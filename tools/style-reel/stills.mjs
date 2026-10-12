@@ -15,6 +15,7 @@ const style = args[0];
 if (!style || style.startsWith("--")) { console.log("usage: node tools/style-reel/stills.mjs <style> [--t 1,3.5,8] [--out dir] [--sheet]"); process.exit(2); }
 const times = opt("--t", "1,3.6,8.4,10.4,15.2,17.2,19.6,21.2,23.4,25.5,27.4,29.5").split(",").map(Number);
 const out = path.resolve(opt("--out", path.join(HERE, "renders/stills"))); fs.mkdirSync(out, { recursive: true });
+if (!fs.existsSync(path.join(HERE, "assets/words.js"))) console.warn("note: no demo take yet (assets/words.js, face.mp4): captions and the face are empty. bash tools/install.sh video makes them.");
 const { chromium } = await import("playwright");
 const b = await chromium.launch({ channel: process.env.CHROME_CHANNEL || "chrome", headless: true, args: ["--allow-file-access-from-files", "--autoplay-policy=no-user-gesture-required"] });
 const files = [];

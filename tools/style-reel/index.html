@@ -145,7 +145,7 @@
       if (S.cap) {
         const capEl = q("#cap"), on = S.cap.on, off = S.cap.off;
         FACE.forEach(([w0, w1]) => {
-          const ws = window.WORDS.filter((x) => x.s >= w0 - .05 && x.s < w1 - .05);
+          const ws = (window.WORDS || []).filter((x) => x.s >= w0 - .05 && x.s < w1 - .05);
           const chunks = []; let cur = [];
           ws.forEach((x, i) => { cur.push(x); const nx = ws[i + 1];
             if (cur.length === 3 || !nx || /[.،,!؟]$/.test(x.t) || nx.s - x.e > .35) { chunks.push(cur); cur = []; } });
