@@ -20,5 +20,7 @@ suite() { echo "== $1"; out=$(node "test/$1" 2>&1); echo "$out" | grep -E "❌|p
 cp .dev.vars.example .dev.vars;                                                start; suite run.mjs
 cp .dev.vars.example .dev.vars; echo "ZERNIO_DRY_RUN=0" >> .dev.vars;           start; suite publish.mjs; suite story.mjs; suite reports.mjs
 cp .dev.vars.example .dev.vars; sed -i.bak 's/^PUBLISH_CHAT=.*/PUBLISH_CHAT=@my_channel/' .dev.vars; start; suite flow.mjs
+cp .dev.vars.example .dev.vars; sed -i.bak 's/^LANG=.*/LANG=en/' .dev.vars; echo "ZERNIO_DRY_RUN=0" >> .dev.vars; start; suite features.mjs
+cp .dev.vars.example .dev.vars; sed -i.bak 's/^LANG=.*/LANG=en/' .dev.vars; printf "ZERNIO_DRY_RUN=0\nAGENCY=on\n" >> .dev.vars; start; suite agency.mjs
 stop; rm -f .dev.vars .dev.vars.bak
 [ $total = 0 ] && echo "ALL GREEN" || { echo "SOME CHECKS FAILED"; exit 1; }

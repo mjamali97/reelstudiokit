@@ -25,7 +25,7 @@ ok(calls().some((c) => c.zernio && c.method === "POST" && c.path === "/webhooks/
 const tok = crypto.createHash("sha256").update("test-ingest:dashboard").digest("hex").slice(0, 40);
 ok((await fetch(W + "/dashboard?k=nope")).status === 403, "dashboard refuses a wrong token");
 const html = await (await fetch(W + "/dashboard?k=" + tok)).text();
-ok(/داشبورد/.test(html) && /امتیاز پیج/.test(html) && /Tehran/.test(html) && /<svg/.test(html) && /ریل تست R25/.test(html), "dashboard: KPIs, charts, audience, posts table", html.slice(0, 200));
+ok(/داشبورد/.test(html) && /امتیاز پیج/.test(html) && /Tehran/.test(html) && /<svg/.test(html) && /Test reel R25/.test(html), "dashboard: KPIs, charts, audience, posts table", html.slice(0, 200));
 ok(!/NaN|undefined/.test(html.replace(/<script[\s\S]*<\/script>/, "")), "dashboard has no NaN/undefined");
 
 // daily report

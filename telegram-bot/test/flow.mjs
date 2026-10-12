@@ -12,7 +12,7 @@ const api = (p, m = "GET", b) => fetch(W + p, { method: m, headers: { "x-api-key
 const btns = (c) => (c.body.reply_markup?.inline_keyboard || []).flat().map((b) => b.text + "|" + b.callback_data);
 
 let r = await step("/tg/studio", msg("/start"));
-ok(r[0]?.body.reply_markup?.keyboard?.flat().length === 10 && r[0].body.reply_markup.keyboard.flat().some((b) => b.text === "🔎 سرچ"), "menu has 10 buttons incl. 🎬 ریل‌ها, 🔎 سرچ, ➕ ایده‌ی جدید");
+ok(r[0]?.body.reply_markup?.keyboard?.flat().length === 11 && r[0].body.reply_markup.keyboard.flat().some((b) => b.text === "🔎 سرچ"), "menu has 11 buttons incl. 🎬 ریل‌ها, 🔎 سرچ, ➕ ایده‌ی جدید");
 await step("/tg/studio", msg("ایده‌ی تست برای فهرست"));
 r = await step("/tg/studio", msg("💡 ایده‌ها"));
 ok(btns(r[0]).some((x) => x.includes("|io:")), "idea list = one button per idea", btns(r[0]).join(" "));

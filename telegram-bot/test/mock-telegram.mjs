@@ -12,7 +12,18 @@ http.createServer((req, res) => {
     if (u.startsWith("/zernio/")) {
       const path = u.slice(7); let body = {}; try { body = JSON.parse(raw.toString() || "{}"); } catch {}
       fs.appendFileSync(LOG, JSON.stringify({ zernio: true, method: req.method, path, body }) + "\n");
-      if (path.startsWith("/accounts")) return json(res, { accounts: [{ _id: "igacc", platform: "instagram", username: "mybrand", profileId: { _id: "prof" }, followersCount: 1000 }, { _id: "ytacc", platform: "youtube" }] });
+      if (/^\/accounts\/[^/]+\/instagram\/business-discovery/.test(path)) {
+        const u = new URL("http://x" + path).searchParams.get("username");
+        if (u === "nobody") return json(res, { error: "not a business account" }, 404);
+        const ago = (d) => new Date(Date.now() - d * 864e5).toISOString();
+        return json(res, { profile: { id: "c-" + u, username: u, name: u, followersCount: 4200, followsCount: 300, mediaCount: 210 },
+          media: [...Array(12)].map((_, i) => ({ id: "m" + i, caption: "post " + i, mediaProductType: "REELS", timestamp: ago(i * 2), permalink: "https://www.instagram.com/p/" + u + i + "/", likeCount: 100 + i * 10, commentsCount: 5 + i })) });
+      }
+      if (path.startsWith("/accounts")) return json(res, { accounts: [{ _id: "igacc", platform: "instagram", username: "mybrand", profileId: { _id: "prof" }, followersCount: 1000 },
+        { _id: "igB", platform: "instagram", username: "photolab", profileId: { _id: "profB" }, followersCount: 2500 }, { _id: "ytacc", platform: "youtube" }] });
+      if (path.startsWith("/profiles")) return json(res, { profiles: [{ _id: "prof", name: "Sweet Corner", accountUsernames: ["mybrand"] }, { _id: "profB", name: "Photo Lab", accountUsernames: ["photolab"] }] });
+      if (path.startsWith("/inbox/") && req.method === "POST") return json(res, { success: true });
+      if (path.startsWith("/posts?status=scheduled")) return json(res, { posts: [{ _id: "s1", content: "Next reel: the autumn menu", platforms: [{ platform: "instagram", accountId: "igacc", scheduledFor: new Date(Date.now() + 2 * 864e5).toISOString() }] }] });
       if (path.startsWith("/media/presign")) return json(res, { uploadUrl: "http://127.0.0.1:8790/upload/" + (++zid), publicUrl: "https://media.example/" + zid + ".png" });
       if (path.startsWith("/comment-automations") && req.method === "POST") return json(res, { automation: { _id: "auto" + (++zid) } });
       if (path.startsWith("/posts") && req.method === "POST") return json(res, { post: { _id: "zpost" + (++zid) } });
@@ -27,7 +38,7 @@ http.createServer((req, res) => {
       if (path.startsWith("/analytics/instagram/demographics")) return json(res, { demographics: { city: [{ dimension: "Tehran", value: 500 }, { dimension: "Karaj", value: 80 }], age: [{ dimension: "25-34", value: 400 }, { dimension: "18-24", value: 200 }] } });
       if (path.startsWith("/analytics/best-time")) return json(res, { slots: [{ day_of_week: 1, hour: 15, avg_engagement: 120, post_count: 3 }, { day_of_week: 3, hour: 16, avg_engagement: 90, post_count: 2 }] });
       if (path.startsWith("/analytics?") || path === "/analytics") {
-        const reel = (id, h, views, extra = {}) => ({ _id: id, latePostId: "late-" + id, platform: "instagram", content: "ریل تست " + id + "\nخط دوم", publishedAt: ago(h), mediaProductType: "REELS",
+        const reel = (id, h, views, extra = {}) => ({ _id: id, latePostId: "late-" + id, platform: "instagram", content: "Test reel " + id + "\nsecond line", publishedAt: ago(h), mediaProductType: "REELS",
           platformPostUrl: "https://www.instagram.com/reel/" + id + "/", analytics: { views, reach: views * .8, likes: views / 40, comments: views / 100, shares: views / 90, saves: views / 30,
             reelsSkipRate: 40, igReelsAvgWatchTime: 14000, videoDurationSeconds: 40, lastUpdated: ago(1), ...extra } });
         const list = [...EXTRA.map((e) => reel(e.id, e.h, e.views)), reel("R25", 25, 18000, { reelsSkipRate: 33 }), reel("R170", 170, 9000), reel("R60", 60, 7000),
@@ -37,13 +48,14 @@ http.createServer((req, res) => {
       if (path.startsWith("/comment-automations") && req.method === "GET" && !path.includes("/logs")) return json(res, { automations: [{ id: "autoR25", postId: "late-R25", keywords: ["منو"] }] });
       if (path.includes("/logs")) return json(res, { logs: [{ status: "sent" }, { status: "sent" }, { status: "failed" }], pagination: { total: 3 }, misses: { total: 2 } });
       if (path.startsWith("/webhooks/settings")) return json(res, req.method === "GET" ? { webhooks: [] } : { webhook: { _id: "wh1" } });
-      if (path.startsWith("/analytics")) return json(res, { posts: [{ platform: "instagram", content: "یه ریل تستی:\n“تست”", publishedAt: "2026-01-06T17:15:04Z", mediaProductType: "REELS", platformPostUrl: "https://www.instagram.com/reel/TESTCODE1/", analytics: { views: 12345, reach: 11000, likes: 300, comments: 200, shares: 150, saves: 900, igReelsAvgWatchTime: 12000, reelsSkipRate: 40, videoDurationSeconds: 60, engagementRate: 20.3 } }], pagination: { pages: 1 } });
+      if (path.startsWith("/analytics")) return json(res, { posts: [{ platform: "instagram", content: "A test reel:\n“test”", publishedAt: "2026-01-06T17:15:04Z", mediaProductType: "REELS", platformPostUrl: "https://www.instagram.com/reel/TESTCODE1/", analytics: { views: 12345, reach: 11000, likes: 300, comments: 200, shares: 150, saves: 900, igReelsAvgWatchTime: 12000, reelsSkipRate: 40, videoDurationSeconds: 60, engagementRate: 20.3 } }], pagination: { pages: 1 } });
       return json(res, {});
     }
     const [, bot, method] = u.match(/^\/bot([^/]+)\/(\w+)/) || [];
     let body = {}; const ct = req.headers["content-type"] || "";
-    if (ct.includes("json")) { try { body = JSON.parse(raw.toString() || "{}"); } catch {} } else if (raw.length) body = { multipart: true, bytes: raw.length };
+    if (ct.includes("json")) { try { body = JSON.parse(raw.toString() || "{}"); } catch {} }
+    else if (raw.length) { const t = raw.toString("latin1"); body = { multipart: true, bytes: raw.length, chat_id: (t.match(/name="chat_id"\r\n\r\n([^\r]+)/) || [])[1], filename: (t.match(/filename="([^"]+)"/) || [])[1] }; }
     fs.appendFileSync(LOG, JSON.stringify({ bot, method, body }) + "\n");
-    json(res, { ok: true, result: /^send/.test(method || "") ? { message_id: ++mid } : true });
+    json(res, { ok: true, result: method === "getMe" ? { username: bot === "TEST_PUBLISHER" ? "test_publisher_bot" : "test_studio_bot" } : /^send/.test(method || "") ? { message_id: ++mid } : true });
   });
 }).listen(8790, "127.0.0.1", () => console.log("mock telegram + zernio on 8790"));

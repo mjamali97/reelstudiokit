@@ -58,6 +58,10 @@
     "NEWS_POST_TIME": "20:00",
     "DAILY_REPORT_AT": "09:00",            // daily page report in Telegram ("off" to disable)
     "POST_REPORTS": "on",                  // a report 24 h and 7 days after every post ("off" to disable)
+    "MONTHLY_REPORT": "on",                // a PDF report on day 1 of every month ("off" to disable)
+    "INBOX_ASSIST": "on",                  // new comments and DMs arrive with a suggested reply to approve ("off" to disable)
+    "BUSINESS_FACTS": "",                  // facts the reply assistant may use: hours, address, how to order, price list link
+    "AGENCY": "off",                       // "on": manage several clients (one Zernio profile each) from this bot
 
     "TG_API": "https://api.telegram.org"
   }

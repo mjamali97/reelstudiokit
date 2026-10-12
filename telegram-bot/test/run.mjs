@@ -33,7 +33,7 @@ ok(wh.some((c) => c.body.url.endsWith("/tg/studio") && c.body.secret_token === "
 
 // menu
 r = await step(msg("/start"));
-ok(r[0]?.body.reply_markup?.keyboard?.flat().length === 10, "/start shows the 10-button menu", JSON.stringify(r[0]?.body.reply_markup));
+ok(r[0]?.body.reply_markup?.keyboard?.flat().length === 11, "/start shows the 11-button menu", JSON.stringify(r[0]?.body.reply_markup));
 ok(/My Studio/.test(r[0]?.body.text || ""), "help text carries BRAND_NAME");
 for (const b of ["📊 داشبورد", "🎬 ریل‌ها", "💡 ایده‌ها", "📝 پیش‌نویس‌ها", "📅 برنامه", "📸 استوری", "📰 خبر", "⚙️ وضعیت"]) {
   r = (await step(msg(b))).filter((c) => c.bot); ok(r.length === 1 && r[0].method === "sendMessage" && !/خطا/.test(txt(r)), `menu button ${b} answers`, txt(r).slice(0, 120));

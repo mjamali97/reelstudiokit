@@ -10,7 +10,7 @@
 import puppeteer from "@cloudflare/puppeteer";
 import { makeReports } from "./reports.js";
 import { FONT_BLACK, FONT_SEMIBOLD } from "./fonts.js";
-import { brand, NEWS_PROMPT, STORY_PROMPT, SEARCH_PROMPT, RESEARCH_PROMPT, POST_PROMPT, storyParts, storyBody, frameHtml, replyPool, tagsDefault } from "./formats.js";
+import { brand, NEWS_PROMPT, STORY_PROMPT, SEARCH_PROMPT, RESEARCH_PROMPT, POST_PROMPT, REPLY_PROMPT, storyParts, storyBody, frameHtml, replyPool, tagsDefault } from "./formats.js";
 import { _, _f, num, setLang, lang, listSep, grouped } from "./i18n.js";
 
 const fa = (n) => num(n);   // digits in the bot's language (Persian ۰۱۲, Arabic ٠١٢, Latin elsewhere)
@@ -23,20 +23,21 @@ const storyTime = (env) => hm(env.STORY_POST_TIME, "10:00");
 const newsTime = (env) => hm(env.NEWS_POST_TIME, "20:00");
 const tags = (env) => (env.TAGS || tagsDefault()).split(",").map((x) => x.trim()).filter(Boolean);
 
-const MENU = () => ({
+const MENU = (env = {}) => ({
   keyboard: [
     [{ text: _("🎬 Reels") }, { text: _("📝 Drafts") }],
     [{ text: _("💡 Ideas") }, { text: _("📅 Schedule") }],
     [{ text: _("📸 Stories") }, { text: _("📰 News") }],
     [{ text: _("🔎 Search") }, { text: _("➕ New idea") }],
     [{ text: _("📊 Dashboard") }, { text: _("⚙️ Status") }],
+    env.AGENCY === "on" ? [{ text: _("💬 Inbox") }, { text: _("👥 Clients") }] : [{ text: _("💬 Inbox") }],
   ],
   resize_keyboard: true, is_persistent: true, input_field_placeholder: _("Send a link or an idea…"),
 });
 const KIND_FA = () => ({ youtube: _("YouTube"), instagram: _("Instagram"), x: _("X"), news: _("News"), site: _("Site"), note: _("Note") });
 const DRAFT_FA = () => ({ telegram: _("Telegram post"), news: _("Telegram news"), story: _("Auto story"), story_manual: _("Manual story (link/poll)"), reel: _("Reel"), carousel: _("Carousel") });
 const STATUS_FA = () => ({ draft: _("Draft"), pending_final: _("Waiting for the final OK in the publisher bot"), scheduled: _("Approved and scheduled"), published: _("Published"), rejected: _("Rejected") });
-const MENU_TEXTS = () => MENU().keyboard.flat().map((b) => b.text);
+const MENU_TEXTS = (env) => MENU(env).keyboard.flat().map((b) => b.text);
 const KIND_EMOJI = { telegram: "📣", news: "📰", story: "📸", story_manual: "📸", reel: "🎬", carousel: "🖼" };
 const cancelKb = () => ({ inline_keyboard: [[{ text: _("✖️ Never mind"), callback_data: "x:cancel" }]] });
 const setState = (env, chat, mode, ref = null) => env.DB.prepare("INSERT OR REPLACE INTO state (chat_id, mode, ref) VALUES (?,?,?)").bind(String(chat), mode, ref).run();
@@ -52,6 +53,27 @@ async function tg(env, token, method, body) {
 }
 const studio = (env, m, b) => tg(env, env.STUDIO_BOT_TOKEN, m, b);
 const publisher = (env, m, b) => tg(env, env.PUBLISHER_BOT_TOKEN, m, b);
+const sendTo = (env, chat, text, extra = {}) => publisher(env, "sendMessage", { chat_id: chat, text: String(text).slice(0, 4096), parse_mode: "HTML", disable_web_page_preview: true, ...extra });
+async function sendDoc(env, chat, bytes, name, caption, viaPublisher = false) {
+  const fd = new FormData();
+  fd.append("chat_id", String(chat)); fd.append("caption", String(caption || "").slice(0, 1024));
+  fd.append("document", new Blob([bytes], { type: "application/pdf" }), name);
+  return (await fetch(`${env.TG_API}/bot${viaPublisher ? env.PUBLISHER_BOT_TOKEN : env.STUDIO_BOT_TOKEN}/sendDocument`, { method: "POST", body: fd })).json().catch(() => ({ ok: false }));
+}
+async function pdf(env, html) {
+  if (env.FAKE_SHOTS === "1") return new TextEncoder().encode("%PDF-1.4\n% local test\n");
+  if (!env.BROWSER) throw new Error(_("Browser Rendering is not connected to the bot."));
+  const b = await puppeteer.launch(env.BROWSER);
+  try { const pg = await b.newPage(); await pg.setContent(html, { waitUntil: "load" }); await pg.evaluate(async () => { await document.fonts.ready; }); return await pg.pdf({ format: "A4", printBackground: true }); }
+  finally { await b.close(); }
+}
+async function publisherName(env) {
+  const c = (await env.DB.prepare("SELECT v FROM kv WHERE k='pubname'").first())?.v;
+  if (c) return c;
+  const r = await publisher(env, "getMe", {}), n = r.result?.username;
+  if (n) await env.DB.prepare("INSERT OR REPLACE INTO kv (k, v) VALUES ('pubname', ?)").bind(n).run();
+  return n || null;
+}
 const say = (env, text, extra = {}) => studio(env, "sendMessage", { chat_id: env.OWNER_ID, text: String(text).slice(0, 4096), parse_mode: "HTML", disable_web_page_preview: true, ...extra });
 
 // ---------- time (local = TZ_NAME, any IANA zone, DST-safe) ----------
@@ -241,6 +263,14 @@ async function sendForFinal(env, d) {
 async function onPublisher(env, u) {
   const m = u.message, q = u.callback_query;
   const chat = String(m?.chat?.id ?? q?.message?.chat?.id ?? "");
+  // a client opening their invite link (t.me/<publisher>?start=c_<code>) links their Telegram to their reports
+  const startCode = (m?.text || "").match(/^\/start c_([a-f0-9]+)/);
+  if (startCode && env.AGENCY === "on") {
+    const c = await R.linkClient(env, startCode[1], chat);
+    if (!c) return publisher(env, "sendMessage", { chat_id: chat, text: _("This invite link is not valid any more. Ask for a new one.") });
+    await publisher(env, "sendMessage", { chat_id: chat, text: _f("✅ Connected. {0}'s daily report, a report after every post and a monthly PDF will arrive here.", c.name) });
+    return say(env, _f("🔗 <b>{0}</b> linked their Telegram; their reports now go to them too.", esc(c.name)));
+  }
   if (chat !== String(env.OWNER_ID) || String(m?.from?.id ?? q?.from?.id) !== String(env.OWNER_ID)) return;
   const key = "pub:" + chat;
   if (m) {
@@ -339,6 +369,41 @@ async function schedule(env) {
   return { text: _f("📅 <b>Schedule</b>\n\n<b>Telegram:</b>\n{0}\n\n<b>Instagram and YouTube (Zernio):</b>\n{1}", l, z),
     reply_markup: { inline_keyboard: [...local.map((d) => [{ text: `⏰ ${fmtTime(d.scheduled_for, env)} · ${(d.title || d.body || "").slice(0, 30)}`, callback_data: `do:${d.id}` }]), [{ text: _("🔄 Refresh"), callback_data: "sc" }]] } };
 }
+// ---------- inbox, competitors, clients screens ----------
+async function inboxList(env) {
+  const rows = (await env.DB.prepare("SELECT * FROM inbox WHERE status='carded' ORDER BY id DESC LIMIT 15").all()).results;
+  const text = `<b>${_("💬 Inbox")}</b>\n\n${rows.length ? _("Comments and DMs waiting for an answer. Tap one to open it.") : _("Nothing waiting. New comments and DMs arrive here with a suggested reply.")}${env.INBOX_ASSIST === "off" ? "\n\n" + _("(The inbox assistant is off: INBOX_ASSIST.)") : ""}`;
+  return { text, reply_markup: { inline_keyboard: rows.map((r) => [{ text: `${r.kind === "dm" ? "✉️" : "💬"} @${r.author}: ${String(r.text).replace(/\s+/g, " ")}`.slice(0, 60), callback_data: `ibo:${r.id}` }]) } };
+}
+async function competitorsScreen(env, clientId) {
+  const list = await R.competitorsOf(env, clientId), cl = clientId ? await R.clientById(env, clientId) : null;
+  const text = `<b>${_("🥊 Competitors")}</b>${cl ? " · " + esc(cl.name) : ""}\n\n${list.length ? _("Public numbers of business/creator accounts, checked every Monday with the daily report. Tap 🗑 to remove one.") : _("No competitors yet. Add up to 10 similar pages (same city or niche).")}`;
+  return { text, reply_markup: { inline_keyboard: [...list.map((c) => [{ text: `@${c.username}`, url: `https://instagram.com/${c.username}` }, { text: "🗑", callback_data: `cp:rm:${c.id}` }]),
+    [{ text: _("➕ Add competitor"), callback_data: `cp:add:${clientId || 0}` }, ...(list.length ? [{ text: _("📊 Compare now"), callback_data: `cp:run:${clientId || 0}` }] : [])],
+    ...(cl ? [[{ text: _("↩️ Back"), callback_data: `clo:${cl.id}` }]] : [])] } };
+}
+async function clientsScreen(env) {
+  const cs = await R.clientsAll(env), url = await R.dashLink(env);
+  const text = `<b>${_("👥 Clients")}</b>\n\n${cs.length ? _("Each client is a Zernio profile with its own Instagram. Tap one for its card.") : _("No clients yet. In Zernio, create one profile per client and connect their Instagram there; then tap ➕.")}`;
+  return { text, reply_markup: { inline_keyboard: [...cs.map((c) => [{ text: `${c.chat_id ? "🔗 " : ""}${c.name}`.slice(0, 50), callback_data: `clo:${c.id}` }]),
+    [{ text: _("➕ Add client"), callback_data: "cl:new" }, ...(url ? [{ text: _("📊 Agency dashboard"), url }] : [])]] } };
+}
+async function clientCard(env, id) {
+  const c = await R.clientById(env, id);
+  if (!c) return { text: _("Not found."), reply_markup: { inline_keyboard: [[{ text: _("↩️ Back"), callback_data: "cl:list" }]] } };
+  const t = await R.targetFor(env, id), url = await R.dashLink(env, c), pub = await publisherName(env);
+  const invite = pub ? `https://t.me/${pub}?start=c_${c.join_code}` : null;
+  const L = [`👤 <b>${esc(c.name)}</b>`, t ? `📸 @${esc(t.acc.username || "")} · ${fa(t.acc.followersCount ?? "—")}` : _("⚠️ No Instagram account in this Zernio profile yet."),
+    c.chat_id ? _("🔗 Telegram linked: the client gets their own reports.") : _("🔗 Telegram not linked yet: send the client the invite link; one tap and their reports go to them too."),
+    _f("🔔 Daily and post reports to the client: {0}", c.reports ? _("on") : _("off")), _f("📄 Monthly PDF to the client: {0}", c.monthly ? _("on") : _("off"))];
+  return { text: L.join("\n"), reply_markup: { inline_keyboard: [
+    [...(url ? [{ text: _("📊 Dashboard"), url }] : []), ...(invite ? [{ text: _("🔗 Invite link"), url: invite }] : [])],
+    [{ text: _("📈 Report now"), callback_data: `cl:daily:${c.id}` }, { text: _("📄 Monthly PDF"), callback_data: `cl:pdf:${c.id}` }],
+    [{ text: _("🥊 Competitors"), callback_data: `cpm:${c.id}` }],
+    [{ text: c.reports ? _("🔔 Client reports: on") : _("🔕 Client reports: off"), callback_data: `cl:rep:${c.id}` }, { text: c.monthly ? _("📄 Client PDF: on") : _("📄 Client PDF: off"), callback_data: `cl:mon:${c.id}` }],
+    [{ text: _("🗑 Remove"), callback_data: `cl:del:${c.id}` }, { text: _("↩️ Clients"), callback_data: "cl:list" }]] } };
+}
+
 const HELP = (env) => [
   _f("👋 <b>{0} Studio</b>", esc(brand(env).name)),
   "",
@@ -833,7 +898,7 @@ async function dashboardData(env) {
 }
 
 // ---------- job queue (webhook background work is cut at ~30 s; Gemini + search + link checks take 20-90 s) ----------
-const JOBS = { daily: () => _("Daily page report"), postreports: () => _("24-hour and 7-day post reports"), news: () => _("News digest of the last three days"), story: () => _("Story suggestion"), search: (a) => _f("Search «{0}»", a),
+const JOBS = { daily: (a) => (a ? _f("Daily report of client #{0}", fa(a)) : _("Daily page report")), monthly: () => _("Monthly PDF report"), competitors: () => _("Competitors report"), postreports: () => _("24-hour and 7-day post reports"), news: () => _("News digest of the last three days"), story: () => _("Story suggestion"), search: (a) => _f("Search «{0}»", a),
   research: (a) => _f("Research of idea #{0}", fa(a)), post: (a) => _f("Telegram post from idea #{0}", fa(a)), storyimg: (a) => _f("Story images #{0}", fa(a)) };
 async function enqueue(env, type, arg = null) {
   const dup = await env.DB.prepare("SELECT id FROM jobs WHERE type=? AND IFNULL(arg,'')=IFNULL(?,'') AND status IN ('queued','running')").bind(type, arg).first();
@@ -848,7 +913,9 @@ async function runJobs(env) {
     const claim = await env.DB.prepare("UPDATE jobs SET status='running', updated_at=datetime('now') WHERE id=? AND status='queued'").bind(j.id).run();
     if (!claim.meta?.changes) continue;
     try {
-      if (j.type === "daily") await R.dailyReport(env);
+      if (j.type === "daily") await R.dailyReport(env, j.arg ? +j.arg : null);
+      else if (j.type === "monthly") await R.monthlyReport(env, j.arg ? +j.arg : null);
+      else if (j.type === "competitors") await R.competitorsReport(env, j.arg ? +j.arg : null);
       else if (j.type === "postreports") await R.checkPostReports(env);
       else if (j.type === "news") await makeNews(env);
       else if (j.type === "story") await makeStory(env);
@@ -869,7 +936,7 @@ async function onMessage(env, m) {
   if (String(m.chat?.id) !== String(env.OWNER_ID)) return; // private bot
   const text = (m.text || m.caption || "").trim();
   const st = await env.DB.prepare("SELECT * FROM state WHERE chat_id=?").bind(String(m.chat.id)).first();
-  if (st?.mode && (text.startsWith("/") || MENU_TEXTS().includes(text))) await env.DB.prepare("DELETE FROM state WHERE chat_id=?").bind(String(m.chat.id)).run();
+  if (st?.mode && (text.startsWith("/") || MENU_TEXTS(env).includes(text))) await env.DB.prepare("DELETE FROM state WHERE chat_id=?").bind(String(m.chat.id)).run();
   else if (st?.mode) {
     await env.DB.prepare("DELETE FROM state WHERE chat_id=?").bind(String(m.chat.id)).run();
     if (st.mode === "search") return text ? enqueue(env, "search", text) : say(env, _("You didn't send any text."));
@@ -891,11 +958,13 @@ async function onMessage(env, m) {
       const d = await setDraft(env, id, { body: storyBody(parts), result: null });
       return say(env, _f("✏️ Story {0} changed:\n\n", fa(i + 1)) + draftCard(d, env), { reply_markup: draftKb(d) });
     }
+    if (st.mode === "ibedit") { if (!text) return say(env, _("You didn't send any text.")); const c = await R.inboxSetReply(env, st.ref, m.text); return say(env, c.text, { reply_markup: c.kb }); }
+    if (st.mode === "cpadd") { if (!text) return say(env, _("You didn't send any text.")); const r = await R.addCompetitor(env, st.ref, text.split(/\s+/)[0]); await say(env, r.msg); return screen(await competitorsScreen(env, st.ref)); }
     if (st.mode === "note") { await env.DB.prepare("UPDATE ideas SET note=?, updated_at=datetime('now') WHERE id=?").bind(text, st.ref).run(); const i = await env.DB.prepare("SELECT * FROM ideas WHERE id=?").bind(st.ref).first(); return say(env, ideaCard(i), { reply_markup: ideaKb(i) }); }
   }
   const cmd = text.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
   const screen = (o) => say(env, o.text, { reply_markup: o.reply_markup });
-  if (cmd === "/start" || cmd === "/help") return say(env, HELP(env), { reply_markup: MENU() });
+  if (cmd === "/start" || cmd === "/help") return say(env, HELP(env), { reply_markup: MENU(env) });
   if (cmd === "/news") return enqueue(env, "news");
   if (cmd === "/search" || text === _("🔎 Search")) { await setState(env, m.chat.id, "search"); return say(env, _("🔎 What should I look for? Write it, for example:\nthis month's trends in my field"), { reply_markup: cancelKb() }); }
   if (text === _("➕ New idea")) { await setState(env, m.chat.id, "idea"); return say(env, _("➕ Send the link or the text of the idea."), { reply_markup: cancelKb() }); }
@@ -912,17 +981,21 @@ async function onMessage(env, m) {
   if (cmd === "/dashboard" || text === _("📊 Dashboard")) {
     const url = await R.dashLink(env);
     return say(env, url ? _("📊 Your dashboard (a private link, don't share it). It refreshes from Zernio every time you open it.") : _("The dashboard isn't ready yet: open /setup once."),
-      { reply_markup: { inline_keyboard: [...(url ? [[{ text: _("📊 Open dashboard"), url }]] : []), [{ text: _("📈 Send today's report now"), callback_data: "g:daily" }]] } });
+      { reply_markup: { inline_keyboard: [...(url ? [[{ text: _("📊 Open dashboard"), url }]] : []), [{ text: _("📈 Send today's report now"), callback_data: "g:daily" }, { text: _("📄 Monthly PDF now"), callback_data: "g:monthly" }],
+        ...(env.AGENCY === "on" ? [] : [[{ text: _("🥊 Competitors"), callback_data: "cpm:0" }]])] } });
   }
+  if (cmd === "/inbox" || text === _("💬 Inbox")) return screen(await inboxList(env));
+  if (env.AGENCY === "on" && (cmd === "/clients" || text === _("👥 Clients"))) return screen(await clientsScreen(env));
   if (cmd === "/status" || text === _("⚙️ Status")) return say(env, await status(env), { reply_markup: { inline_keyboard: [[{ text: _("🔄 Refresh"), callback_data: "stt" }]] } });
   let mm;
   if ((mm = cmd.match(/^\/i(\d+)/))) { const i = await env.DB.prepare("SELECT * FROM ideas WHERE id=?").bind(+mm[1]).first(); return i ? say(env, ideaCard(i), { reply_markup: ideaKb(i) }) : say(env, _("Not found.")); }
   if ((mm = cmd.match(/^\/d(\d+)/))) { const d = await getDraft(env, +mm[1]); return d ? say(env, draftCard(d, env), { reply_markup: draftKb(d) }) : say(env, _("Not found.")); }
-  if (text.startsWith("/")) return say(env, _("Use the buttons below 👇"), { reply_markup: MENU() });
+  if (text.startsWith("/")) return say(env, _("Use the buttons below 👇"), { reply_markup: MENU(env) });
   if (text) return saveIdea(env, text);
 }
 
 async function onCallback(env, q) {
+  const screen = (o) => say(env, o.text, { reply_markup: o.reply_markup });
   if (String(q.from?.id) !== String(env.OWNER_ID)) return;
   const [t, a, b, c, e] = (q.data || "").split(":");
   const edit = (text, reply_markup) => studio(env, "editMessageText", { chat_id: q.message.chat.id, message_id: q.message.message_id, text, parse_mode: "HTML", disable_web_page_preview: true, reply_markup });
@@ -981,6 +1054,33 @@ async function onCallback(env, q) {
       await edit(draftCard(d, env) + `\n\n${r.msg}`, draftKb(d)); return toast(r.ok ? _("Done") : _("Error"));
     }
   }
+  if (t === "ib") {
+    if (a === "send") { const r = await R.inboxSend(env, +b); if (r.ok) await studio(env, "editMessageReplyMarkup", { chat_id: q.message.chat.id, message_id: q.message.message_id, reply_markup: { inline_keyboard: [] } }); await toast(r.ok ? _("Sent ✅") : _("Error")); return say(env, esc(r.msg)); }
+    if (a === "edit") { await setState(env, q.message.chat.id, "ibedit", +b); await toast(""); return say(env, _("✏️ Send your reply (it replaces the suggestion; you'll confirm it with ✅)."), { reply_markup: cancelKb() }); }
+    if (a === "no") { await R.inboxIgnore(env, +b); await studio(env, "editMessageReplyMarkup", { chat_id: q.message.chat.id, message_id: q.message.message_id, reply_markup: { inline_keyboard: [] } }); return toast(_("Ignored")); }
+  }
+  if (t === "ibo") { const c = await R.inboxShow(env, +a); await toast(""); return c ? say(env, c.text, { reply_markup: c.kb }) : say(env, _("Not found.")); }
+  if (t === "cpm") { await toast(""); return screen(await competitorsScreen(env, +a)); }
+  if (t === "cp") {
+    if (a === "add") { await setState(env, q.message.chat.id, "cpadd", +b); await toast(""); return say(env, _("🥊 Send the competitor's Instagram @username (a business or creator account)."), { reply_markup: cancelKb() }); }
+    if (a === "rm") { const c = await env.DB.prepare("SELECT * FROM competitors WHERE id=?").bind(+b).first(); await env.DB.prepare("DELETE FROM competitors WHERE id=?").bind(+b).run(); await toast(_("Deleted")); return screen(await competitorsScreen(env, c?.client_id || 0)); }
+    if (a === "run") { await toast(_("⏳ Queued")); return enqueue(env, "competitors", +b || null); }
+  }
+  if (t === "cl" && env.AGENCY === "on") {
+    if (a === "list") { await toast(""); return screen(await clientsScreen(env)); }
+    if (a === "new") {
+      const free = await R.freeProfiles(env); await toast("");
+      if (!free.length) return say(env, _("Every Zernio profile is already a client. Create a profile in Zernio (one per client), connect their Instagram there, then come back."));
+      return say(env, _("➕ Which Zernio profile is the new client?"), { reply_markup: { inline_keyboard: [...free.slice(0, 20).map((p) => [{ text: `${p.name}${p.accountUsernames?.length ? " · " + p.accountUsernames.join(", ") : ""}`.slice(0, 60), callback_data: `cl:addp:${p._id}` }]), [{ text: _("↩️ Back"), callback_data: "cl:list" }]] } });
+    }
+    if (a === "addp") { const c = await R.addClient(env, b); await toast(c ? _("Saved") : _("Not found")); return c ? screen(await clientCard(env, c.id)) : null; }
+    if (a === "daily") { await toast(_("⏳ Queued")); return enqueue(env, "daily", String(+b)); }
+    if (a === "pdf") { await toast(_("⏳ Queued")); return enqueue(env, "monthly", String(+b)); }
+    if (a === "rep" || a === "mon") { const col = a === "rep" ? "reports" : "monthly"; await env.DB.prepare(`UPDATE clients SET ${col}=1-${col} WHERE id=?`).bind(+b).run(); await toast(""); return screen(await clientCard(env, +b)); }
+    if (a === "del") { await toast(""); return say(env, _("🗑 Remove this client? Their Zernio profile and posts are not touched."), { reply_markup: { inline_keyboard: [[{ text: _("🗑 Yes, delete"), callback_data: `cl:del2:${b}` }, { text: _("↩️ No"), callback_data: `clo:${b}` }]] } }); }
+    if (a === "del2") { await env.DB.prepare("DELETE FROM clients WHERE id=?").bind(+b).run(); await toast(_("Deleted")); return screen(await clientsScreen(env)); }
+  }
+  if (t === "clo") { await toast(""); return screen(await clientCard(env, +a)); }
   if (t === "g") {
     if (a === "ssave") { await env.DB.prepare("UPDATE ideas SET status='open' WHERE id=?").bind(+b).run(); await toast(_("Saved")); return say(env, _("💡 Added to ideas.")); }
     if (!JOBS[a]) return toast("");
@@ -1062,6 +1162,10 @@ async function api(req, env, path) {
   }
   if (path === "/api/job" && req.method === "POST") { const b = await req.json(); if (!JOBS[b.type]) return Response.json({ error: "type" }, { status: 400 }); await enqueue(env, b.type, b.arg ?? null); return Response.json({ ok: true }); }
   if (path === "/api/jobs" && req.method === "GET") return Response.json((await env.DB.prepare("SELECT * FROM jobs ORDER BY id DESC LIMIT 20").all()).results);
+  if (path === "/api/clients" && req.method === "GET") return Response.json(await R.clientsAll(env));
+  if (path === "/api/clients" && req.method === "POST") { const b = await req.json(); const c = b.profileId && await R.addClient(env, b.profileId); return c ? Response.json(c) : Response.json({ error: "profileId not found in Zernio" }, { status: 404 }); }
+  if (path === "/api/inbox" && req.method === "GET") return Response.json((await env.DB.prepare("SELECT * FROM inbox ORDER BY id DESC LIMIT 50").all()).results);
+  if (path === "/api/competitors" && req.method === "POST") { const b = await req.json(); return Response.json(await R.addCompetitor(env, b.clientId || 0, b.username || "")); }
   if (path === "/api/notify" && req.method === "POST") { const b = await req.json(); await say(env, b.text || ""); return Response.json({ ok: true }); }
   return Response.json({ error: "not found" }, { status: 404 });
 }
@@ -1108,7 +1212,7 @@ async function publishDue(env) {
 }
 
 // daily report, post reports, dashboard, Zernio webhooks (src/reports.js)
-const R = makeReports({ zernio, say, fa, esc, localParts, fontBlack: FONT_BLACK, fontSemi: FONT_SEMIBOLD });
+const R = makeReports({ zernio, say, sendTo, sendDoc, gemini, pdf, fa, esc, localParts, fontBlack: FONT_BLACK, fontSemi: FONT_SEMIBOLD, prompts: { REPLY_PROMPT } });
 
 export default {
   async fetch(req, env, ctx) {
@@ -1136,6 +1240,7 @@ export default {
       return Response.json(await setup(env, url.origin));
     }
     if (path === "/dashboard") return R.serveDashboard(env, req);
+    if (path.startsWith("/c/")) return R.serveClientDashboard(env, path.slice(3));
     if (path === "/zernio/webhook" && req.method === "POST") return R.onZernioWebhook(env, req);
     if (path.startsWith("/api/")) return api(req, env, path);
     return new Response(`${brand(env).name} bot ✓`);
