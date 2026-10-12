@@ -1,0 +1,38 @@
+{
+ "type": "carousel",
+ "template": "checklist",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "cover": {
+  "kicker": "Party checklist",
+  "title": "Before you order a birthday cake"
+ },
+ "listTitle": "Check these 6 things",
+ "items": [
+  {
+   "text": "Number of guests (and kids)"
+  },
+  {
+   "text": "Any allergies: nuts, gluten, dairy"
+  },
+  {
+   "text": "The theme, colours or a photo"
+  },
+  {
+   "text": "Delivery time and address"
+  },
+  {
+   "text": "Candles, topper, name on the cake"
+  },
+  {
+   "text": "Fridge space at home"
+  }
+ ],
+ "cta": {
+  "title": "Ordering for a party?",
+  "text": "Comment the word and we'll send you the order form.",
+  "word": "PARTY",
+  "save": "Save it",
+  "share": "Send to the host"
+ }
+}

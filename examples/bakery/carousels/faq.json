@@ -1,0 +1,35 @@
+{
+ "type": "carousel",
+ "template": "faq",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "cover": {
+  "kicker": "You asked",
+  "title": "Ordering a birthday cake: 4 answers"
+ },
+ "items": [
+  {
+   "q": "How early should I order?",
+   "a": "Two days ahead for our menu cakes, five days for a custom design."
+  },
+  {
+   "q": "How many kilos for 10 people?",
+   "a": "About 1.5 kg. Count 120–150 g per guest, a little more for kids' parties."
+  },
+  {
+   "q": "Do you deliver?",
+   "a": "Yes, within the city, in a cooled box, at the time you choose."
+  },
+  {
+   "q": "Can I bring a photo of a design?",
+   "a": "Yes. Send it in the DM and we'll tell you what we can make and the price."
+  }
+ ],
+ "cta": {
+  "title": "Want the full recipe card?",
+  "text": "Comment the word and we'll DM it to you.",
+  "word": "RECIPE",
+  "save": "Save it",
+  "share": "Send to a friend"
+ }
+}

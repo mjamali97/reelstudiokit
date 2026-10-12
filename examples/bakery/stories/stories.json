@@ -1,0 +1,89 @@
+{
+ "type": "story",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "frames": [
+  {
+   "template": "special",
+   "chip": "Today",
+   "image": "../media/photo-1.jpg",
+   "title": "Pistachio crown",
+   "price": "$28/kg",
+   "text": "Baked this morning, 6 left",
+   "sticker": "Link sticker → order page"
+  },
+  {
+   "template": "poll",
+   "chip": "Poll",
+   "title": "Which cake should we bake on Friday?",
+   "options": [
+    "Saffron & rose",
+    "Spiced pumpkin"
+   ],
+   "sticker": "Poll sticker here"
+  },
+  {
+   "template": "question",
+   "chip": "Q&A",
+   "title": "Ask us anything about birthday cakes",
+   "text": "We answer every question tonight.",
+   "sticker": "Question box here"
+  },
+  {
+   "template": "offer",
+   "chip": "Offer",
+   "big": "-20%",
+   "title": "All cheesecakes",
+   "until": "until Friday 21:00",
+   "sticker": "Countdown sticker here"
+  },
+  {
+   "template": "new-arrival",
+   "chip": "New",
+   "image": "../media/photo-2.jpg",
+   "title": "Saffron & rose",
+   "text": "Seasonal, until November"
+  },
+  {
+   "template": "tip",
+   "chip": "Tip",
+   "n": 3,
+   "title": "Keep cream cakes cold",
+   "text": "Take it out of the fridge 30 minutes before serving, not earlier."
+  },
+  {
+   "template": "review",
+   "chip": "Review",
+   "quote": "It looked exactly like my daughter's sketch.",
+   "name": "Sara",
+   "stars": 5
+  },
+  {
+   "template": "behind",
+   "chip": "Behind the scenes",
+   "image": "../media/photo-4.jpg",
+   "title": "5:30 a.m. in our kitchen",
+   "text": "The first trays of the day"
+  },
+  {
+   "template": "event",
+   "chip": "Event",
+   "title": "Kids' cupcake workshop",
+   "date": "Sat 14 Dec",
+   "time": "11:00",
+   "place": "Sweet Corner, Main St 12",
+   "sticker": "Reminder sticker"
+  },
+  {
+   "template": "link",
+   "chip": "Order",
+   "title": "Order your cake in one tap",
+   "items": [
+    "Pick the cake and the size",
+    "Choose a delivery time",
+    "Pay at the door"
+   ],
+   "sticker": "Link sticker → order page"
+  }
+ ]
+}

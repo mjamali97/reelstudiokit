@@ -1,0 +1,542 @@
+[
+ {
+  "id": "vazirmatn",
+  "name": "Vazirmatn",
+  "scripts": [
+   "persian",
+   "arabic",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/vazirmatn",
+  "css": "fonts/vazirmatn/font.css",
+  "kb": 140,
+  "note": "Clean Persian sans; the kit's default for Persian."
+ },
+ {
+  "id": "estedad",
+  "name": "Estedad",
+  "scripts": [
+   "persian",
+   "arabic",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/estedad",
+  "css": "fonts/estedad/font.css",
+  "kb": 161,
+  "note": "Geometric Persian sans, strong for titles."
+ },
+ {
+  "id": "shabnam",
+  "name": "Shabnam",
+  "scripts": [
+   "persian",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/shabnam-font",
+  "css": "fonts/shabnam/font.css",
+  "kb": 72,
+  "note": "Soft Persian sans for body text and captions."
+ },
+ {
+  "id": "sahel",
+  "name": "Sahel",
+  "scripts": [
+   "persian",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/sahel-font",
+  "css": "fonts/sahel/font.css",
+  "kb": 105,
+  "note": "Friendly Persian sans with a heavy weight."
+ },
+ {
+  "id": "samim",
+  "name": "Samim",
+  "scripts": [
+   "persian",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/samim-font",
+  "css": "fonts/samim/font.css",
+  "kb": 73,
+  "note": "Compact Persian sans for dense text."
+ },
+ {
+  "id": "lalezar",
+  "name": "Lalezar",
+  "scripts": [
+   "persian",
+   "arabic",
+   "latin"
+  ],
+  "kind": "display",
+  "weights": [
+   400
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/lalezar",
+  "css": "fonts/lalezar/font.css",
+  "kb": 80,
+  "note": "Bold Persian display face for big words."
+ },
+ {
+  "id": "markazi-text",
+  "name": "Markazi Text",
+  "scripts": [
+   "persian",
+   "arabic",
+   "latin"
+  ],
+  "kind": "serif",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/markazi-text",
+  "css": "fonts/markazi-text/font.css",
+  "kb": 105,
+  "note": "Persian/Arabic serif for an editorial look."
+ },
+ {
+  "id": "noto-kufi-arabic",
+  "name": "Noto Kufi Arabic",
+  "scripts": [
+   "arabic",
+   "persian"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/noto-kufi-arabic",
+  "css": "fonts/noto-kufi-arabic/font.css",
+  "kb": 180,
+  "note": "Kufi sans, wide support."
+ },
+ {
+  "id": "noto-naskh-arabic",
+  "name": "Noto Naskh Arabic",
+  "scripts": [
+   "arabic",
+   "persian"
+  ],
+  "kind": "serif",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/noto-naskh-arabic",
+  "css": "fonts/noto-naskh-arabic/font.css",
+  "kb": 139,
+  "note": "Naskh for long reading."
+ },
+ {
+  "id": "amiri",
+  "name": "Amiri",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "serif",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/amiri",
+  "css": "fonts/amiri/font.css",
+  "kb": 263,
+  "note": "Classical Naskh serif."
+ },
+ {
+  "id": "cairo",
+  "name": "Cairo",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/cairo",
+  "css": "fonts/cairo/font.css",
+  "kb": 106,
+  "note": "Popular Arabic sans with Latin."
+ },
+ {
+  "id": "tajawal",
+  "name": "Tajawal",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/tajawal",
+  "css": "fonts/tajawal/font.css",
+  "kb": 56,
+  "note": "Light, modern Arabic sans."
+ },
+ {
+  "id": "almarai",
+  "name": "Almarai",
+  "scripts": [
+   "arabic"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   800
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/almarai",
+  "css": "fonts/almarai/font.css",
+  "kb": 148,
+  "note": "Very readable Arabic sans for UI and captions."
+ },
+ {
+  "id": "reem-kufi",
+  "name": "Reem Kufi",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "display",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/reem-kufi",
+  "css": "fonts/reem-kufi/font.css",
+  "kb": 61,
+  "note": "Geometric Kufi display."
+ },
+ {
+  "id": "ibm-plex-sans-arabic",
+  "name": "IBM Plex Sans Arabic",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/ibm-plex-sans-arabic",
+  "css": "fonts/ibm-plex-sans-arabic/font.css",
+  "kb": 136,
+  "note": "Corporate, neutral Arabic sans."
+ },
+ {
+  "id": "readex-pro",
+  "name": "Readex Pro",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/readex-pro",
+  "css": "fonts/readex-pro/font.css",
+  "kb": 75,
+  "note": "Arabic + Latin, designed for readability."
+ },
+ {
+  "id": "rubik",
+  "name": "Rubik",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/rubik",
+  "css": "fonts/rubik/font.css",
+  "kb": 135,
+  "note": "Rounded sans, Arabic + Latin."
+ },
+ {
+  "id": "inter",
+  "name": "Inter",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/inter",
+  "css": "fonts/inter/font.css",
+  "kb": 174,
+  "note": "Neutral Latin UI sans (Turkish, German, French, Italian)."
+ },
+ {
+  "id": "space-grotesk",
+  "name": "Space Grotesk",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/space-grotesk",
+  "css": "fonts/space-grotesk/font.css",
+  "kb": 49,
+  "note": "Techy grotesk."
+ },
+ {
+  "id": "montserrat",
+  "name": "Montserrat",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/montserrat",
+  "css": "fonts/montserrat/font.css",
+  "kb": 150,
+  "note": "Geometric sans, strong headlines."
+ },
+ {
+  "id": "bricolage-grotesque",
+  "name": "Bricolage Grotesque",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   800
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/bricolage-grotesque",
+  "css": "fonts/bricolage-grotesque/font.css",
+  "kb": 96,
+  "note": "Characterful grotesk."
+ },
+ {
+  "id": "syne",
+  "name": "Syne",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "display",
+  "weights": [
+   400,
+   700,
+   800
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/syne",
+  "css": "fonts/syne/font.css",
+  "kb": 58,
+  "note": "Wide, artsy display."
+ },
+ {
+  "id": "bebas-neue",
+  "name": "Bebas Neue",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "display",
+  "weights": [
+   400
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/bebas-neue",
+  "css": "fonts/bebas-neue/font.css",
+  "kb": 22,
+  "note": "Tall condensed caps for big words."
+ },
+ {
+  "id": "archivo-black",
+  "name": "Archivo Black",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "display",
+  "weights": [
+   400
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/archivo-black",
+  "css": "fonts/archivo-black/font.css",
+  "kb": 32,
+  "note": "Heavy grotesk for slams."
+ },
+ {
+  "id": "playfair-display",
+  "name": "Playfair Display",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "serif",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/playfair-display",
+  "css": "fonts/playfair-display/font.css",
+  "kb": 103,
+  "note": "High-contrast editorial serif."
+ },
+ {
+  "id": "dm-serif-display",
+  "name": "DM Serif Display",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "serif",
+  "weights": [
+   400
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/dm-serif-display",
+  "css": "fonts/dm-serif-display/font.css",
+  "kb": 35,
+  "note": "Elegant display serif."
+ },
+ {
+  "id": "fraunces",
+  "name": "Fraunces",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "serif",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/fraunces",
+  "css": "fonts/fraunces/font.css",
+  "kb": 104,
+  "note": "Soft, warm serif."
+ },
+ {
+  "id": "instrument-serif",
+  "name": "Instrument Serif",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "serif",
+  "weights": [
+   400
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/instrument-serif",
+  "css": "fonts/instrument-serif/font.css",
+  "kb": 32,
+  "note": "Condensed modern serif."
+ },
+ {
+  "id": "bodoni-moda",
+  "name": "Bodoni Moda",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "serif",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/bodoni-moda",
+  "css": "fonts/bodoni-moda/font.css",
+  "kb": 68,
+  "note": "Fashion-magazine Bodoni (the Vogue style)."
+ },
+ {
+  "id": "jetbrains-mono",
+  "name": "JetBrains Mono",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "mono",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/jetbrains-mono",
+  "css": "fonts/jetbrains-mono/font.css",
+  "kb": 57,
+  "note": "Mono for code, terminals and numbers."
+ }
+]

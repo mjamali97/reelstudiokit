@@ -1,0 +1,7 @@
+{
+ "type": "highlights",
+ "set": "food",
+ "style": "solid",
+ "lang": "en",
+ "brand": "brand/brand.json"
+}

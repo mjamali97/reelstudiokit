@@ -1,0 +1,10 @@
+{
+ "name": "reel-studio-tools",
+ "private": true,
+ "type": "module",
+ "description": "Node tools of the kit: capture (webcap/webrec), render (carousels, stories, highlights, captions), brand extraction. Uses your installed Google Chrome.",
+ "dependencies": {
+  "playwright": "1.63.0",
+  "lucide-static": "0.469.0"
+ }
+}

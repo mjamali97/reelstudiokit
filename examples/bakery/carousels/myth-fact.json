@@ -1,0 +1,37 @@
+{
+ "type": "carousel",
+ "template": "myth-fact",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "cover": {
+  "kicker": "Myth or fact?",
+  "title": "4 things everyone believes about cake"
+ },
+ "mythWord": "Myth",
+ "factWord": "Fact",
+ "items": [
+  {
+   "myth": "Cream cakes can stay out of the fridge all day.",
+   "fact": "Keep them cold until 30 minutes before serving; cream spoils fast in a warm room."
+  },
+  {
+   "myth": "More sugar makes a cake moister.",
+   "fact": "Sugar holds moisture, but too much makes it gummy. Fat and correct baking time matter more."
+  },
+  {
+   "myth": "A cake is done when the top is golden.",
+   "fact": "Check the middle: a skewer should come out with a few moist crumbs, not wet batter."
+  },
+  {
+   "myth": "Frozen cake tastes worse.",
+   "fact": "Wrapped well, a sponge freezes for a month and thaws soft in the fridge overnight."
+  }
+ ],
+ "cta": {
+  "title": "Want the full recipe card?",
+  "text": "Comment the word and we'll DM it to you.",
+  "word": "RECIPE",
+  "save": "Save it",
+  "share": "Send to a friend"
+ }
+}

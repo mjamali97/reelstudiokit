@@ -1,0 +1,29 @@
+{
+ "type": "carousel",
+ "template": "testimonial",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "cover": {
+  "kicker": "Real reviews",
+  "title": "What our customers said this month"
+ },
+ "items": [
+  {
+   "quote": "The cake looked exactly like the sketch my daughter drew. She cried.",
+   "name": "Sara, birthday order",
+   "stars": 5
+  },
+  {
+   "quote": "Delivered cold and on time, and the pistachio cream was unreal.",
+   "name": "Daniel",
+   "stars": 5
+  }
+ ],
+ "cta": {
+  "title": "Want the full recipe card?",
+  "text": "Comment the word and we'll DM it to you.",
+  "word": "RECIPE",
+  "save": "Save it",
+  "share": "Send to a friend"
+ }
+}

@@ -1,0 +1,31 @@
+{
+ "type": "carousel",
+ "template": "before-after",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "cover": {
+  "kicker": "Before → after",
+  "title": "From a sketch to the party table"
+ },
+ "beforeWord": "Before",
+ "afterWord": "After",
+ "items": [
+  {
+   "before": "../media/photo-6.jpg",
+   "after": "../media/photo-1.jpg",
+   "caption": "The customer's sketch, our three-layer cake"
+  },
+  {
+   "before": "../media/photo-4.jpg",
+   "after": "../media/photo-2.jpg",
+   "caption": "Plain sponge, finished with fresh berries"
+  }
+ ],
+ "cta": {
+  "title": "Want the full recipe card?",
+  "text": "Comment the word and we'll DM it to you.",
+  "word": "RECIPE",
+  "save": "Save it",
+  "share": "Send to a friend"
+ }
+}

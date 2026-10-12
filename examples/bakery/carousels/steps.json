@@ -1,0 +1,41 @@
+{
+ "type": "carousel",
+ "template": "steps",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "cover": {
+  "kicker": "How we make it",
+  "title": "Our pistachio cake, step by step",
+  "image": "../media/photo-1.jpg"
+ },
+ "stepWord": "Step",
+ "items": [
+  {
+   "title": "Toast the pistachios",
+   "text": "8 minutes at 160 °C, until they smell sweet.",
+   "image": "../media/photo-2.jpg"
+  },
+  {
+   "title": "Whip the eggs",
+   "text": "Until they triple and fall like a ribbon.",
+   "image": "../media/photo-3.jpg"
+  },
+  {
+   "title": "Fold, don't stir",
+   "text": "Big slow folds keep the air in the batter.",
+   "image": "../media/photo-4.jpg"
+  },
+  {
+   "title": "Bake low and slow",
+   "text": "160 °C for 35 minutes, then rest 10 in the open oven.",
+   "image": "../media/photo-5.jpg"
+  }
+ ],
+ "cta": {
+  "title": "Want the full recipe card?",
+  "text": "Comment the word and we'll DM it to you.",
+  "word": "RECIPE",
+  "save": "Save it",
+  "share": "Send to a friend"
+ }
+}

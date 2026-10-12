@@ -1,7 +1,0 @@
-{
-  "name": "reel-studio-capture",
-  "private": true,
-  "type": "module",
-  "description": "webcap (stills) and webrec (video) of live websites for b-roll; drives your installed Google Chrome",
-  "dependencies": { "playwright": "1.63.0" }
-}

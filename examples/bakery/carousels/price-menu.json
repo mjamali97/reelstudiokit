@@ -1,0 +1,52 @@
+{
+ "type": "carousel",
+ "template": "price-menu",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "cover": {
+  "kicker": "This week",
+  "title": "Our cake menu with prices"
+ },
+ "listTitle": "Cakes per kilo",
+ "items": [
+  {
+   "name": "Chocolate",
+   "price": "$24",
+   "desc": "Dark ganache, cocoa sponge",
+   "tag": "Best seller"
+  },
+  {
+   "name": "Pistachio",
+   "price": "$28",
+   "desc": "Toasted pistachio cream"
+  },
+  {
+   "name": "Carrot",
+   "price": "$22",
+   "desc": "Walnuts, cream cheese"
+  },
+  {
+   "name": "Red velvet",
+   "price": "$26",
+   "desc": "Vanilla cream"
+  },
+  {
+   "name": "Saffron & rose",
+   "price": "$30",
+   "desc": "Seasonal",
+   "tag": "New"
+  },
+  {
+   "name": "Lemon tart",
+   "price": "$18",
+   "desc": "Per tart, 8 slices"
+  }
+ ],
+ "cta": {
+  "title": "Want the full recipe card?",
+  "text": "Comment the word and we'll DM it to you.",
+  "word": "RECIPE",
+  "save": "Save it",
+  "share": "Send to a friend"
+ }
+}

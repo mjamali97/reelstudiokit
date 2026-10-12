@@ -1,0 +1,43 @@
+{
+ "type": "carousel",
+ "template": "comparison",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "cover": {
+  "kicker": "Which one?",
+  "title": "Sponge cake or cheesecake for your party"
+ },
+ "compare": {
+  "a": "Sponge",
+  "b": "Cheesecake"
+ },
+ "items": [
+  {
+   "label": "Best for",
+   "a": "Kids, big groups",
+   "b": "Adults, dinners"
+  },
+  {
+   "label": "Keeps",
+   "a": "2 days",
+   "b": "4 days"
+  },
+  {
+   "label": "Per kilo",
+   "a": "$24",
+   "b": "$32"
+  },
+  {
+   "label": "Design",
+   "a": "Any shape",
+   "b": "Round only"
+  }
+ ],
+ "cta": {
+  "title": "Want the full recipe card?",
+  "text": "Comment the word and we'll DM it to you.",
+  "word": "RECIPE",
+  "save": "Save it",
+  "share": "Send to a friend"
+ }
+}

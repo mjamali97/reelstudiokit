@@ -1,0 +1,40 @@
+{
+ "type": "carousel",
+ "template": "tips",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "cover": {
+  "kicker": "Baking tips",
+  "title": "5 mistakes that ruin a homemade cake",
+  "sub": "Save this before your next bake"
+ },
+ "items": [
+  {
+   "title": "Cold eggs and butter",
+   "text": "Take them out an hour before. Cold fat won't trap air, so the cake comes out dense."
+  },
+  {
+   "title": "Opening the oven early",
+   "text": "The first 20 minutes set the structure. A blast of cold air and the middle sinks."
+  },
+  {
+   "title": "Measuring flour with a cup",
+   "text": "A scooped cup can hold 30% more flour. Weigh it, or spoon it in and level it."
+  },
+  {
+   "title": "Over-mixing after the flour",
+   "text": "Mix only until you can't see dry flour. More mixing builds gluten and makes it chewy."
+  },
+  {
+   "title": "Cutting it hot",
+   "text": "Let it cool on a rack for an hour. Warm cake crumbles and the cream melts."
+  }
+ ],
+ "cta": {
+  "title": "Want the full recipe card?",
+  "text": "Comment the word and we'll DM it to you.",
+  "word": "RECIPE",
+  "save": "Save it",
+  "share": "Send to a friend"
+ }
+}

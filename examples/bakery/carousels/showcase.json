@@ -1,0 +1,46 @@
+{
+ "type": "carousel",
+ "template": "showcase",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "cover": {
+  "kicker": "New in",
+  "title": "Three cakes for this autumn"
+ },
+ "items": [
+  {
+   "image": "../media/photo-1.jpg",
+   "name": "Pistachio crown",
+   "price": "$28/kg",
+   "points": [
+    "Toasted pistachio cream",
+    "Feeds 10 at 1.5 kg"
+   ]
+  },
+  {
+   "image": "../media/photo-2.jpg",
+   "name": "Saffron & rose",
+   "price": "$30/kg",
+   "points": [
+    "Seasonal, until November",
+    "No artificial colour"
+   ]
+  },
+  {
+   "image": "../media/photo-5.jpg",
+   "name": "Spiced pumpkin",
+   "price": "$26/kg",
+   "points": [
+    "Cream cheese frosting",
+    "Best served cold"
+   ]
+  }
+ ],
+ "cta": {
+  "title": "Want the full recipe card?",
+  "text": "Comment the word and we'll DM it to you.",
+  "word": "RECIPE",
+  "save": "Save it",
+  "share": "Send to a friend"
+ }
+}
