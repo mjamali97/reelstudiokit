@@ -7,6 +7,7 @@ const env = { BRAND_NAME: "Sweet Corner", IG_HANDLE: "@sweetcorner", TG_CHANNEL:
 ok(typeof BASE.POST_PROMPT === "function" && typeof BASE.replyPool === "function", "defaults export every prompt");
 Object.assign(BASE.O, YOURS);
 ok(BASE.POST_PROMPT(env, { title: "t" }).includes("@sweetcorner_menu"), "defaults work with an empty formats.js");
+for (const k of Object.keys(BASE.O)) delete BASE.O[k];   // the checks below must not depend on the overrides in your formats.js
 BASE.O.TG_EXAMPLE = () => "MY-OWN-EXAMPLE";
 BASE.O.STYLE = { en: "MY-OWN-STYLE" };
 BASE.O.REPLIES = { en: ["MY-OWN-REPLY"] };
