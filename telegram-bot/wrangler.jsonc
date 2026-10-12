@@ -36,7 +36,7 @@
     "CREATOR_NAME": "CHANGE-ME",
     "AUDIENCE": "CHANGE-ME",
     "NEWS_TOPIC": "حوزه‌ی کار من",
-    "STORY_IDEA_KIND": "یه محصول یا خدمت امروز، یه نکته‌ی کاربردی، یا یه سؤال برای نظرسنجی",
+    "STORY_IDEA_KIND": "a product or service of the day, a practical tip, or a question for a poll",
     "AUDIENCE_NOTE": "",
     "AUDIO_NAME": "",
     "TAGS": "محصول,پشت‌صحنه,سؤال مشتری,آموزش,قیمت,مناسبت,نظر مشتری,خبر",
@@ -48,8 +48,8 @@
     "STORY_MUTED": "#A9B0B8",
 
     // time: any IANA zone (Asia/Tehran, Europe/Berlin, America/Toronto…); 0 = Sunday … 6 = Saturday; "off" disables a daily job
-    "TZ_NAME": "Asia/Tehran",
-    "TZ_LABEL": "تهران",
+    "TZ_NAME": "Europe/London",
+    "TZ_LABEL": "London",
     "REEL_DAYS": "0,2,4",
     "REEL_TIME": "18:30",
     "STORY_IDEA_AT": "08:30",
@@ -60,6 +60,7 @@
     "POST_REPORTS": "on",                  // a report 24 h and 7 days after every post ("off" to disable)
     "MONTHLY_REPORT": "on",                // a PDF report on day 1 of every month ("off" to disable)
     "INBOX_ASSIST": "on",                  // new comments and DMs arrive with a suggested reply to approve ("off" to disable)
+    "BRAND_VOICE": "",                     // the brand voice in 2–4 sentences (tone, du/Sie or tu/vous, emoji, words used and avoided); /setup writes it from profile/VOICE.md
     "BUSINESS_FACTS": "",                  // facts the reply assistant may use: hours, address, how to order, price list link
     "AGENCY": "off",                       // "on": manage several clients (one Zernio profile each) from this bot
 

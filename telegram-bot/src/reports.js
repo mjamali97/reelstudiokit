@@ -410,11 +410,14 @@ ${cities.length ? `<h2>${_("Followers' cities")}</h2>${cities.map((c) => `<div>$
       const claim = await env.DB.prepare("UPDATE inbox SET status='work' WHERE id=? AND status='new'").bind(r.id).run();
       if (!claim.meta?.changes) continue;
       let suggestion = null;
+      const cl = r.client_id ? await clientById(env, r.client_id) : null;
+      // agency: the client's own name, handle, voice and facts, never the agency's
+      const as = cl ? { ...env, BRAND_NAME: cl.name, IG_HANDLE: cl.handle || "", BRAND_VOICE: cl.voice || "", BUSINESS_FACTS: cl.facts || "", CREATOR_NAME: cl.name, AUDIENCE: cl.name } : env;
       if (env.GEMINI_API_KEY && prompts.REPLY_PROMPT) {
-        try { suggestion = (await gemini(env, prompts.REPLY_PROMPT(env, { kind: r.kind, text: r.text, from: r.author, post: r.post_text }))).text.replace(/^["“«]|["”»]$/g, "").trim().slice(0, 900); } catch (e) { suggestion = null; }
+        try { suggestion = (await gemini(env, prompts.REPLY_PROMPT(as, { kind: r.kind, text: r.text, from: r.author, post: r.post_text }))).text.replace(/^["“«]|["”»]$/g, "").trim().slice(0, 900); } catch (e) { suggestion = null; }
       }
       await env.DB.prepare("UPDATE inbox SET suggestion=?, status='carded' WHERE id=?").bind(suggestion, r.id).run();
-      const r2 = { ...r, suggestion }, cl = r.client_id ? await clientById(env, r.client_id) : null;
+      const r2 = { ...r, suggestion };
       await say(env, inboxCard(r2, cl?.name), { reply_markup: inboxKb(r2) });
     }
   }
@@ -631,6 +634,13 @@ ${t.client ? "" : `<p class="muted">${_("For a full audit with advice (bio, high
     await env.DB.prepare("INSERT OR IGNORE INTO clients (profile_id, name, token, join_code) VALUES (?,?,?,?)").bind(p._id, p.name || "Client", rnd(20), rnd(6)).run();
     return env.DB.prepare("SELECT * FROM clients WHERE profile_id=?").bind(p._id).first();
   }
+  // voice, facts and handle per client (tools/client.mjs sync, or POST /api/clients {id, voice, facts, handle})
+  async function updateClient(env, id, { voice, facts, handle } = {}) {
+    const c = await clientById(env, id);
+    if (!c) return null;
+    await env.DB.prepare("UPDATE clients SET voice=COALESCE(?,voice), facts=COALESCE(?,facts), handle=COALESCE(?,handle) WHERE id=?").bind(voice ?? null, facts ?? null, handle ?? null, id).run();
+    return clientById(env, id);
+  }
   async function linkClient(env, code, chatId) {
     const c = await env.DB.prepare("SELECT * FROM clients WHERE join_code=?").bind(code).first();
     if (!c) return null;
@@ -657,5 +667,5 @@ ${t.client ? "" : `<p class="muted">${_("For a full audit with advice (bio, high
 
   return { dailyReport, checkPostReports, postReport, monthlyReport, monthlyHtml, competitorsReport, addCompetitor, competitorsOf,
     processInbox, inboxSend, inboxSetReply, inboxIgnore, inboxShow, onZernioWebhook, registerWebhook, serveDashboard, serveClientDashboard,
-    dashLink, dashToken, score, tick, targets, targetFor, clientsAll, clientById, freeProfiles, addClient, linkClient, agency };
+    dashLink, dashToken, score, tick, targets, targetFor, clientsAll, clientById, freeProfiles, addClient, updateClient, linkClient, agency };
 }

@@ -21,3 +21,7 @@ reels/**/raw/
 tools/style-reel/assets/words.js
 research/analytics/*.json
 tools/capture/package-lock.json
+tools/vendor/
+clients/*/reels/**/raw/
+brand/extracted/
+brand/preview/

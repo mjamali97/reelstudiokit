@@ -87,6 +87,18 @@ ok(res.ok, "competitor added for one client");
 n = await job("competitors", "1");
 ok(sends(n, OWNER).some((b) => /Sweet Corner/.test(b.text) && /rival_bakery/.test(b.text)), "competitors report labelled with the client");
 
+// each client's own voice and facts in the inbox assistant (fake Gemini records the prompt)
+const up = await api("/api/clients", "POST", { id: 1, voice: "VOICE-OF-SWEET-CORNER: playful, calls people friend", facts: "FACTS-SC: open 9-18", handle: "@sweetcorner" });
+ok(up.voice?.startsWith("VOICE-OF-SWEET-CORNER") && up.handle === "@sweetcorner", "client voice, facts and handle saved", JSON.stringify(up));
+{
+  const wtok = crypto.createHash("sha256").update("test-secret:zernio").digest("hex").slice(0, 32);
+  const e = { id: "ag-c1", event: "comment.received", comment: { id: "agc1", postId: "zp9", text: "When are you open?", author: { username: "carol" } }, account: { accountId: "igacc", platform: "instagram" } }, b = JSON.stringify(e);
+  n = calls().length;
+  await fetch(W + "/zernio/webhook?k=" + wtok, { method: "POST", headers: { "content-type": "application/json", "x-zernio-signature": crypto.createHmac("sha256", "test-secret").update(b).digest("hex") }, body: b });
+  for (let i = 0; i < 12 && !calls().slice(n).some((c) => c.gemini); i++) { await fetch(W + "/__scheduled?cron=" + encodeURIComponent("* * * * *")); await new Promise((r) => setTimeout(r, 500)); }
+  const pr = calls().slice(n).find((c) => c.gemini)?.prompt || "";
+  ok(/VOICE-OF-SWEET-CORNER/.test(pr) && /FACTS-SC/.test(pr) && /@sweetcorner/.test(pr) && /Sweet Corner/.test(pr), "inbox reply for a client uses that client's voice, facts and handle", pr.slice(0, 300));
+}
 const fa = calls().filter((c) => c.body && typeof c.body.text === "string" && /[؀-ۿ]/.test(c.body.text));
 ok(fa.length === 0, "no Persian text in the English agency bot", fa.map((c) => c.body.text.slice(0, 80)).join(" | "));
 const errs = (fs.readFileSync(new URL("./dev.log", import.meta.url), "utf8").match(/handler error|publisher error|Uncaught/g) || []);

@@ -33,7 +33,8 @@ const STYLE = {
   it: "Tono colloquiale, caldo e breve, con la voce del titolare. Niente esagerazioni, nessuna affermazione senza fonte.",
 };
 const style = () => STYLE[lang()] || STYLE.en;
-const inLang = () => `Write everything in ${langName()}. ${style()}`;
+// BRAND_VOICE (wrangler.jsonc, written by /setup from profile/VOICE.md) is the brand's own voice; it wins over the generic style
+const inLang = (env) => `Write everything in ${langName()}. ${style()}${env?.BRAND_VOICE ? `\nBrand voice (follow it over the general style above): ${env.BRAND_VOICE}` : ""}`;
 
 // ---------- Telegram channel post ----------
 // Your Telegram post format. Change the template and the rules here (and playbook/TELEGRAM-POST.md) to match your channel.
@@ -52,7 +53,7 @@ export const TG_FORMAT = (env) => `Telegram post format for ${brand(env).chan} (
 
 ➡️ ${brand(env).chan}
 
-Rules: ${inLang()} Only one speaker: ${brand(env).creator}. Links on their own line, a blank line between label/link pairs.
+Rules: ${inLang(env)} Only one speaker: ${brand(env).creator}. Links on their own line, a blank line between label/link pairs.
 Emoji only in those four places. No markdown (no ** or # headings). Never claim the owner did something ("I built", "I tested")
 unless the information says so; an "angle" or an "idea" means it has not been done yet.`;
 const EXAMPLES = {
@@ -93,7 +94,7 @@ const STORY_IDEA_KIND = (env) => env.STORY_IDEA_KIND || "a product or service of
 const STORY_RULES = () => "Story rules: very short, at most 4 short lines per frame, 2 or 3 frames, one speaker, use → to point to the next frame.";
 export const STORY_PROMPT = (env, { today }) => `Today is ${today}. For today's Instagram story of ${brand(env).ig} (audience: ${brand(env).audience}),
 use Google Search to find one fresh, real thing about ${brand(env).topic} that is useful for this audience (${STORY_IDEA_KIND(env)}). Only one.
-${STORY_RULES()} ${inLang()} If the story needs a sticker, suggest it: a link (to the order page, the product or the source), a poll
+${STORY_RULES()} ${inLang(env)} If the story needs a sticker, suggest it: a link (to the order page, the product or the source), a poll
 (two options) or a question box; if it is complete without one (a news item or a tip), set sticker to "none" so it posts by itself.
 Return only JSON: {"title": "...", "frames": ["...", "..."], "sticker": "link|poll|question|none", "link": "https://...", "poll": ["...", "..."], "question": "...", "why": "why today"}`;
 
@@ -101,7 +102,7 @@ Return only JSON: {"title": "...", "frames": ["...", "..."], "sticker": "link|po
 export const SEARCH_PROMPT = (env, q) => `A question from ${brand(env).creator} (owner of ${brand(env).ig}): «${q}»
 Search with Google Search and answer short: 3 to 6 concrete items, each with one line of explanation and its original link (own line).
 Only things with a source; if unsure, say so. End with one line starting with 🎬 and a short hook for an Instagram reel. No intro.
-${inLang()}`;
+${inLang(env)}`;
 export const RESEARCH_PROMPT = (env, i) => `Review this Instagram reel idea${i.url ? " (open and read its page)" : ""}:
 Title: ${i.title || "—"}
 Link: ${i.url || "—"}
@@ -110,7 +111,7 @@ Note: ${i.note || "—"} ${i.summary ? "\nCurrent summary: " + i.summary.slice(0
 ${SCORE_RULES(env)}
 
 Only write facts you saw on the page or in search (numbers, prices, whether it is free, what it needs).
-${inLang()}
+${inLang(env)}
 Return only JSON: {"summary": "two or three short, conversational sentences with the real numbers", "hook": "the first-second hook in ${brand(env).creator}'s voice", "gate": "one word to comment", "score": 0-10, "tier": 0-4, "weak": "the weakest part in one sentence", "avoid": "what not to say"}`;
 export const POST_PROMPT = (env, i) => `Write a post for the Telegram channel ${brand(env).chan} about:
 Title: ${i.title || "—"}
@@ -131,7 +132,7 @@ ${post ? `The post: «${String(post).slice(0, 400)}»\n` : ""}From @${from || "s
 Write ONE reply, at most two short sentences, helpful and warm. If they ask a price, hours, an address or how to order and the
 information below does not say it, ${kind === "dm" ? "say you will check and answer soon" : "say you sent it in the DM"}; never invent a price or a fact.
 ${env.BUSINESS_FACTS ? "Facts you may use: " + env.BUSINESS_FACTS : ""}
-${inLang()} Return only the reply text.`;
+${inLang(env)} Return only the reply text.`;
 
 // ---------- stories ----------
 // the label chip on top of every story frame

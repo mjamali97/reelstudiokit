@@ -2,7 +2,8 @@
 <html lang="en" data-resolution="portrait"
   data-composition-variables='[{"id":"style","type":"enum","label":"Style","default":"swiss","options":[
     {"value":"vogue","label":"Vogue editorial"},{"value":"vox","label":"Vox collage"},
-    {"value":"swiss","label":"Swiss kinetic"},{"value":"hud","label":"HUD terminal"},{"value":"doodle","label":"Hand-drawn doodle"}]},
+    {"value":"swiss","label":"Swiss kinetic"},{"value":"hud","label":"HUD terminal"},{"value":"doodle","label":"Hand-drawn doodle"},
+    {"value":"clean","label":"Clean (your brand colours)"},{"value":"neon","label":"Neon night"},{"value":"retro","label":"Retro 70s"},{"value":"brutal","label":"Neo-brutal"},{"value":"luxe","label":"Luxe black and gold"},{"value":"pop","label":"Pop comic"},{"value":"chalk","label":"Chalkboard"},{"value":"receipt","label":"Receipt printer"}]},
     {"id":"face","type":"enum","label":"Face colour","default":"auto","options":[{"value":"auto","label":"Style default"},{"value":"color","label":"Colour"},{"value":"bw","label":"Black and white"}]}]'>
   <head>
     <meta charset="UTF-8" />
@@ -14,6 +15,8 @@
       @font-face{font-family:"Markazi";src:url("assets/fonts/MarkaziText.ttf") format("truetype");font-weight:400 700}
       @font-face{font-family:"Bodoni";src:url("assets/fonts/BodoniModa.ttf") format("truetype");font-weight:400 900}
       @font-face{font-family:"Bodoni";src:url("assets/fonts/BodoniModa-Italic.ttf") format("truetype");font-weight:400 900;font-style:italic}
+      @font-face{font-family:"Lalezar";src:url("assets/fonts/Lalezar-arabic.woff2") format("woff2");unicode-range:U+0600-06FF,U+200C-200E,U+FB50-FDFF,U+FE70-FEFC}
+      @font-face{font-family:"Lalezar";src:url("assets/fonts/Lalezar-latin.woff2") format("woff2");unicode-range:U+0000-00FF,U+2000-206F}
       *{margin:0;padding:0;box-sizing:border-box}
       html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
       #root{position:absolute;inset:0;overflow:hidden}
@@ -26,6 +29,8 @@
       .abs{position:absolute}
       .fa{direction:rtl;unicode-bidi:isolate;text-wrap:balance}
       .ltr{direction:ltr}
+      /* left-to-right brands (brand.json lang en/de/fr/it/tr → BRAND.dir "ltr"): the same styles, mirrored reading */
+      .dir-ltr .fa,.dir-ltr .cap-c{direction:ltr}
       bdi{direction:ltr;unicode-bidi:isolate}
       .mask{-webkit-mask:var(--i) center/contain no-repeat;mask:var(--i) center/contain no-repeat}
     </style>
@@ -74,9 +79,18 @@
     <script src="styles/swiss.js"></script>
     <script src="styles/hud.js"></script>
     <script src="styles/doodle.js"></script>
+    <script src="styles/clean.js"></script>
+    <script src="styles/neon.js"></script>
+    <script src="styles/retro.js"></script>
+    <script src="styles/brutal.js"></script>
+    <script src="styles/luxe.js"></script>
+    <script src="styles/pop.js"></script>
+    <script src="styles/chalk.js"></script>
+    <script src="styles/receipt.js"></script>
     <script>
       window.__timelines = window.__timelines || {};
-      const vars = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
+      const vars = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) ||
+        Object.fromEntries(new URLSearchParams(location.search));   // ?style=neon when previewed in a browser (stills.mjs)
       const name = (vars.style && window.STYLES[vars.style]) ? vars.style : "swiss";
       const S = window.STYLES[name];
       const tl = gsap.timeline({ paused: true });
@@ -95,6 +109,7 @@
       const css = document.createElement("style"); css.textContent = S.css; document.head.appendChild(css);
       document.getElementById("over").innerHTML = S.html;
       document.getElementById("root").classList.add("st-" + name);
+      if (window.BRAND && BRAND.dir === "ltr") document.getElementById("root").classList.add("dir-ltr");
       if (vars.face === "color" || vars.face === "bw") document.getElementById("root").classList.add("face-" + vars.face);
 
       const q = (s) => document.querySelector(s);
@@ -113,6 +128,13 @@
           onUpdate: () => { q(el).textContent = fmt ? fmt(Math.round(o.v)) : H.fa.format(Math.round(o.v)); } }, t); },
         // a scene is visible between t0 and t1; transitions are the style's job and must overlap (no empty frames)
         scene: (el, t0, t1) => { tl.set(el, { visibility: "visible" }, t0); tl.set(el, { visibility: "hidden" }, t1); },
+        // a slow handheld camera on a whole scene: push-in plus a gentle float (starts zoomed so no edge ever shows)
+        camera: (el, t0, t1, o = {}) => { const per = o.per ?? 1.7, n = Math.max(1, Math.ceil((t1 - t0) / per));
+          tl.fromTo(el, { scale: o.s0 ?? 1.035 }, { scale: o.s1 ?? 1.075, duration: t1 - t0, ease: "none" }, t0);
+          tl.fromTo(el, { y: -(o.amp ?? 12) }, { y: o.amp ?? 12, duration: per, ease: "sine.inOut", yoyo: true, repeat: n - 1 }, t0); },
+        // light that breathes (neon hum, a shimmer): brightness up and down
+        hum: (el, t0, t1, o = {}) => { const per = o.per ?? .5, n = Math.max(1, Math.ceil((t1 - t0) / per));
+          tl.fromTo(el, { filter: "brightness(1)" }, { filter: `brightness(${o.a ?? 1.18})`, duration: per, ease: "sine.inOut", yoyo: true, repeat: n - 1 }, t0); },
         // keep every hold alive: a slow drift on the scene's camera
         drift: (el, t0, t1, a = { scale: 1, x: 0, y: 0 }, b = { scale: 1.05, x: 0, y: -20 }) =>
           tl.fromTo(el, a, Object.assign({ duration: t1 - t0, ease: "none" }, b), t0),

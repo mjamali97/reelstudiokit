@@ -11,3 +11,4 @@ telegram-bot/src/formats.js        merge=ours
 telegram-bot/src/fonts.js          merge=ours
 tools/style-reel/assets/brand.js   merge=ours
 tools/style-reel/assets/fonts.css  merge=ours
+clients/** merge=ours

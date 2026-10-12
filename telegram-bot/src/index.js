@@ -424,7 +424,7 @@ async function gemini(env, prompt, { search = false, url = false } = {}) {
   if (url) tools.push({ url_context: {} });
   const body = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.4 }, ...(tools.length ? { tools } : {}) };
   for (const model of ["gemini-flash-latest", "gemini-2.5-flash"]) {
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+    const r = await fetch(`${env.GEMINI_API || "https://generativelanguage.googleapis.com"}/v1beta/models/${model}:generateContent`, {
       method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY }, body: JSON.stringify(body) });
     const j = await r.json().catch(() => ({}));
     if (r.status === 404) continue;
@@ -1163,7 +1163,11 @@ async function api(req, env, path) {
   if (path === "/api/job" && req.method === "POST") { const b = await req.json(); if (!JOBS[b.type]) return Response.json({ error: "type" }, { status: 400 }); await enqueue(env, b.type, b.arg ?? null); return Response.json({ ok: true }); }
   if (path === "/api/jobs" && req.method === "GET") return Response.json((await env.DB.prepare("SELECT * FROM jobs ORDER BY id DESC LIMIT 20").all()).results);
   if (path === "/api/clients" && req.method === "GET") return Response.json(await R.clientsAll(env));
-  if (path === "/api/clients" && req.method === "POST") { const b = await req.json(); const c = b.profileId && await R.addClient(env, b.profileId); return c ? Response.json(c) : Response.json({ error: "profileId not found in Zernio" }, { status: 404 }); }
+  if (path === "/api/clients" && req.method === "POST") {
+    const b = await req.json();
+    if (b.id) { const c = await R.updateClient(env, +b.id, b); return c ? Response.json(c) : Response.json({ error: "client not found" }, { status: 404 }); }
+    const c = b.profileId && await R.addClient(env, b.profileId); return c ? Response.json(c) : Response.json({ error: "profileId not found in Zernio" }, { status: 404 });
+  }
   if (path === "/api/inbox" && req.method === "GET") return Response.json((await env.DB.prepare("SELECT * FROM inbox ORDER BY id DESC LIMIT 50").all()).results);
   if (path === "/api/competitors" && req.method === "POST") { const b = await req.json(); return Response.json(await R.addCompetitor(env, b.clientId || 0, b.username || "")); }
   if (path === "/api/notify" && req.method === "POST") { const b = await req.json(); await say(env, b.text || ""); return Response.json({ ok: true }); }

@@ -1,0 +1,21 @@
+name: Bug
+description: Something does not work as the guide says
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes: { label: What happened, description: "What you ran or typed, what you expected, what you got. Paste errors (remove any key or token first)." }
+    validations: { required: true }
+  - type: input
+    id: version
+    attributes: { label: Kit version, description: "the content of the VERSION file" }
+    validations: { required: true }
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [setup / onboarding, brand tools, carousels / stories / captions, video styles, Telegram bots, publishing / Zernio, install / update, docs, other]
+    validations: { required: true }
+  - type: input
+    id: system
+    attributes: { label: System, description: "macOS / Linux / WSL, node -v, python3 --version" }

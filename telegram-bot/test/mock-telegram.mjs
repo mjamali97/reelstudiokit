@@ -8,6 +8,27 @@ http.createServer((req, res) => {
   const chunks = []; req.on("data", (c) => chunks.push(c)); req.on("end", () => {
     const raw = Buffer.concat(chunks), u = req.url;
     if (u.startsWith("/__mock/add-post")) { EXTRA.push(JSON.parse(raw.toString())); return json(res, { ok: true }); }
+    // ---- demo mode (bash demo/demo.sh): the Telegram viewer page and its buttons ----
+    if (u === "/" || u.startsWith("/viewer")) { res.setHeader("content-type", "text/html; charset=utf-8"); return res.end(fs.readFileSync(new URL("../demo/viewer.html", import.meta.url))); }
+    if (u.startsWith("/__mock/calls")) return json(res, fs.readFileSync(LOG, "utf8").trim().split("\n").filter(Boolean).map((l) => JSON.parse(l)));
+    if (u.startsWith("/__mock/send") || u.startsWith("/__mock/press")) {
+      const b = JSON.parse(raw.toString() || "{}"), OWNER = +(process.env.OWNER_ID || 100000001), id = Date.now() % 1e9;
+      const update = u.startsWith("/__mock/send") ? { message: { message_id: id, date: 0, chat: { id: OWNER, type: "private" }, from: { id: OWNER }, text: b.text } }
+        : { callback_query: { id: "q" + id, from: { id: OWNER }, data: b.data, message: { message_id: b.message_id, chat: { id: OWNER }, text: b.text || "", ...(b.photo ? { photo: [{}] } : {}) } } };
+      return fetch(`http://127.0.0.1:8787/tg/${b.bot === "publisher" ? "publisher" : "studio"}`, { method: "POST", headers: { "content-type": "application/json", "x-telegram-bot-api-secret-token": process.env.WEBHOOK_SECRET || "test-secret" }, body: JSON.stringify({ update_id: id, ...update }) })
+        .then((r) => json(res, { status: r.status }), (e) => json(res, { error: e.message }, 502));
+    }
+    // ---- fake Gemini (GEMINI_API=http://127.0.0.1:8790/gemini): canned answers in the demo's shape, no AI involved ----
+    if (u.startsWith("/gemini/")) {
+      const prompt = (() => { try { return JSON.parse(raw.toString()).contents[0].parts[0].text; } catch { return ""; } })();
+      fs.appendFileSync(LOG, JSON.stringify({ gemini: true, prompt }) + "\n");
+      const text = /"frames"/.test(prompt) ? JSON.stringify({ title: "Pumpkin spice is back", frames: ["Our pumpkin spice cake is back from today →", "Only 12 a day, until November.\nWhich size do you want?"], sticker: "poll", poll: ["Small", "Party size"], why: "first cold week of autumn (demo answer)" })
+        : /"summary"/.test(prompt) ? JSON.stringify({ summary: "A 5-step guide to storing cream cakes at home. Demo answer: in the real bot Gemini reads the link and writes this from the page.", hook: "Your cake is melting in the car? Do this.", gate: "STORE", score: 7.5, tier: 1, weak: "needs a real shot of the fridge step", avoid: "do not promise it keeps a week" })
+        : /reply text/.test(prompt) ? "We're open every day 8:00–19:00. See you soon! 🎂"
+        : /post text/.test(prompt) ? "🎂 How to keep a cream cake fresh at home:\n\nThe full guide (one page):\nhttps://example.com/storage\n\n🔴 Tip: never leave it in a warm car.\n\n💬 #store\n\n➡️ @my_channel"
+        : "1. Cream cakes keep 2 days in the fridge, covered.\nhttps://example.com/storage\n2. Take them out 30 minutes before serving.\nhttps://example.com/serving\n\n🎬 Hook: “Your cake melts in the car? Do this.” (demo answer)";
+      return json(res, { candidates: [{ content: { parts: [{ text }] }, groundingMetadata: { groundingChunks: [{ web: { uri: "https://example.com/storage", title: "Storage guide" } }] } }] });
+    }
     if (u.startsWith("/upload/")) { fs.appendFileSync(LOG, JSON.stringify({ zernio: true, method: req.method, path: u, bytes: raw.length }) + "\n"); return json(res, {}); }
     if (u.startsWith("/zernio/")) {
       const path = u.slice(7); let body = {}; try { body = JSON.parse(raw.toString() || "{}"); } catch {}
@@ -54,8 +75,13 @@ http.createServer((req, res) => {
     const [, bot, method] = u.match(/^\/bot([^/]+)\/(\w+)/) || [];
     let body = {}; const ct = req.headers["content-type"] || "";
     if (ct.includes("json")) { try { body = JSON.parse(raw.toString() || "{}"); } catch {} }
-    else if (raw.length) { const t = raw.toString("latin1"); body = { multipart: true, bytes: raw.length, chat_id: (t.match(/name="chat_id"\r\n\r\n([^\r]+)/) || [])[1], filename: (t.match(/filename="([^"]+)"/) || [])[1] }; }
-    fs.appendFileSync(LOG, JSON.stringify({ bot, method, body }) + "\n");
-    json(res, { ok: true, result: method === "getMe" ? { username: bot === "TEST_PUBLISHER" ? "test_publisher_bot" : "test_studio_bot" } : /^send/.test(method || "") ? { message_id: ++mid } : true });
+    else if (raw.length) {
+      const t = raw.toString("utf8"), field = (n) => (t.match(new RegExp(`name="${n}"\\r\\n\\r\\n([\\s\\S]*?)\\r\\n--`)) || [])[1];
+      body = { multipart: true, bytes: raw.length, chat_id: field("chat_id"), filename: (t.match(/filename="([^"]+)"/) || [])[1], caption: field("caption") };
+      try { const rm = field("reply_markup"); if (rm) body.reply_markup = JSON.parse(rm); } catch {}
+    }
+    const sent = /^send/.test(method || "") ? ++mid : null;
+    fs.appendFileSync(LOG, JSON.stringify({ bot, method, body, ...(sent ? { mid: sent } : {}), t: Date.now() }) + "\n");
+    json(res, { ok: true, result: method === "getMe" ? { username: bot === "TEST_PUBLISHER" ? "test_publisher_bot" : "test_studio_bot" } : sent ? { message_id: sent } : true });
   });
 }).listen(8790, "127.0.0.1", () => console.log("mock telegram + zernio on 8790"));

@@ -1,0 +1,16 @@
+{
+  "name": "reel-studio",
+  "owner": { "name": "Reel Studio", "url": "https://github.com/mjamali97/reelstudiokit" },
+  "metadata": { "description": "Reel Studio: a content studio for Instagram, YouTube Shorts and Telegram inside Claude Code." },
+  "plugins": [
+    {
+      "name": "reel-studio",
+      "source": "./plugins/reel-studio",
+      "description": "Start a Reel Studio for your brand: clones the kit into a folder, installs its tools, then /setup reads your site and page and builds your voice, design system, formats, plan and Telegram bots.",
+      "homepage": "https://github.com/mjamali97/reelstudiokit",
+      "license": "MIT",
+      "category": "productivity",
+      "keywords": ["instagram", "reels", "content", "telegram", "marketing", "carousel", "stories", "small business", "agency"]
+    }
+  ]
+}

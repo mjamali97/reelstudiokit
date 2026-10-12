@@ -1,0 +1,11 @@
+name: Idea
+description: A new feature, style, template or language
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes: { label: The idea, description: "What should the studio do, for which kind of business, and why it would bring views, followers or customers." }
+    validations: { required: true }
+  - type: textarea
+    id: example
+    attributes: { label: An example, description: "A post, a page or a screenshot that shows what you mean (no one else's private data)." }

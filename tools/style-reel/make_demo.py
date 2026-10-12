@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A stand-in take so the five styles can be previewed and rendered before you record anything.
+"""A stand-in take so the 13 styles can be previewed and rendered before you record anything.
 
     tools/.venv/bin/python tools/style-reel/make_demo.py
 

@@ -1,50 +1,91 @@
-# Reel Studio kit for Claude Code
+# Reel Studio
 
-A complete Instagram/YouTube/Telegram content studio that runs inside Claude Code, for any page: a creator, an expert,
-a bakery, a clinic, a shop, a course. No personal data inside; `/setup` makes it yours.
+**A content studio for Instagram, YouTube Shorts and Telegram that runs inside Claude Code.** It learns your brand (your
+site, your page, your files), writes in your voice, edits reels in 13 motion styles, makes carousels, stories and
+highlight covers in your colours and fonts, publishes after your ✅, and sends you the numbers every morning. For any
+business: a bakery, a restaurant, a photo studio, a salon, a clinic, a shop, an expert, or an agency with many clients.
 
-**Persian step-by-step guide: [README.fa.md](README.fa.md)**
+**Guide:** [English](docs/guide/en.md) · [فارسی](docs/guide/fa.md) · [العربية](docs/guide/ar.md) · [Türkçe](docs/guide/tr.md) · [Deutsch](docs/guide/de.md) · [Français](docs/guide/fr.md) · [Italiano](docs/guide/it.md)
 
-## What you get
+![13 video styles](docs/showcase/styles.png)
+
+## Try it in five minutes, no accounts
+
+```bash
+git clone https://github.com/mjamali97/reelstudiokit.git my-studio && cd my-studio
+bash tools/install.sh                 # checks your computer, installs the core tools
+bash telegram-bot/demo/demo.sh        # your bots, running locally with fake Telegram, Instagram and Gemini
+```
+
+Or from inside Claude Code, as a plugin: `/plugin install reel-studio --marketplace mjamali97/reelstudiokit`, then
+`/reel-studio:start` (it clones the kit into a folder of your choice and installs the tools).
+
+A browser page plays Telegram: press the buttons, approve a post, watch it reach the channel, open the dashboard, answer a
+comment. Nothing leaves your computer. Then open the folder in Claude Code (`claude`) and type `/demo` or `/setup`.
+
+![The demo](docs/showcase/demo.png)
+
+## What it makes
+
+**Carousels:** 10 templates, 1080×1350, written in your voice, rendered in your brand.
+
+![Carousels](docs/showcase/carousels.png)
+
+**Stories and highlight covers:** 10 story templates with room for the sticker, 4 highlight sets in 3 styles.
+
+![Stories](docs/showcase/stories.png)
+![Highlight covers](docs/showcase/highlights.png)
+
+**Your brand, read from what you already have:** `/setup` reads your website, Instagram and brand files, then shows your
+brand on real frames, or three directions side by side to choose from.
+
+![Brand directions](docs/showcase/brand.png)
+
+## How it works
+
+| step | you type | what happens |
+|---|---|---|
+| set up once | `/setup` | reads your site, page and files → "here is what I understood" → your voice (with a sample test) → your design system → a first audit → your formats and a two-week plan → Zernio and two Telegram bots, in test mode first |
+| plan | `/content-plan` | the week's reels, carousels and stories from your business playbook (20 included), plus the shot list |
+| make | `/reel-idea` `/reel-style` `/carousel` `/story` `/captions` | checked facts → a script in your voice → a styled edit or slides, QA-checked before you see it |
+| publish | `/publish` | a Zernio draft and a card in your Telegram bot; one ✅ schedules Instagram + YouTube + the comment-to-DM gate; Telegram posts get a second, final ✅ |
+| learn | `/analytics` `/page-audit` | your numbers → what worked → updated hooks, styles, posting times; a monthly audit with the top 5 fixes |
+
+**In Telegram, every day:** a 09:00 report (followers, trend, a page score out of 100), a report 24 h and 7 days after each
+post, comments and DMs with a suggested reply in your voice, a weekly competitors report, a monthly PDF, a content
+calendar and a private dashboard. The bot speaks English, Persian, Arabic, Turkish, German, French and Italian.
+
+**Agency mode:** one folder per client (`node tools/client.mjs`), one bot for all of them, each client's own voice in the
+inbox, their own reports and dashboard link. See [playbook/AGENCY.md](playbook/AGENCY.md).
+
+## Inside
+
 | | |
 |---|---|
-| `/setup` | onboarding: your profile, voice, design system, formats, tools, Zernio, Telegram bots, deploy, analytics baseline |
-| `/reel-idea` | idea → verified facts → script in your voice (hooks + Hormozi's model) → viral score → 2–3 style options |
-| `/reel-style` | which edit style fits this content, with odds |
-| `/vogue` `/hud` `/swiss` `/vox` `/doodle` | five motion-edit styles (HyperFrames: HTML → MP4, free, local) |
-| `/content-plan` | the week's reels, stories and posts from your business playbook, plus the shot list to film |
-| `playbook/business/` | 20 content playbooks: restaurant/café, bakery, photo studio, online shop, beauty salon, clinic, expert/service, personal page, gym, real estate, car services, language school, tailor/fashion, home decor, florist, jewellery, travel, hotel/eco-lodge, handmade, weddings & events (`INDEX.md`); `/setup` writes one for any other kind |
-| `/update` | pulls new kit versions without touching your profile, brand, formats, settings or reels |
-| `/publish` | approved render → Zernio draft → a publish card in your Studio bot → one ✅ schedules IG + YouTube + DM gate + Telegram |
-| `/telegram-post` | channel posts and stories in your format, as drafts for approval |
-| `/analytics` | your numbers from Zernio → what worked → updated hooks, scores, posting days |
-| `/page-audit` | full page audit: bio, highlights, grid, content mix, retention, audience vs your customer, timing, conversion, 3–5 competitors → scores + top 5 fixes + a two-week plan |
-| `telegram-bot/` | two Telegram bots on a free Cloudflare Worker: Studio (ideas, drafts, approvals, search, news, story ideas, a daily page report with a score, a report 24 h and 7 days after every post, a private dashboard) and Publisher (final ✅ before anything reaches your channel) |
-| `playbook/` | the runbooks behind the skills, incl. a motion QA checklist built from real defects |
+| `.claude/skills/` | 27 skills: onboarding, planning, 13 video styles, carousels, stories, captions, publishing, analytics, audits, updates |
+| `playbook/` | the runbooks behind them, and 20 business playbooks (restaurant, bakery, photo studio, online shop, salon, clinic, gym, real estate, florist, jewellery, travel, weddings…) |
+| `tools/` | renderers (carousels, stories, captions), brand tools (extract from a website, palette from images, preview, apply), the HyperFrames reel engine, QA, Zernio CLI, agency folders |
+| `fonts/` | 30 open-licence font families for Latin, Persian and Arabic, with a gallery |
+| `telegram-bot/` | the two bots (Cloudflare Worker, free tier), 200+ local checks, the demo |
+| `examples/bakery/` | a complete fictional brand: profile, voice, every template rendered |
 
-## Quick start
-1. Install Claude Code, then get the kit:
-   ```bash
-   git clone https://github.com/mjamali97/reelstudiokit.git my-studio && cd my-studio && claude
-   ```
-   (or download the ZIP from GitHub, unzip, open a terminal in the folder, run `claude`).
-2. Type `/setup` and answer. It is resumable (`profile/SETUP-STATUS.md`).
-3. Then: ideas to the Studio bot or `/reel-idea` here → film → `/reel-style` → edit → approve → `/publish` → ✅.
-
-## Updates
-The kit keeps improving. Type `/update` (or `bash tools/update.sh`): it pulls the new version from this repo, keeps
-everything that is yours (`.gitattributes` lists those files), shows what's new from `CHANGELOG.md` and tells you if a
-change needs an action. Current version: see `VERSION`.
+Everything it relies on (HyperFrames, WhisperX, Playwright, the Persian typography linter, the NextWork editor plugin…)
+is listed with its licence and pinned version in [tools/STACK.md](tools/STACK.md) and installed by `tools/install.sh`.
 
 ## Requirements
-macOS (or Windows with WSL2 / Linux), git, Node ≥ 20, Python ≥ 3.11, ffmpeg, Google Chrome, uv. Accounts: Zernio,
-Telegram, Google AI Studio (free Gemini key), Cloudflare (free), GitHub. Costs: Zernio's paid accounts beyond its free
-tier; everything else here runs on free plans.
+
+macOS, Linux or Windows (WSL2); git, Node 20+, Python 3.11+, ffmpeg, Google Chrome, uv; Claude Code. To go live: an
+Instagram professional account, [Zernio](https://zernio.com), Telegram, a free Gemini key, free Cloudflare and GitHub
+accounts. The kit is free; you pay for Claude, and for Zernio beyond its free tier.
 
 ## Safety
-Nothing is published without your ✅ (twice for Telegram). Uploads are drafts. Keys live in `.env` and GitHub secrets,
-never in files you commit or in the chat. Bot tests run against mocks: `bash telegram-bot/test/all.sh`.
 
-## Licence
-MIT (`LICENSE`). Fonts, icons and libraries keep their own licences: `THIRD_PARTY_NOTICES.md`.
-Maintaining or contributing: `CONTRIBUTING.md`.
+Nothing is published without your ✅ (twice for Telegram), and uploads are drafts. Keys live in `.env` and in your GitHub
+and Cloudflare secrets, never in the chat or in git. Only facts with a source go on screen or in a caption. The kit contains
+no personal data. Bot tests run against fakes: `bash telegram-bot/test/all.sh`. Report a vulnerability: [SECURITY.md](SECURITY.md).
+
+## Updates, contributing, licence
+
+`/update` pulls new versions and keeps your profile, brand, formats and reels ([CHANGELOG.md](CHANGELOG.md)).
+Contributing: [CONTRIBUTING.md](CONTRIBUTING.md). MIT licence ([LICENSE](LICENSE)); fonts, icons and libraries keep
+their own licences ([THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)).

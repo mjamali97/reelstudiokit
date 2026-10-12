@@ -1,0 +1,12 @@
+name: Business playbook
+description: Propose a content playbook for a kind of business that is not in playbook/business/ yet
+labels: [playbook]
+body:
+  - type: input
+    id: kind
+    attributes: { label: Kind of business }
+    validations: { required: true }
+  - type: textarea
+    id: content
+    attributes: { label: What works for it, description: "Customers, content pillars, 5–10 reel ideas with hooks, what to film weekly, the gate reward, stories, what never to do. The template: playbook/business/_TEMPLATE.md" }
+    validations: { required: true }

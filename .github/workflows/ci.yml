@@ -1,0 +1,54 @@
+# Checks on every push and pull request. Nothing here needs a secret or reaches Telegram, Zernio or Cloudflare.
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node tools/ci/check.mjs
+
+  bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: telegram-bot/package-lock.json }
+      - run: cd telegram-bot && npm ci --no-audit --no-fund
+      - name: all bot checks (mock Telegram, Zernio and Gemini)
+        run: bash telegram-bot/test/all.sh | tee bot-tests.log; grep -q "ALL GREEN" bot-tests.log
+
+  render:
+    runs-on: ubuntu-latest
+    env: { CHROME_CHANNEL: chromium }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: tools/package-lock.json }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: cd tools && npm ci --no-audit --no-fund && npx playwright install --with-deps chromium
+      - run: pip install -q pillow numpy
+      - name: carousels, stories, highlights render (a font that fails to load fails the job)
+        run: |
+          for f in examples/bakery/carousels/tips.json examples/bakery/carousels/tips-fa.json examples/bakery/stories/stories.json examples/bakery/stories/highlights-soft.json; do
+            node tools/render/render.mjs "$f" --out "/tmp/out/$(basename "$f" .json)"; done
+      - name: brand preview and apply (dry run)
+        run: node tools/brand/preview.mjs --out /tmp/out/preview && node tools/brand/apply.mjs --dry
+      - name: captions burner
+        run: |
+          ffmpeg -v error -f lavfi -i "color=c=0x6b4a3a:s=1080x1920:d=3" -f lavfi -i "sine=f=220:d=3" -c:v libx264 -c:a aac -shortest /tmp/in.mp4
+          printf '1\n00:00:00,200 --> 00:00:02,500\nThree mistakes that ruin a cake\n' > /tmp/a.srt
+          node tools/render/captions.mjs /tmp/in.mp4 /tmp/a.srt /tmp/out/cap.mp4
+      - name: palette
+        run: python3 tools/brand/palette.py examples/bakery/media --k 6
+      - name: video styles load and seek without errors
+        run: for s in $(ls tools/style-reel/styles | sed 's/\.js$//'); do node tools/style-reel/stills.mjs "$s" --t 1,9,22 --out /tmp/out/stills; done

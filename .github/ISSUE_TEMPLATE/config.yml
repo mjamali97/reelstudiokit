@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and show & tell
+    url: https://github.com/mjamali97/reelstudiokit/discussions
+    about: Ask how to do something, share what you made with the studio.
+  - name: Security
+    url: https://github.com/mjamali97/reelstudiokit/security/advisories/new
+    about: Report a vulnerability privately.

@@ -10,6 +10,15 @@ Read `profile/CREATOR.md`, their business playbook (`playbook/business/<file>`),
 Insights screenshots, or what is visible on public profiles. Never estimate a metric, never quote an "industry
 benchmark" you cannot cite; compare with their own medians and with the competitor pages you actually looked at.
 
+## Two modes
+- **Public** (setup phase 5, or any time without Zernio): only what anyone can see — the profile, grid, captions, view
+  counts Instagram shows on reels, highlights, competitors, the order path. Score only the areas that public data can
+  show (Profile, Grid, Content mix, Hooks from visible view counts, Conversion path, vs competitors); mark Reach, Retention,
+  Audience fit and Timing "waits for data". Save as `profile/audits/AUDIT-<date>-public.md`.
+- **Full** (Zernio connected, setup phase 9 and monthly): everything below, compared with the last audit.
+Either way: render the fixes they can do today in their brand (the highlight covers with `/story`, the new bio as text in
+their voice), so the audit ends with something they can use in the next ten minutes.
+
 ## 1 · Collect
 
 1. **Numbers (Zernio, read-only):** `python3 -I tools/zernio/zernio.py audit` → `research/analytics/audit.json`

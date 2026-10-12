@@ -11,7 +11,7 @@ export const CSS = `
 .top{display:flex;justify-content:space-between;align-items:center;font:700 26px/1 var(--body);color:var(--muted);letter-spacing:.02em}
 .kick{display:inline-block;align-self:flex-start;background:var(--accent);color:var(--surface);font:800 30px/1 var(--display);padding:16px 26px 18px;border-radius:999px}
 .foot{position:absolute;left:88px;right:88px;bottom:52px;display:flex;justify-content:space-between;align-items:center;font:600 24px/1 var(--body);color:var(--muted)}
-.swipe{position:absolute;bottom:40px;inset-inline-end:88px;width:84px;height:84px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font:700 44px/1 var(--body)}
+.swipe{position:absolute;bottom:40px;right:88px;width:84px;height:84px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font:700 44px/1 var(--body)}
 .blob{position:absolute;border-radius:50%;background:var(--accent);opacity:.12}
 .h1{font:800 118px/1.08 var(--display);letter-spacing:-.01em;max-height:660px}
 .h2{font:800 86px/1.12 var(--display);max-height:420px}
@@ -37,7 +37,7 @@ td:last-child{border-start-end-radius:20px;border-end-end-radius:20px}
 
 const frame = (ctx, i, n, inner, cls = "") => `<div class="s ${cls}">
 <div class="top"><span>${esc(ctx.brand.name)}</span><span dir="ltr">${digits(`${i + 1} / ${n}`, ctx.lang)}</span></div>${inner}
-<div class="foot"><span dir="ltr">${esc(ctx.brand.handle || "")}</span><span></span></div>${i < n - 1 ? swipe(ctx.lang) : ""}</div>`;
+<div class="foot" dir="ltr"><span dir="ltr">${esc(ctx.brand.handle || "")}</span><span></span></div>${i < n - 1 ? swipe(ctx.lang) : ""}</div>`;
 
 const cover = (c, ctx, i, n) => frame(ctx, i, n, `<div class="blob" style="width:720px;height:720px;inset-inline-end:-260px;top:-180px"></div>
 <div class="grow">${c.kicker ? `<span class="kick">${esc(c.kicker)}</span>` : ""}<div class="h1 fit" data-fit="60" style="max-height:640px">${esc(c.title)}</div>

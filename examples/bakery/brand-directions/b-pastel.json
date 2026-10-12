@@ -1,0 +1,26 @@
+{
+  "_comment": "Example brand direction 'b-pastel' for the fictional Sweet Corner bakery: /setup shows three like these side by side (node tools/brand/preview.mjs a.json b.json c.json).",
+  "name": "Sweet Corner",
+  "nameLocal": "Sweet Corner",
+  "mast": "SWEET CORNER",
+  "handle": "@sweetcorner",
+  "lang": "en",
+  "colors": {
+    "bg": "#F4F7F2",
+    "ink": "#1F2A24",
+    "accent": "#2F8F6B",
+    "muted": "#6F7D74",
+    "surface": "#FFFFFF",
+    "accent2": "#F5B8C4"
+  },
+  "fonts": {
+    "display": "fraunces",
+    "body": "inter",
+    "fa": "vazirmatn",
+    "ar": "cairo",
+    "mono": "jetbrains-mono"
+  },
+  "logo": null,
+  "radius": 36,
+  "footer": "sweetcorner.example · @sweetcorner"
+}

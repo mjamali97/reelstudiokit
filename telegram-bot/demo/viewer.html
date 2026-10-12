@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reel Studio demo</title>
+<style>
+:root{--bg:#E7EBF0;--pane:#FFFFFF;--chat:#D5E3EC;--in:#FFFFFF;--out:#E1FEC6;--ink:#111B21;--mut:#667781;--acc:#2AABEE;--btn:#F1F5F8;--line:#E3E8EC}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0E1621;--pane:#17212B;--chat:#0E1621;--in:#182533;--out:#2B5278;--ink:#F5F5F5;--mut:#8A9AA9;--acc:#5EB5F7;--btn:#22303F;--line:#24313E}}
+:root[data-theme=dark]{--bg:#0E1621;--pane:#17212B;--chat:#0E1621;--in:#182533;--out:#2B5278;--ink:#F5F5F5;--mut:#8A9AA9;--acc:#5EB5F7;--btn:#22303F;--line:#24313E}
+*{box-sizing:border-box}html,body{margin:0;height:100%}body{display:flex;flex-direction:column;height:100dvh;background:var(--bg);color:var(--ink);font:15px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Vazirmatn",Tahoma,sans-serif}
+header{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:12px 16px;background:var(--pane);border-bottom:1px solid var(--line)}
+header h1{font-size:17px;margin:0}header .note{color:var(--mut);font-size:13px;flex:1;min-width:220px}
+header a,header button{color:var(--acc);text-decoration:none;font:inherit;background:none;border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer}
+.tabs{display:none;gap:6px;padding:8px 16px;background:var(--pane)}.tabs button{flex:1;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--btn);color:var(--ink);font:inherit}
+.tabs button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+main{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:12px;flex:1;min-height:0}
+.pane{display:flex;flex-direction:column;background:var(--chat);border-radius:14px;overflow:hidden;min-height:0;border:1px solid var(--line)}
+.top{background:var(--pane);padding:10px 14px;display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--line)}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;flex:none}
+.top b{display:block}.top small{color:var(--mut)}
+.log{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:6px}
+.msg{max-width:88%;background:var(--in);border-radius:12px;padding:8px 11px;box-shadow:0 1px 1px rgba(0,0,0,.08);white-space:pre-wrap;word-wrap:break-word;unicode-bidi:plaintext;text-align:start}
+.msg.me{align-self:flex-end;background:var(--out)}.msg a{color:var(--acc)}
+.msg blockquote{margin:4px 0;padding:2px 8px;border-inline-start:3px solid var(--acc);background:rgba(42,171,238,.08);border-radius:4px}
+.msg pre,.msg code{font:13px ui-monospace,Menlo,monospace;background:rgba(0,0,0,.06);border-radius:4px;padding:1px 4px}
+.media{display:grid;place-items:center;height:120px;border-radius:8px;margin:-2px -5px 6px;background:linear-gradient(135deg,#FFB38A,#E4572E);color:#fff;font-weight:600;text-align:center;padding:10px}
+.ib{display:grid;gap:4px;margin-top:4px;max-width:88%}.ib .row{display:flex;gap:4px}
+.ib button,.kb button{flex:1;border:0;border-radius:8px;padding:8px 6px;background:var(--btn);color:var(--acc);font:600 13px/1.2 inherit;cursor:pointer;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.ib button:hover,.kb button:hover{filter:brightness(.96)}
+.kb{display:grid;gap:4px;padding:6px;max-height:34vh;overflow-y:auto;background:var(--pane);border-top:1px solid var(--line)}.kb .row{display:flex;gap:4px}.kb button{color:var(--ink)}
+form{display:flex;gap:6px;padding:8px;background:var(--pane);border-top:1px solid var(--line)}
+form input{flex:1;border:1px solid var(--line);border-radius:18px;padding:9px 14px;background:var(--bg);color:var(--ink);font:inherit;min-width:0}
+form button{border:0;border-radius:18px;padding:0 16px;background:var(--acc);color:#fff;font:600 14px inherit;cursor:pointer}
+.sys{align-self:center;font-size:12px;color:var(--mut);background:var(--pane);border-radius:10px;padding:3px 10px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#000c;color:#fff;padding:9px 16px;border-radius:10px;opacity:0;transition:.3s;pointer-events:none;max-width:90%}
+.toast.on{opacity:1}
+.tabs button.new::after{content:" ●";color:#E4572E}
+@media (max-width:900px){main{grid-template-columns:1fr;padding:8px 16px 16px}.tabs{display:flex}.pane{display:none}.pane.on{display:flex}header .note{display:none}.kb{max-height:24vh}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Reel Studio · demo</h1>
+  <span class="note">Your bots, running on this computer with fake Telegram, Instagram (Zernio) and Gemini. Press the buttons; nothing leaves your machine.</span>
+  <button id="theme" type="button">◐</button>
+</header>
+<div class="tabs" id="tabs"></div>
+<main id="main"></main>
+<div class="toast" id="toast"></div>
+<script>
+const PANES = [
+  { id: "studio", name: "Studio bot", sub: "your private assistant", color: "#E4572E", input: true },
+  { id: "publisher", name: "Publisher bot", sub: "final ✅ before anything goes out", color: "#2AABEE", input: false },
+  { id: "channel", name: "Your channel", sub: "what followers see", color: "#3FB97A", input: false },
+];
+const OWNER = "100000001", main = document.getElementById("main"), tabs = document.getElementById("tabs");
+const el = (t, a = {}, ...k) => { const e = document.createElement(t); Object.assign(e, a); e.append(...k); return e; };
+for (const p of PANES) {
+  const log = el("div", { className: "log", id: "log-" + p.id });
+  const pane = el("section", { className: "pane" + (p.id === "studio" ? " on" : ""), id: "pane-" + p.id },
+    el("div", { className: "top" }, el("div", { className: "av", style: `background:${p.color}`, textContent: p.name[0] }), el("div", {}, el("b", { textContent: p.name }), el("small", { textContent: p.sub }))), log);
+  if (p.input) {
+    pane.append(el("div", { className: "kb", id: "kb-" + p.id }));
+    const inp = el("input", { placeholder: "Message, a link, or an idea…" }), f = el("form", {}, inp, el("button", { textContent: "Send" }));
+    f.onsubmit = (e) => { e.preventDefault(); if (inp.value.trim()) { send(inp.value.trim()); inp.value = ""; } };
+    pane.append(f);
+  }
+  main.append(pane);
+  const tb = el("button", { textContent: p.name, className: p.id === "studio" ? "on" : "", id: "tab-" + p.id });
+  tb.onclick = () => { tb.classList.remove("new"); document.querySelectorAll(".pane,.tabs button").forEach((x) => x.classList.remove("on")); pane.classList.add("on"); tb.classList.add("on"); };
+  tabs.append(tb);
+}
+document.getElementById("theme").onclick = () => { const r = document.documentElement; r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark"; };
+const toast = (t) => { const x = document.getElementById("toast"); x.textContent = t; x.classList.add("on"); setTimeout(() => x.classList.remove("on"), 2600); };
+
+// Telegram HTML → safe DOM (only the tags Telegram allows)
+const OK = new Set(["B", "STRONG", "I", "EM", "U", "S", "A", "CODE", "PRE", "BLOCKQUOTE", "TG-SPOILER", "BR"]);
+function safe(html) {
+  const doc = new DOMParser().parseFromString(`<div>${html}</div>`, "text/html"), walk = (n) => {
+    for (const c of [...n.childNodes]) {
+      if (c.nodeType === 1) {
+        walk(c);
+        if (!OK.has(c.tagName)) { c.replaceWith(...c.childNodes); continue; }
+        for (const a of [...c.attributes]) if (!(c.tagName === "A" && a.name === "href" && /^https?:/.test(a.value))) c.removeAttribute(a.name);
+        if (c.tagName === "A") { c.target = "_blank"; c.rel = "noopener"; }
+      }
+    }
+  };
+  walk(doc.body.firstChild); return [...doc.body.firstChild.childNodes];
+}
+const bots = { TEST_STUDIO: "studio", TEST_PUBLISHER: "publisher" };
+const msgs = new Map(), mine = []; let seen = 0, lastKb = null;
+const paneOf = (c) => String(c.body.chat_id) === OWNER ? bots[c.bot] : "channel";
+const KINDS = { sendPhoto: "🖼 photo", sendVideo: "🎬 video", sendDocument: "📄 file", sendMediaGroup: "🖼 album" };
+function apply(c) {
+  const b = c.body || {}, bot = bots[c.bot];
+  if (!bot) return;
+  if (["sendMessage", "sendPhoto", "sendVideo", "sendDocument", "sendMediaGroup"].includes(c.method)) {
+    const media = c.method === "sendMessage" ? null : KINDS[c.method] + (b.filename ? ` · ${b.filename}` : "") + (/mp4|video/.test(b.video || "") ? "" : "");
+    const text = b.text ?? b.caption ?? (b.media ? (Array.isArray(b.media) ? b.media.map((m) => m.caption || "").join("\n") : "") : "");
+    msgs.set(bot + ":" + c.mid, { bot, pane: paneOf(c), mid: c.mid, text, media, markup: b.reply_markup, t: c.t, html: b.parse_mode === "HTML" });
+    if (b.reply_markup?.keyboard && bot === "studio") lastKb = b.reply_markup.keyboard;
+  } else if (/^editMessage/.test(c.method)) {
+    const m = msgs.get(bot + ":" + b.message_id);
+    if (m) { if (b.text != null) m.text = b.text; if (b.caption != null) m.text = b.caption; if ("reply_markup" in b || c.method !== "editMessageReplyMarkup") m.markup = b.reply_markup; if (b.parse_mode) m.html = true; m.t = m.t; }
+  } else if (c.method === "deleteMessage") msgs.delete(bot + ":" + b.message_id);
+  else if (c.method === "answerCallbackQuery" && b.text) toast(b.text);
+}
+const counts = {}; let primed = false;
+function render() {
+  for (const p of PANES) {
+    const log = document.getElementById("log-" + p.id), atEnd = log.scrollHeight - log.scrollTop - log.clientHeight < 60;
+    const items = [...msgs.values()].filter((m) => m.pane === p.id).concat(mine.filter((m) => m.pane === p.id)).sort((a, b) => a.t - b.t);
+    const tab = document.getElementById("tab-" + p.id);
+    if (primed && items.length > (counts[p.id] || 0) && !tab.classList.contains("on")) tab.classList.add("new");
+    counts[p.id] = items.length;
+    log.replaceChildren(...(items.length ? [] : [el("div", { className: "sys", textContent: p.id === "studio" ? "Say hi: press a menu button below, or type /start" : p.id === "publisher" ? "Approved posts appear here for the final ✅" : "Nothing posted yet (test mode posts to you, not here)" })]),
+      ...items.flatMap((m) => {
+        const bubble = el("div", { className: "msg" + (m.me ? " me" : "") });
+        if (m.media) bubble.append(el("div", { className: "media", textContent: m.media + "\n(rendered on Cloudflare in the real bot)" }));
+        if (m.html) bubble.append(...safe(m.text || "")); else bubble.append(m.text || "");
+        const out = [bubble], ib = m.markup?.inline_keyboard;
+        if (ib?.length) out.push(el("div", { className: "ib" }, ...ib.map((row) => el("div", { className: "row" }, ...row.map((k) => {
+          const btn = el("button", { textContent: k.text });
+          btn.onclick = () => k.url ? window.open(k.url.replace(/^https:\/\/[^/]*workers\.dev/, "http://127.0.0.1:8787"), "_blank") : k.callback_data ? press(m, k.callback_data) : toast("This button opens an app in Telegram");
+          return btn;
+        })))));
+        return out;
+      }));
+    if (atEnd) log.scrollTop = log.scrollHeight;
+  }
+  const kb = document.getElementById("kb-studio");
+  kb.replaceChildren(...(lastKb || []).map((row) => el("div", { className: "row" }, ...row.map((k) => { const t = k.text ?? k; const b = el("button", { textContent: t }); b.onclick = () => send(t); return b; }))));
+}
+async function poll() {
+  try {
+    const all = await (await fetch("/__mock/calls")).json();
+    if (all.length < seen) { msgs.clear(); seen = 0; }
+    for (const c of all.slice(seen)) apply(c);
+    if (all.length !== seen) { seen = all.length; render(); }
+    primed = true;
+  } catch {}
+  setTimeout(poll, 700);
+}
+async function send(text) {
+  mine.push({ pane: "studio", me: true, text, t: Date.now() }); render();
+  await fetch("/__mock/send", { method: "POST", body: JSON.stringify({ bot: "studio", text }) });
+}
+async function press(m, data) {
+  await fetch("/__mock/press", { method: "POST", body: JSON.stringify({ bot: m.bot, data, message_id: m.mid, text: m.text, photo: !!m.media }) });
+}
+render(); poll();
+</script>
+</body>
+</html>

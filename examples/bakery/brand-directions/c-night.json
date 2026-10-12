@@ -1,0 +1,26 @@
+{
+  "_comment": "Example brand direction 'c-night' for the fictional Sweet Corner bakery: /setup shows three like these side by side (node tools/brand/preview.mjs a.json b.json c.json).",
+  "name": "Sweet Corner",
+  "nameLocal": "Sweet Corner",
+  "mast": "SWEET CORNER",
+  "handle": "@sweetcorner",
+  "lang": "en",
+  "colors": {
+    "bg": "#14110F",
+    "ink": "#F6EFE6",
+    "accent": "#F2C14E",
+    "muted": "#A89C90",
+    "surface": "#221D19",
+    "accent2": "#E4572E"
+  },
+  "fonts": {
+    "display": "syne",
+    "body": "space-grotesk",
+    "fa": "lalezar",
+    "ar": "cairo",
+    "mono": "jetbrains-mono"
+  },
+  "logo": null,
+  "radius": 18,
+  "footer": "sweetcorner.example · @sweetcorner"
+}

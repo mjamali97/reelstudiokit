@@ -92,4 +92,5 @@ export const icon = (name, color = "currentColor", size = 64) => {
   if (!fs.existsSync(p)) return "";
   return fs.readFileSync(p, "utf8").replace(/<!--.*?-->/gs, "").replace(/width="24"/, `width="${size}"`).replace(/height="24"/, `height="${size}"`).replace(/stroke="currentColor"/g, `stroke="${color}"`);
 };
-export const swipe = (lang) => `<div class="swipe">${RTL.has(lang) ? "←" : "→"}</div>`;
+// Instagram carousels always advance from the right, in every language: the arrow points right and sits bottom-right
+export const swipe = () => `<div class="swipe">→</div>`;

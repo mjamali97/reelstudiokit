@@ -1,10 +1,25 @@
 {
-  "_comment": "Your brand, read by every renderer (carousels, stories, highlight covers, captions) and by /setup. Example values until /setup fills it. Fonts: an id from fonts/fonts.json, or {\"name\": \"…\", \"css\": \"path/to/font.css\"} for your own licensed font.",
+  "_comment": "Your brand, read by every renderer (carousels, stories, highlights, captions, previews) and pushed everywhere else by `node tools/brand/apply.mjs`. /setup and /brand fill it from the owner's site, files and answers. name: as written in Latin letters; nameLocal: in the content language; mast: the masthead of the video styles. Fonts: an id from fonts/fonts.json, or {\"name\": \"…\", \"css\": \"path/to/font.css\"} for your own licensed font.",
   "name": "Sweet Corner",
+  "nameLocal": "Sweet Corner",
+  "mast": "SWEET CORNER",
   "handle": "@sweetcorner",
   "lang": "en",
-  "colors": { "bg": "#FFF8F1", "ink": "#2B1D16", "accent": "#E4572E", "muted": "#8A7A70", "surface": "#FFFFFF", "accent2": "#F2C14E" },
-  "fonts": { "display": "bricolage-grotesque", "body": "inter", "fa": "estedad", "ar": "cairo", "mono": "jetbrains-mono" },
+  "colors": {
+    "bg": "#FFF8F1",
+    "ink": "#2B1D16",
+    "accent": "#E4572E",
+    "muted": "#8A7A70",
+    "surface": "#FFFFFF",
+    "accent2": "#F2C14E"
+  },
+  "fonts": {
+    "display": "bricolage-grotesque",
+    "body": "inter",
+    "fa": "estedad",
+    "ar": "cairo",
+    "mono": "jetbrains-mono"
+  },
   "logo": null,
   "radius": 28,
   "footer": "sweetcorner.example · @sweetcorner"

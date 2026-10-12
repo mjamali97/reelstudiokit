@@ -22,7 +22,7 @@ cp .dev.vars.example .dev.vars;                                                s
 cp .dev.vars.example .dev.vars; echo "ZERNIO_DRY_RUN=0" >> .dev.vars;           start; suite publish.mjs; suite story.mjs; suite reports.mjs
 cp .dev.vars.example .dev.vars; sed -i.bak 's/^PUBLISH_CHAT=.*/PUBLISH_CHAT=@my_channel/' .dev.vars; start; suite flow.mjs
 cp .dev.vars.example .dev.vars; sed -i.bak 's/^LANG=.*/LANG=en/' .dev.vars; echo "ZERNIO_DRY_RUN=0" >> .dev.vars; start; suite features.mjs
-cp .dev.vars.example .dev.vars; sed -i.bak 's/^LANG=.*/LANG=en/' .dev.vars; printf "ZERNIO_DRY_RUN=0\nAGENCY=on\n" >> .dev.vars; start; suite agency.mjs
+cp .dev.vars.example .dev.vars; sed -i.bak 's/^LANG=.*/LANG=en/' .dev.vars; printf "ZERNIO_DRY_RUN=0\nAGENCY=on\nGEMINI_API_KEY=fake\nGEMINI_API=http://127.0.0.1:8790/gemini\n" >> .dev.vars; start; suite agency.mjs
 for L in fa ar tr de fr it; do cp .dev.vars.example .dev.vars; sed -i.bak "s/^LANG=.*/LANG=$L/" .dev.vars; start; echo "== langs.mjs $L"; out=$(node test/langs.mjs $L 2>&1); echo "$out" | grep -E "❌|passed"; echo "$out" | grep -q " 0 failed" || total=1; done
 stop; rm -f .dev.vars .dev.vars.bak
 [ $total = 0 ] && echo "ALL GREEN" || { echo "SOME CHECKS FAILED"; exit 1; }
