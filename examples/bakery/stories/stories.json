@@ -84,6 +84,15 @@
     "Pay at the door"
    ],
    "sticker": "Link sticker → order page"
+  },
+  {
+   "template": "location",
+   "chip": "Find us",
+   "title": "Sweet Corner, by the piazza",
+   "address": "Covent Garden Piazza, London",
+   "zoom": 17,
+   "text": "Open every day 8:00–19:00 · delivery within 8 km",
+   "sticker": "Location sticker"
   }
  ]
 }

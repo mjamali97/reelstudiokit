@@ -13,7 +13,7 @@ If CREATOR.md still says `STATUS: not set up`, run `/setup` first. In agency mod
 ## What is where
 - `.claude/skills/` · onboarding `/setup` `/brand` `/demo` · planning `/content-plan` `/reel-idea` `/reel-style` · 13 video styles
   `/vogue` `/vox` `/swiss` `/hud` `/doodle` `/clean` `/neon` `/retro` `/brutal` `/luxe` `/pop` `/chalk` `/receipt` · other formats
-  `/carousel` `/story` `/captions` · out `/publish` `/telegram-post` · numbers `/analytics` `/page-audit` · `/update`
+  `/carousel` `/story` `/captions` `/assets` · out `/publish` `/telegram-post` · numbers `/analytics` `/page-audit` · `/update`
 - `playbook/` · runbooks: IDEA-TO-REEL, BUSINESS-REEL, STYLE-REEL, MOTION-QA, TAKE, CAPTION, COVER-AND-GATE, PUBLISH,
   TELEGRAM-POST, FORMATS (the brand's own formats), SETUP-ACCOUNTS, AGENCY, PERSIAN (RTL rules)
 - `playbook/business/` · 20 content playbooks, one per kind of business (`INDEX.md`) + `_TEMPLATE.md`; CREATOR.md names theirs
@@ -21,9 +21,9 @@ If CREATOR.md still says `STATUS: not set up`, run `/setup` first. In agency mod
   analytics), RULES (standing rules), IDEAS-REMOVED, SETUP-STATUS, audits/
 - `brand/` · design system: `brand.json` (colours, fonts, logo; read by every renderer) + BRAND.md; `node tools/brand/apply.mjs`
   pushes it to tokens.css, the video styles and the bot. `brand/formats/` their saved carousel/story/caption specs.
-- `fonts/` · 30 open-licence families (`fonts/gallery.html`) · `tools/brand/` extract (website → brand), palette (images → colours),
+- `fonts/` · 51 open-licence families (`fonts/gallery.html`) · `assets/illustrations/` CC0 doodles · `tools/assets/fetch.mjs` licensed stock with credits · · `tools/brand/` extract (website → brand), palette (images → colours),
   preview (brand on real frames), apply
-- `tools/render/` · carousels (10 templates), stories (10) + highlight covers, captions burner · `tools/style-reel/` HyperFrames
+- `tools/render/` · carousels (10 templates), stories (11, incl. a brand-coloured OpenStreetMap map) + highlight covers, captions burner, icons (4 sets), illustrations · `tools/style-reel/` HyperFrames
   engine + 13 styles (`stills.mjs` previews) · `tools/take/` cut + audio · `tools/capture/` their own site · `tools/zernio/` CLI
 - `tools/install.sh` + `tools/STACK.md` · every tool (HyperFrames, WhisperX, Playwright, persian-motion-director, the NextWork
   editor plugin…) pinned, with licences · `tools/client.mjs` agency folders
@@ -46,7 +46,7 @@ pulls new versions; files listed in `.gitattributes` are theirs and keep their v
 - **One speaker:** the person who appears for the brand. No second voice, no fake reactions, no generated face pretending to be them.
 - **Every motion render passes `playbook/MOTION-QA.md`** (qa.py with zero FAIL + the 3 fps eye pass) before they see it;
   every carousel and story is looked at as a contact sheet before they see it.
-- **Fonts and assets only with a licence for social media use** (the library is OFL); never a "personal use only" font.
+- **Fonts and assets only with a licence for social media use** (`/assets`): the kit's own are OFL/MIT/ISC/CC0; fetched files keep a CREDITS.md; never NC, SA, "personal use only", Google Images or another page's post.
 - **When the owner corrects you or states a preference, add it to `profile/RULES.md`** (date, rule, why) in the same turn, and
   to VOICE.md if it is about wording. If they say an idea is dead, add it to `profile/IDEAS-REMOVED.md` and never propose it again.
 - **Agency:** never reuse one client's photos, captions, reviews or numbers for another.

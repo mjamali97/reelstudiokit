@@ -538,5 +538,379 @@
   "css": "fonts/jetbrains-mono/font.css",
   "kb": 57,
   "note": "Mono for code, terminals and numbers."
+ },
+ {
+  "id": "noto-nastaliq-urdu",
+  "name": "Noto Nastaliq Urdu",
+  "scripts": [
+   "persian",
+   "arabic"
+  ],
+  "kind": "display",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/noto-nastaliq-urdu",
+  "css": "fonts/noto-nastaliq-urdu/font.css",
+  "kb": 347,
+  "note": "Nastaliq calligraphic style: poetic, traditional Persian titles."
+ },
+ {
+  "id": "noto-sans-arabic",
+  "name": "Noto Sans Arabic",
+  "scripts": [
+   "arabic",
+   "persian"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/noto-sans-arabic",
+  "css": "fonts/noto-sans-arabic/font.css",
+  "kb": 197,
+  "note": "Plain, very complete Arabic-script sans (Persian letters included)."
+ },
+ {
+  "id": "alexandria",
+  "name": "Alexandria",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/alexandria",
+  "css": "fonts/alexandria/font.css",
+  "kb": 113,
+  "note": "Modern geometric Arabic + Latin."
+ },
+ {
+  "id": "changa",
+  "name": "Changa",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   800
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/changa",
+  "css": "fonts/changa/font.css",
+  "kb": 82,
+  "note": "Squarish, techy Arabic + Latin."
+ },
+ {
+  "id": "el-messiri",
+  "name": "El Messiri",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "display",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/el-messiri",
+  "css": "fonts/el-messiri/font.css",
+  "kb": 55,
+  "note": "Elegant, calligraphic-leaning Arabic display."
+ },
+ {
+  "id": "lemonada",
+  "name": "Lemonada",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "display",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/lemonada",
+  "css": "fonts/lemonada/font.css",
+  "kb": 76,
+  "note": "Round, playful Arabic display."
+ },
+ {
+  "id": "baloo-bhaijaan-2",
+  "name": "Baloo Bhaijaan 2",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "display",
+  "weights": [
+   400,
+   700,
+   800
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/baloo-bhaijaan-2",
+  "css": "fonts/baloo-bhaijaan-2/font.css",
+  "kb": 173,
+  "note": "Chunky, friendly Arabic display for food and kids."
+ },
+ {
+  "id": "harmattan",
+  "name": "Harmattan",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/harmattan",
+  "css": "fonts/harmattan/font.css",
+  "kb": 286,
+  "note": "Simple, open Arabic for small captions."
+ },
+ {
+  "id": "mada",
+  "name": "Mada",
+  "scripts": [
+   "arabic",
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/mada",
+  "css": "fonts/mada/font.css",
+  "kb": 100,
+  "note": "Clean modern Arabic UI sans."
+ },
+ {
+  "id": "dm-sans",
+  "name": "DM Sans",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/dm-sans",
+  "css": "fonts/dm-sans/font.css",
+  "kb": 64,
+  "note": "Friendly, compact geometric sans."
+ },
+ {
+  "id": "poppins",
+  "name": "Poppins",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/poppins",
+  "css": "fonts/poppins/font.css",
+  "kb": 39,
+  "note": "Very popular round geometric sans."
+ },
+ {
+  "id": "outfit",
+  "name": "Outfit",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   900
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/outfit",
+  "css": "fonts/outfit/font.css",
+  "kb": 59,
+  "note": "Clean modern geometric sans."
+ },
+ {
+  "id": "plus-jakarta-sans",
+  "name": "Plus Jakarta Sans",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   800
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/plus-jakarta-sans",
+  "css": "fonts/plus-jakarta-sans/font.css",
+  "kb": 67,
+  "note": "Contemporary sans for brands."
+ },
+ {
+  "id": "manrope",
+  "name": "Manrope",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   800
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/manrope",
+  "css": "fonts/manrope/font.css",
+  "kb": 65,
+  "note": "Semi-condensed modern sans."
+ },
+ {
+  "id": "sora",
+  "name": "Sora",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "sans",
+  "weights": [
+   400,
+   700,
+   800
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/sora",
+  "css": "fonts/sora/font.css",
+  "kb": 65,
+  "note": "Wide, techy sans."
+ },
+ {
+  "id": "lora",
+  "name": "Lora",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "serif",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/lora",
+  "css": "fonts/lora/font.css",
+  "kb": 65,
+  "note": "Calm, readable serif."
+ },
+ {
+  "id": "oswald",
+  "name": "Oswald",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "display",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/oswald",
+  "css": "fonts/oswald/font.css",
+  "kb": 47,
+  "note": "Condensed sans for big headlines."
+ },
+ {
+  "id": "anton",
+  "name": "Anton",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "display",
+  "weights": [
+   400
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/anton",
+  "css": "fonts/anton/font.css",
+  "kb": 49,
+  "note": "Heavy condensed impact face."
+ },
+ {
+  "id": "caveat",
+  "name": "Caveat",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "script",
+  "weights": [
+   400,
+   700
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/caveat",
+  "css": "fonts/caveat/font.css",
+  "kb": 135,
+  "note": "Handwriting, for notes and doodles."
+ },
+ {
+  "id": "pacifico",
+  "name": "Pacifico",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "script",
+  "weights": [
+   400
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/pacifico",
+  "css": "fonts/pacifico/font.css",
+  "kb": 62,
+  "note": "Retro brush script for cafés and treats."
+ },
+ {
+  "id": "lobster",
+  "name": "Lobster",
+  "scripts": [
+   "latin"
+  ],
+  "kind": "script",
+  "weights": [
+   400
+  ],
+  "license": "OFL-1.1",
+  "source": "https://www.npmjs.com/package/@fontsource/lobster",
+  "css": "fonts/lobster/font.css",
+  "kb": 60,
+  "note": "Bold retro script."
  }
 ]

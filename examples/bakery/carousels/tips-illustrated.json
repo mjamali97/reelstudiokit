@@ -1,0 +1,37 @@
+{
+ "type": "carousel",
+ "template": "tips",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "cover": {
+  "kicker": "Party tips",
+  "title": "3 things to know before you order",
+  "sub": "Illustrations: Open Doodles + Open Peeps (CC0)",
+  "illustration": "doodle:ice-cream"
+ },
+ "items": [
+  {
+   "title": "Order two days ahead",
+   "text": "Fresh cakes take time; we plan every order the day before.",
+   "illustration": "peep:sara"
+  },
+  {
+   "title": "Tell us about allergies",
+   "text": "Nuts are used in our kitchen every day; we tell you honestly.",
+   "illustration": "notionists:barista"
+  },
+  {
+   "title": "Send a sketch or a photo",
+   "text": "Your idea, our oven. A drawing on paper is enough.",
+   "illustration": "doodle:sitting-reading"
+  }
+ ],
+ "cta": {
+  "title": "Ordering for a party?",
+  "text": "Comment the word and we'll send you the order form.",
+  "word": "PARTY",
+  "save": "Save it",
+  "share": "Send to the host",
+  "illustration": "doodle:dancing"
+ }
+}

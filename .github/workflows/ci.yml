@@ -39,8 +39,10 @@ jobs:
       - run: pip install -q pillow numpy
       - name: carousels, stories, highlights render (a font that fails to load fails the job)
         run: |
-          for f in examples/bakery/carousels/tips.json examples/bakery/carousels/tips-fa.json examples/bakery/stories/stories.json examples/bakery/stories/highlights-soft.json; do
+          for f in examples/bakery/carousels/tips.json examples/bakery/carousels/tips-fa.json examples/bakery/carousels/tips-illustrated.json examples/bakery/stories/stories-illustrated.json examples/bakery/stories/highlights-soft.json; do
             node tools/render/render.mjs "$f" --out "/tmp/out/$(basename "$f" .json)"; done
+      - name: icons from all four sets
+        run: node tools/render/icons.mjs cake | grep -q "phosphor:cake" && node tools/render/icons.mjs cake | grep -q "hero:cake"
       - name: brand preview and apply (dry run)
         run: node tools/brand/preview.mjs --out /tmp/out/preview && node tools/brand/apply.mjs --dry
       - name: captions burner

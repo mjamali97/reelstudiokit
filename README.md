@@ -31,7 +31,7 @@ comment. Nothing leaves your computer. Then open the folder in Claude Code (`cla
 
 ![Carousels](docs/showcase/carousels.png)
 
-**Stories and highlight covers:** 10 story templates with room for the sticker, 4 highlight sets in 3 styles.
+**Stories and highlight covers:** 11 story templates (one draws a map of your shop from OpenStreetMap) with room for the sticker, 4 highlight sets in 3 styles.
 
 ![Stories](docs/showcase/stories.png)
 ![Highlight covers](docs/showcase/highlights.png)
@@ -62,10 +62,10 @@ inbox, their own reports and dashboard link. See [playbook/AGENCY.md](playbook/A
 
 | | |
 |---|---|
-| `.claude/skills/` | 27 skills: onboarding, planning, 13 video styles, carousels, stories, captions, publishing, analytics, audits, updates |
+| `.claude/skills/` | 28 skills: onboarding, planning, 13 video styles, carousels, stories, captions, licensed assets, publishing, analytics, audits, updates |
 | `playbook/` | the runbooks behind them, and 20 business playbooks (restaurant, bakery, photo studio, online shop, salon, clinic, gym, real estate, florist, jewellery, travel, weddings…) |
 | `tools/` | renderers (carousels, stories, captions), brand tools (extract from a website, palette from images, preview, apply), the HyperFrames reel engine, QA, Zernio CLI, agency folders |
-| `fonts/` | 30 open-licence font families for Latin, Persian and Arabic, with a gallery |
+| `fonts/` + `assets/` | 51 open-licence font families (Latin, Persian incl. Nastaliq, Arabic), ~7,000 icons, CC0 illustrations recoloured to your brand, Noto emoji; `tools/assets/fetch.mjs` for CC0/stock photos, video, music and sound effects with a credits file |
 | `telegram-bot/` | the two bots (Cloudflare Worker, free tier), 200+ local checks, the demo |
 | `examples/bakery/` | a complete fictional brand: profile, voice, every template rendered |
 

@@ -27,8 +27,8 @@ bash telegram-bot/demo/demo.sh ar
 تفتح صفحة بثلاثة أعمدة: **بوت الاستوديو** و**بوت النشر** و**قناتك**. اضغط 📝 المسودات ← ✅ على المنشور ← ✅ النهائية في عمود
 بوت النشر، وشاهده يصل إلى القناة. افتح 📊 لوحة البيانات و💬 صندوق الرسائل، وأرسل أي رابط. لا شيء يغادر جهازك. أوقفه بـ Ctrl-C.
 
-الأمثلة المرئية في `examples/bakery/` (مخبز وهمي): ١٠ قوالب كاروسيل، ١٠ قوالب ستوري، أغلفة هايلايت. `fonts/gallery.html` يعرض
-الخطوط الثلاثين. وفي Claude Code يأخذك الأمر `/demo` في جولة على كل ذلك.
+الأمثلة المرئية في `examples/bakery/` (مخبز وهمي): ١٠ قوالب كاروسيل، ١١ قالب ستوري، أغلفة هايلايت. `fonts/gallery.html` يعرض
+الخطوط الواحد والخمسين. وفي Claude Code يأخذك الأمر `/demo` في جولة على كل ذلك.
 
 ## ٢ · ما تحتاجه
 
@@ -106,6 +106,11 @@ bash telegram-bot/demo/demo.sh ar
 | `/doodle` | رسم يدوي على ورق | شروحات، وصفات، نصائح |
 
 معاينة أي أسلوب بلا تصيير: `node tools/style-reel/stills.mjs neon --sheet`.
+
+**صور وموسيقى وأيقونات: فقط ما يحق لك استخدامه** (`/assets`). مدمج: نحو ٧٠٠٠ أيقونة (Lucide وTabler وPhosphor وHeroicons)،
+ورسوم CC0 تُلوَّن بألوان علامتك (Open Doodles، وأشخاص Open Peeps من أي كلمة)، وإيموجي Noto، و٥١ خطاً مفتوح الترخيص، وستوري `location`
+بخريطة مرسومة بألوانك من بيانات OpenStreetMap. ولكل ريل مع ملف مصادر: `node tools/assets/fetch.mjs openverse|commons|pexels|pixabay|unsplash "<ماذا>"`
+للصور ولقطات الفيديو والموسيقى والمؤثرات الصوتية CC0. لا مواد غير تجارية أو share-alike، ولا صور غوغل أو منشورات صفحات أخرى؛ صورة الأرشيف «كعكة» لا «كعكتنا».
 
 كل ريل يمر بفحص جودة آلي (`qa.py`: لا وجه حيث يجب ألا يكون، لا إطارات متجمدة أو فارغة) وبمراجعة بالعين لورقة إطارات قبل أن تراه.
 وكل كاروسيل وستوري يُراجع كورقة إطارات.
@@ -200,7 +205,7 @@ node tools/client.mjs use cafe-dubai
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
 `/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
-`/analytics` `/page-audit` · `/update`
+`/analytics` `/page-audit` · `/assets` · `/update`
 
 </div>
 

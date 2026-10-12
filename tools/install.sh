@@ -34,6 +34,15 @@ info "2 · render, captions, brand tools (Playwright 1.63 + Lucide icons)"
 if [ "$LEVEL" = check ]; then [ -d tools/node_modules/playwright ] && ok "tools/node_modules" || no "tools/node_modules (bash tools/install.sh)"
 else (cd tools && npm ci --no-audit --no-fund >/dev/null 2>&1 || npm install --no-audit --no-fund >/dev/null) && ok "tools/node_modules"; fi
 
+info "2b · Noto Color Emoji (Google, OFL; COLRv1 so Chrome draws it) → tools/vendor/noto-emoji/"
+EMO=tools/vendor/noto-emoji; EMO_TAG=v2.051
+if [ -f $EMO/Noto-COLRv1.ttf ]; then ok "$EMO"
+elif [ "$LEVEL" = check ]; then no "$EMO (bash tools/install.sh)"
+else mkdir -p $EMO && curl -sfL -o $EMO/Noto-COLRv1.ttf "https://raw.githubusercontent.com/googlefonts/noto-emoji/$EMO_TAG/fonts/Noto-COLRv1.ttf" \
+  && curl -sfL -o $EMO/OFL.txt "https://raw.githubusercontent.com/googlefonts/noto-emoji/$EMO_TAG/fonts/LICENSE" \
+  && printf '@font-face{font-family:"Noto Color Emoji";src:url("Noto-COLRv1.ttf") format("truetype");font-display:block}\n' > $EMO/font.css \
+  && ok "$EMO @ $EMO_TAG" || no "Noto emoji download failed (renders still work, emoji fall back to the system font)"; fi
+
 info "3 · Telegram bot packages (wrangler 4)"
 if [ "$LEVEL" = check ]; then [ -d telegram-bot/node_modules ] && ok "telegram-bot/node_modules" || no "telegram-bot/node_modules"
 else (cd telegram-bot && npm ci --no-audit --no-fund >/dev/null) && ok "telegram-bot/node_modules"; fi

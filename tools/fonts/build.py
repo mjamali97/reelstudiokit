@@ -45,6 +45,28 @@ FAMILIES = [
     ("instrument-serif", "Instrument Serif", ["latin"], "serif", [400], "Condensed modern serif."),
     ("bodoni-moda", "Bodoni Moda", ["latin"], "serif", [400, 700, 900], "Fashion-magazine Bodoni (the Vogue style)."),
     ("jetbrains-mono", "JetBrains Mono", ["latin"], "mono", [400, 700], "Mono for code, terminals and numbers."),
+    # 2.1: more Persian/Arabic character and more Latin choices
+    ("noto-nastaliq-urdu", "Noto Nastaliq Urdu", ["persian", "arabic"], "display", [400, 700], "Nastaliq calligraphic style: poetic, traditional Persian titles."),
+    ("noto-sans-arabic", "Noto Sans Arabic", ["arabic", "persian"], "sans", [400, 700, 900], "Plain, very complete Arabic-script sans (Persian letters included)."),
+    ("alexandria", "Alexandria", ["arabic", "latin"], "sans", [400, 700, 900], "Modern geometric Arabic + Latin."),
+    ("changa", "Changa", ["arabic", "latin"], "sans", [400, 700, 800], "Squarish, techy Arabic + Latin."),
+    ("el-messiri", "El Messiri", ["arabic", "latin"], "display", [400, 700], "Elegant, calligraphic-leaning Arabic display."),
+    ("lemonada", "Lemonada", ["arabic", "latin"], "display", [400, 700], "Round, playful Arabic display."),
+    ("baloo-bhaijaan-2", "Baloo Bhaijaan 2", ["arabic", "latin"], "display", [400, 700, 800], "Chunky, friendly Arabic display for food and kids."),
+    ("harmattan", "Harmattan", ["arabic", "latin"], "sans", [400, 700], "Simple, open Arabic for small captions."),
+    ("mada", "Mada", ["arabic", "latin"], "sans", [400, 700, 900], "Clean modern Arabic UI sans."),
+    ("dm-sans", "DM Sans", ["latin"], "sans", [400, 700, 900], "Friendly, compact geometric sans."),
+    ("poppins", "Poppins", ["latin"], "sans", [400, 700, 900], "Very popular round geometric sans."),
+    ("outfit", "Outfit", ["latin"], "sans", [400, 700, 900], "Clean modern geometric sans."),
+    ("plus-jakarta-sans", "Plus Jakarta Sans", ["latin"], "sans", [400, 700, 800], "Contemporary sans for brands."),
+    ("manrope", "Manrope", ["latin"], "sans", [400, 700, 800], "Semi-condensed modern sans."),
+    ("sora", "Sora", ["latin"], "sans", [400, 700, 800], "Wide, techy sans."),
+    ("lora", "Lora", ["latin"], "serif", [400, 700], "Calm, readable serif."),
+    ("oswald", "Oswald", ["latin"], "display", [400, 700], "Condensed sans for big headlines."),
+    ("anton", "Anton", ["latin"], "display", [400], "Heavy condensed impact face."),
+    ("caveat", "Caveat", ["latin"], "script", [400, 700], "Handwriting, for notes and doodles."),
+    ("pacifico", "Pacifico", ["latin"], "script", [400], "Retro brush script for cafés and treats."),
+    ("lobster", "Lobster", ["latin"], "script", [400], "Bold retro script."),
 ]
 PERSIAN_PKGS = {"shabnam": "shabnam-font", "sahel": "sahel-font", "samim": "samim-font"}
 SUBSETS = ("arabic", "latin", "latin-ext")

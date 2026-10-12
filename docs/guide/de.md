@@ -23,8 +23,8 @@ Eine Seite mit drei Spalten öffnet sich: dein **Studio-Bot**, dein **Publisher-
 ✅ beim Beitrag → das finale ✅ in der Publisher-Spalte, und sieh zu, wie er im Kanal ankommt. Öffne 📊 Dashboard und 💬 Posteingang,
 schick irgendeinen Link. Nichts verlässt deinen Rechner. Mit Ctrl-C beenden.
 
-Die Beispiele liegen in `examples/bakery/` (eine erfundene Bäckerei): 10 Karussell-Vorlagen, 10 Story-Vorlagen, Highlight-Cover.
-`fonts/gallery.html` zeigt die 30 Schriften. In Claude Code führt dich `/demo` durch alles.
+Die Beispiele liegen in `examples/bakery/` (eine erfundene Bäckerei): 10 Karussell-Vorlagen, 11 Story-Vorlagen, Highlight-Cover.
+`fonts/gallery.html` zeigt die 51 Schriften. In Claude Code führt dich `/demo` durch alles.
 
 ## 2 · Was du brauchst
 
@@ -102,6 +102,12 @@ Vorschau, dann überträgt `node tools/brand/apply.mjs` die Änderung in die Vid
 | `/doodle` | handgezeichnet auf Papier | Anleitungen, Rezepte, Tipps |
 
 Vorschau ohne Rendern: `node tools/style-reel/stills.mjs neon --sheet`.
+
+**Bilder, Musik, Icons: nur, was du nutzen darfst** (`/assets`). Eingebaut: ~7.000 Icons (Lucide, Tabler, Phosphor, Heroicons),
+CC0-Illustrationen in deinen Markenfarben (Open Doodles; Open-Peeps-Figuren aus jedem Wort), Noto-Emojis, 51 Open-Licence-Schriften
+und eine `location`-Story, deren Karte in deinen Farben aus OpenStreetMap-Daten gezeichnet wird. Pro Reel mit Quellendatei:
+`node tools/assets/fetch.mjs openverse|commons|pexels|pixabay|unsplash "<was>"` für Fotos, Video-B-Roll, CC0-Musik und Soundeffekte.
+Nie nicht-kommerzielles oder Share-alike-Material, nie Google-Bilder oder Beiträge anderer Seiten; Stock ist „ein Kuchen“, nie „unser Kuchen“.
 
 Jedes Reel durchläuft vor deinen Augen eine automatische QA (`qa.py`: kein Gesicht im B-Roll, keine eingefrorenen oder leeren
 Frames) und eine Sichtprüfung eines Kontaktbogens mit 3 Bildern pro Sekunde. Jedes Karussell und jede Story wird als Kontaktbogen geprüft.
@@ -190,4 +196,4 @@ Reels, Bot-Einstellungen; Liste in `.gitattributes`), und zeigt, was neu ist und
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
 `/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
-`/analytics` `/page-audit` · `/update`
+`/analytics` `/page-audit` · `/assets` · `/update`

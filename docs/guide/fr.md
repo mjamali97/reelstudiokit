@@ -23,8 +23,8 @@ Une page s'ouvre avec trois colonnes : ton **bot Studio**, ton **bot Publisher**
 la publication → le ✅ final dans la colonne Publisher, et regarde-la arriver dans la chaîne. Ouvre 📊 Tableau de bord et 💬 Boîte de
 réception, envoie un lien. Rien ne quitte ton ordinateur. Arrête avec Ctrl-C.
 
-Les exemples visuels sont dans `examples/bakery/` (une boulangerie inventée) : 10 modèles de carrousel, 10 modèles de story,
-des couvertures à la une. `fonts/gallery.html` montre les 30 polices. Dans Claude Code, `/demo` te fait tout visiter.
+Les exemples visuels sont dans `examples/bakery/` (une boulangerie inventée) : 10 modèles de carrousel, 11 modèles de story,
+des couvertures à la une. `fonts/gallery.html` montre les 51 polices. Dans Claude Code, `/demo` te fait tout visiter.
 
 ## 2 · Ce qu'il te faut
 
@@ -102,6 +102,13 @@ ton ✅ → `/publish` → ✅ sur la carte dans Telegram → `/analytics` une f
 | `/doodle` | dessiné à la main | tutoriels, recettes, astuces |
 
 Aperçu sans rendu : `node tools/style-reel/stills.mjs neon --sheet`.
+
+**Images, musique, icônes : seulement ce que tu as le droit d'utiliser** (`/assets`). Intégré : ~7 000 icônes (Lucide, Tabler,
+Phosphor, Heroicons), des illustrations CC0 recolorées à ta marque (Open Doodles ; personnages Open Peeps à partir de n'importe quel mot),
+les emojis Noto, 51 polices libres et une story `location` dont la carte est dessinée à tes couleurs depuis les données OpenStreetMap.
+Par reel, avec un fichier de crédits : `node tools/assets/fetch.mjs openverse|commons|pexels|pixabay|unsplash "<quoi>"` pour photos,
+plans vidéo, musique et bruitages CC0. Jamais de contenu non commercial ou share-alike, jamais Google Images ni le post d'une autre page ;
+une image de banque est « un gâteau », jamais « notre gâteau ».
 
 Chaque reel passe un contrôle automatique (`qa.py` : pas de visage là où il ne faut pas, pas d'image figée ni vide) et une
 vérification à l'œil d'une planche à 3 images par seconde avant que tu ne le voies. Chaque carrousel et story est vérifié en planche.
@@ -190,4 +197,4 @@ formats, reels, réglages du bot ; liste dans `.gitattributes`) et montre les no
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
 `/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
-`/analytics` `/page-audit` · `/update`
+`/analytics` `/page-audit` · `/assets` · `/update`

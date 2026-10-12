@@ -8,12 +8,15 @@
 //   carousel:   { cover: {kicker, title, sub, image}, items: [...], cta: {title, text, word, save, share}, + template words }
 //   story:      { frames: [ { template: "special", ...data }, ... ] }          (each frame picks its own template)
 //   highlights: { set: "food|shop|service|creator" or items: [{icon, label}], style: "solid|soft|outline", labels: false }
+// "illustration": "doodle:<name>" or "peep:<seed>" (CC0, recoloured to the brand) on a cover, a cta, a tips item, a tip or question story.
 // Images are paths relative to the spec file. Output: PNG files in --out (default: next to the spec, <name>/).
 import fs from "node:fs";
 import path from "node:path";
 import { loadBrand, page, typeFor, shoot } from "./lib.mjs";
 import * as C from "./carousels.mjs";
 import * as S from "./stories.mjs";
+import { resolveIllustrations } from "./illustrations.mjs";
+import { resolveMaps } from "./maps.mjs";
 
 const args = process.argv.slice(2), opt = (k) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : null; };
 if (args[0] === "--list" || !args[0]) {
@@ -29,6 +32,8 @@ const lang = spec.lang || "en", brand = loadBrand(opt("--brand") || spec.brand |
 const ctx = { brand, lang, base: path.dirname(specPath), labels: !!spec.labels };
 const out = path.resolve(opt("--out") || path.join(path.dirname(specPath), path.basename(specPath, ".json")));
 const fonts = typeFor(brand, lang).check;
+await resolveIllustrations(spec, brand);   // "illustration": "doodle:coffee" | "peep:sara" … → recoloured SVG
+if (spec.type === "story") await resolveMaps(spec, brand);   // "location" frames: a map drawn from OpenStreetMap data, cached
 let pages, size;
 if (spec.type === "carousel") {
   size = C.SIZE;

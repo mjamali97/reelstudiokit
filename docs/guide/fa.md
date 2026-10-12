@@ -28,8 +28,8 @@ bash telegram-bot/demo/demo.sh fa
 توی ستون بات انتشار بزن و ببین توی کانال میاد. 📊 داشبورد و 💬 صندوق پیام رو باز کن، یه لینک بفرست. هیچی از کامپیوترت بیرون نمی‌ره.
 با Ctrl-C تمومش کن.
 
-نمونه‌های تصویری توی `examples/bakery/` هستن (یه قنادی خیالی): ۱۰ قالب کروسل، ۱۰ قالب استوری، کاور هایلایت.
-`fonts/gallery.html` سی تا فونت رو نشون می‌ده. توی Claude Code دستور `/demo` همه‌ش رو قدم‌به‌قدم نشونت می‌ده.
+نمونه‌های تصویری توی `examples/bakery/` هستن (یه قنادی خیالی): ۱۰ قالب کروسل، ۱۱ قالب استوری، کاور هایلایت.
+`fonts/gallery.html` ۵۱ فونت رو نشون می‌ده. توی Claude Code دستور `/demo` همه‌ش رو قدم‌به‌قدم نشونت می‌ده.
 
 ## ۲ · چی لازم داری
 
@@ -107,6 +107,12 @@ WhisperX، لینتر تایپوگرافی فارسی) · `all` (اسکیل‌ه
 | `/doodle` | دست‌کشیده روی کاغذ | آموزش، دستور پخت، نکته |
 
 پیش‌نمایش هر سبک بدون رندر: `node tools/style-reel/stills.mjs neon --sheet`.
+
+**عکس، موزیک، آیکون: فقط چیزی که اجازه‌ی استفاده‌ش رو داری** (`/assets`). داخل کیت: حدود ۷۰۰۰ آیکون (Lucide، Tabler، Phosphor،
+Heroicons)، تصویرسازی‌های CC0 که با رنگ برندت رنگ می‌شن (Open Doodles، و آدم‌های Open Peeps از هر کلمه‌ای)، ایموجی Noto، ۵۱ فونت آزاد، و
+استوری `location` که نقشه‌ش با رنگ‌های برندت از داده‌ی OpenStreetMap کشیده می‌شه. برای هر ریل با فایل منبع‌ها:
+`node tools/assets/fetch.mjs openverse|commons|pexels|pixabay|unsplash "<چی>"` برای عکس، ویدیوی b-roll، موزیک و افکت صوتی CC0.
+هیچ‌وقت محتوای غیرتجاری یا share-alike، عکس گوگل یا پست پیج دیگه نه؛ عکس استوک «یه کیک»ه، نه «کیک ما».
 
 هر ریل قبل از اینکه ببینی یه QA خودکار رد می‌کنه (`qa.py`: صورت جایی که نباید، فریم یخ‌زده یا خالی) و یه بررسی چشمی روی شیت
 سه فریم در ثانیه. هر کروسل و استوری هم به صورت شیت چک می‌شه.
@@ -201,7 +207,7 @@ node tools/client.mjs use cafe-shiraz
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
 `/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
-`/analytics` `/page-audit` · `/update`
+`/analytics` `/page-audit` · `/assets` · `/update`
 
 </div>
 

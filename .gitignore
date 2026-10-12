@@ -25,3 +25,4 @@ tools/vendor/
 clients/*/reels/**/raw/
 brand/extracted/
 brand/preview/
+reels/_stock/

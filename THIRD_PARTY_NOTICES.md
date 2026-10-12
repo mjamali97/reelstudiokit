@@ -8,7 +8,12 @@ The kit's own code and texts are MIT (see `LICENSE`). These parts keep their own
 | Bodoni Moda font (The Bodoni Moda Project Authors) | `tools/style-reel/assets/fonts/BodoniModa*.ttf` | SIL Open Font License 1.1 (`OFL-bodoni.txt`) |
 | Markazi Text font (The Markazi Text Project Authors) | `tools/style-reel/assets/fonts/MarkaziText.ttf` | SIL Open Font License 1.1 (`OFL-markazi.txt`) |
 | Lalezar font (Borna Izadpanah) | `tools/style-reel/assets/fonts/Lalezar-*.woff2` | SIL Open Font License 1.1 (`OFL-lalezar.txt`) |
-| 30 font families of the library (Inter, Vazirmatn, Estedad, Cairo, Fraunces, Syne, … each with its authors) | `fonts/<family>/` (from the @fontsource packages; Shabnam, Sahel, Samim from their npm packages) | SIL Open Font License 1.1, one `OFL.txt` per folder |
+| 51 font families of the library (Inter, Vazirmatn, Estedad, Cairo, Fraunces, Syne, … each with its authors) | `fonts/<family>/` (from the @fontsource packages; Shabnam, Sahel, Samim from their npm packages) | SIL Open Font License 1.1, one `OFL.txt` per folder |
+| Open Doodles (Pablo Stanley) | `assets/illustrations/open-doodles/*.svg` (one left out) | CC0 1.0 (public domain dedication; no credit required) |
+| Tabler Icons, Phosphor Icons, Heroicons | `tools/package.json` (npm) | MIT |
+| DiceBear core and the Open Peeps, Notionists, Lorelei and Thumbs styles | `tools/package.json` (npm) | code MIT; these four designs CC0 1.0 (DiceBear's CC BY styles are not installed) |
+| Noto Color Emoji (Google) | downloaded to `tools/vendor/noto-emoji/` by `tools/install.sh` | SIL Open Font License 1.1 |
+| OpenStreetMap data | fetched per location map (Overpass, Nominatim), never stored in the repo | ODbL 1.0: "© OpenStreetMap contributors" is printed on every map |
 | Lucide icons | `tools/style-reel/assets/icons/icon-*.svg` (`icon-cake.svg` drawn after Lucide's); `lucide-static` (npm) for carousels, stories and highlight covers | ISC |
 | GSAP | loaded from jsDelivr by `tools/style-reel/index.html` | GSAP standard licence (free to use) |
 | HyperFrames | fetched by `npx hyperframes@0.8.46` | Apache 2.0 |

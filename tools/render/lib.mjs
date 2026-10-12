@@ -7,6 +7,7 @@ export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 export const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 export const RTL = new Set(["fa", "ar"]);
 const FONTS = JSON.parse(fs.readFileSync(path.join(ROOT, "fonts/fonts.json"), "utf8"));
+const EMOJI_CSS = path.join(ROOT, "tools/vendor/noto-emoji/font.css");   // written by tools/install.sh (Noto Color Emoji, OFL)
 
 // a font reference from brand.json: a library id ("estedad") or { name, css } for your own licensed font
 function fontRef(ref) {
@@ -27,10 +28,13 @@ export function typeFor(brand, lang) {
   const script = lang === "fa" ? brand.fonts.fa || "vazirmatn" : lang === "ar" ? brand.fonts.ar || "cairo" : null;
   const faces = [fontRef(brand.fonts.display || "inter"), fontRef(brand.fonts.body || "inter"), fontRef(brand.fonts.mono || "jetbrains-mono"), script && fontRef(script)].filter(Boolean);
   const S = script ? `'${fontRef(script).name}', ` : "";
+  // emoji come from Noto Color Emoji (OFL, COLRv1, downloaded by tools/install.sh) when installed, so every render has the same
+  // licensed emoji on any computer; not in "check" because it only loads for emoji characters
+  const E = fs.existsSync(EMOJI_CSS) ? `, 'Noto Color Emoji'` : "";
   return {
-    faces, check: [...new Set(faces.map((f) => f.name))],
-    display: `${S}'${fontRef(brand.fonts.display || "inter").name}', sans-serif`,
-    body: `${S}'${fontRef(brand.fonts.body || "inter").name}', sans-serif`,
+    faces: [...faces, ...(E ? [{ name: "Noto Color Emoji", css: EMOJI_CSS }] : [])], check: [...new Set(faces.map((f) => f.name))],
+    display: `${S}'${fontRef(brand.fonts.display || "inter").name}'${E}, sans-serif`,
+    body: `${S}'${fontRef(brand.fonts.body || "inter").name}'${E}, sans-serif`,
     mono: `'${fontRef(brand.fonts.mono || "jetbrains-mono").name}', monospace`,
   };
 }
@@ -73,6 +77,8 @@ export async function shoot(pages, outDir, { w, h, transparent = false } = {}) {
       await pg.evaluate(async (names) => {
         await document.fonts.ready;
         for (const n of names) for (const wt of [400, 700, 900]) await document.fonts.load(`${wt} 40px '${n}'`, "aبکA").catch(() => {});
+        await document.fonts.load("40px 'Noto Color Emoji'", document.body.innerText).catch(() => {});   // only the emoji chunks this page uses
+        await document.fonts.ready;
         window.__fit && window.__fit();
       }, p.fonts);
       const missing = await pg.evaluate((names) => names.filter((n) => !document.fonts.check(`40px '${n}'`, "aA")), p.fonts);
@@ -87,10 +93,28 @@ export async function shoot(pages, outDir, { w, h, transparent = false } = {}) {
 }
 
 // small shared components
+// icons from four open sets, all bundled through tools/package.json:
+//   "cake" or "lucide:cake"            Lucide (ISC)            lucide.dev
+//   "tabler:cake" / "tabler:cake:filled"   Tabler Icons (MIT)  tabler.io/icons
+//   "phosphor:cake[:bold|fill|duotone|light|thin]"  Phosphor (MIT)  phosphoricons.com
+//   "hero:cake[:solid]"                Heroicons (MIT)          heroicons.com
+const ICON_DIR = path.join(ROOT, "tools/node_modules");
+export function iconPath(ref) {
+  const [a, b, c] = String(ref).split(":"), set = b ? a : "lucide", name = b || a, v = c || "";
+  const p = {
+    lucide: `lucide-static/icons/${name}.svg`,
+    tabler: `@tabler/icons/icons/${v === "filled" ? "filled" : "outline"}/${name}.svg`,
+    phosphor: v && v !== "regular" ? `@phosphor-icons/core/assets/${v}/${name}-${v}.svg` : `@phosphor-icons/core/assets/regular/${name}.svg`,
+    hero: `heroicons/24/${v === "solid" ? "solid" : "outline"}/${name}.svg`,
+  }[set];
+  return p ? path.join(ICON_DIR, p) : null;
+}
 export const icon = (name, color = "currentColor", size = 64) => {
-  const p = path.join(ROOT, "tools/node_modules/lucide-static/icons", `${name}.svg`);
-  if (!fs.existsSync(p)) return "";
-  return fs.readFileSync(p, "utf8").replace(/<!--.*?-->/gs, "").replace(/width="24"/, `width="${size}"`).replace(/height="24"/, `height="${size}"`).replace(/stroke="currentColor"/g, `stroke="${color}"`);
+  const p = iconPath(name);
+  if (!p || !fs.existsSync(p)) { console.warn(`icon not found: ${name} (sets: lucide, tabler, phosphor, hero; node tools/render/icons.mjs <word> searches them)`); return ""; }
+  // every set draws in currentColor (stroke or fill), so the colour is set once on the svg
+  return fs.readFileSync(p, "utf8").replace(/<!--.*?-->/gs, "")
+    .replace(/<svg\b([^>]*)>/, (m, attrs) => `<svg${attrs.replace(/\s(width|height|class)="[^"]*"/g, "")} width="${size}" height="${size}" style="color:${color};flex:none">`);
 };
 // Instagram carousels always advance from the right, in every language: the arrow points right and sits bottom-right
 export const swipe = () => `<div class="swipe">→</div>`;

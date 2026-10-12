@@ -1,0 +1,23 @@
+{
+ "type": "story",
+ "lang": "en",
+ "brand": "brand/brand.json",
+ "frames": [
+  {
+   "template": "tip",
+   "chip": "Tip",
+   "n": 4,
+   "title": "Cut it cold",
+   "text": "A cream cake slices clean straight from the fridge.",
+   "illustration": "doodle:coffee"
+  },
+  {
+   "template": "question",
+   "chip": "Q&A",
+   "title": "Ask us anything about birthday cakes",
+   "text": "We answer every question tonight.",
+   "sticker": "Question box here",
+   "illustration": "peep:sara"
+  }
+ ]
+}

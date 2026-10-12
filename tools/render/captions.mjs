@@ -150,6 +150,8 @@ try {
   await pg.evaluate(async (names) => { await document.fonts.ready; for (const n of names) await document.fonts.load(`700 40px '${n}'`, "aبکA").catch(() => {}); }, T.check);
   const missing = await pg.evaluate((names) => names.filter((n) => !document.fonts.check(`700 40px '${n}'`, "aA")), T.check);
   if (missing.length) throw new Error(`font(s) not loaded: ${missing.join(", ")}`);
+  const allText = states.map((st) => st.html.replace(/<[^>]+>/g, "")).join(" ");
+  await pg.evaluate(async (t) => { await document.fonts.load("40px 'Noto Color Emoji'", t).catch(() => {}); await document.fonts.ready; }, allText);
   await pg.evaluate(() => { document.getElementById("t").style.visibility = "hidden"; });
   await pg.screenshot({ path: path.join(tmp, "blank.png"), omitBackground: true });
   await pg.evaluate(() => { document.getElementById("t").style.visibility = "visible"; });

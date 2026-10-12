@@ -7,6 +7,7 @@ export const SIZE = { w: 1080, h: 1350 };
 const chunk = (a, n) => { const k = Math.ceil(a.length / n), size = Math.ceil(a.length / k); return a.reduce((o, x, i) => (i % size ? o[o.length - 1].push(x) : o.push([x]), o), []); };
 
 export const CSS = `
+.ill{display:flex;justify-content:center}.ill svg{max-width:100%}
 .s{position:absolute;inset:0;padding:96px 88px 120px;display:flex;flex-direction:column;overflow:hidden}
 .top{display:flex;justify-content:space-between;align-items:center;font:700 26px/1 var(--body);color:var(--muted);letter-spacing:.02em}
 .kick{display:inline-block;align-self:flex-start;background:var(--accent);color:var(--surface);font:800 30px/1 var(--display);padding:16px 26px 18px;border-radius:999px}
@@ -41,9 +42,11 @@ const frame = (ctx, i, n, inner, cls = "") => `<div class="s ${cls}">
 
 const cover = (c, ctx, i, n) => frame(ctx, i, n, `<div class="blob" style="width:720px;height:720px;inset-inline-end:-260px;top:-180px"></div>
 <div class="grow">${c.kicker ? `<span class="kick">${esc(c.kicker)}</span>` : ""}<div class="h1 fit" data-fit="60" style="max-height:640px">${esc(c.title)}</div>
-${c.sub ? `<div class="p mut" style="font-size:44px">${esc(c.sub)}</div>` : ""}${c.image ? `<img class="photo" style="height:360px" src="${img(c.image, ctx.base)}">` : ""}</div>`);
+${c.sub ? `<div class="p mut" style="font-size:44px">${esc(c.sub)}</div>` : ""}${c.image ? `<img class="photo" style="height:360px" src="${img(c.image, ctx.base)}">` : ""}
+${c.illustration ? `<div class="ill" style="height:380px">${c.illustration}</div>` : ""}</div>`);
 
 const cta = (c, ctx, i, n) => frame(ctx, i, n, `<div class="grow" style="align-items:flex-start">
+${c.illustration ? `<div class="ill" style="height:330px;width:100%">${c.illustration}</div>` : ""}
 <div class="h2 fit" data-fit="48">${esc(c.title || "")}</div>${c.text ? `<div class="p" style="opacity:.9">${esc(c.text)}</div>` : ""}
 ${c.word ? `<span class="pill">${esc(c.word)}</span>` : ""}
 <div class="row" style="margin-top:20px;gap:40px;font:700 34px/1 var(--body)">${icon("bookmark", "currentColor", 56)}<span>${esc(c.save || "")}</span>${icon("send", "currentColor", 56)}<span>${esc(c.share || "")}</span></div></div>`, "cta");
@@ -52,7 +55,8 @@ ${c.word ? `<span class="pill">${esc(c.word)}</span>` : ""}
 export const TEMPLATES = {
   tips: { about: "Numbered tips, one per slide (title + text).", item: '{"title": "...", "text": "..."}',
     slides: (s, ctx) => s.items.map((it, k) => (i, n) => frame(ctx, i, n, `<div class="grow"><div class="num">${digits(String(k + 1).padStart(2, "0"), ctx.lang)}</div>
-<div class="h2 fit" data-fit="44">${esc(it.title)}</div><div class="p mut fit" data-fit="28" style="max-height:420px">${esc(it.text || "")}</div></div>`)) },
+<div class="h2 fit" data-fit="44">${esc(it.title)}</div><div class="p mut fit" data-fit="28" style="max-height:420px">${esc(it.text || "")}</div>
+${it.illustration ? `<div class="ill" style="height:340px;margin-top:10px">${it.illustration}</div>` : ""}</div>`)) },
   steps: { about: "A how-to: step N with an optional photo.", item: '{"title": "...", "text": "...", "image": "optional.jpg"}',
     slides: (s, ctx) => s.items.map((it, k) => (i, n) => frame(ctx, i, n, `<div class="grow" style="gap:26px"><span class="tag">${esc(s.stepWord || "Step")} ${digits(k + 1, ctx.lang)}</span>
 ${it.image ? `<img class="photo" style="height:470px" src="${img(it.image, ctx.base)}">` : ""}<div class="h3 fit" data-fit="40">${esc(it.title)}</div>

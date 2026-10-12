@@ -23,8 +23,8 @@ bash telegram-bot/demo/demo.sh tr
 son ✅'e bas ve kanala düşmesini izle. 📊 Panel ve 💬 Gelen kutusunu aç, bir bağlantı gönder. Hiçbir şey bilgisayarından çıkmaz.
 Ctrl-C ile durdur.
 
-Görsel örnekler `examples/bakery/` klasöründe (hayali bir pastane): 10 karusel şablonu, 10 hikâye şablonu, öne çıkan kapakları.
-`fonts/gallery.html` 30 fontu gösterir. Claude Code'da `/demo` hepsini adım adım gezdirir.
+Görsel örnekler `examples/bakery/` klasöründe (hayali bir pastane): 10 karusel şablonu, 11 hikâye şablonu, öne çıkan kapakları.
+`fonts/gallery.html` 51 fontu gösterir. Claude Code'da `/demo` hepsini adım adım gezdirir.
 
 ## 2 · Gerekenler
 
@@ -102,6 +102,12 @@ gösterir, sonra `node tools/brand/apply.mjs` değişikliği video stillerine, b
 | `/doodle` | kâğıda el çizimi | nasıl yapılır, tarifler, ipuçları |
 
 Render almadan önizleme: `node tools/style-reel/stills.mjs neon --sheet`.
+
+**Görsel, müzik, ikon: yalnızca kullanma hakkın olan** (`/assets`). Dahili: ~7.000 ikon (Lucide, Tabler, Phosphor, Heroicons),
+markanın renklerine boyanan CC0 illüstrasyonlar (Open Doodles; herhangi bir kelimeden Open Peeps karakterleri), Noto emoji, 51 açık
+lisanslı font ve haritası OpenStreetMap verisinden senin renklerinle çizilen `location` hikâyesi. Her reels için kaynak dosyasıyla:
+`node tools/assets/fetch.mjs openverse|commons|pexels|pixabay|unsplash "<ne>"` fotoğraf, video b-roll, CC0 müzik ve ses efekti için.
+Ticari olmayan veya share-alike içerik, Google Görseller ya da başka sayfanın paylaşımı asla; stok görsel "bir pasta"dır, "bizim pastamız" değil.
 
 Her reels sana gösterilmeden önce otomatik kalite kontrolünden (`qa.py`: olmaması gereken yerde yüz, donmuş veya boş kare yok) ve
 saniyede 3 karelik bir kontak sayfasıyla göz kontrolünden geçer. Her karusel ve hikâye de kontak sayfasıyla kontrol edilir.
@@ -190,4 +196,4 @@ ayarları; liste `.gitattributes` içinde), yenilikleri ve senden bir işlem ger
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
 `/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
-`/analytics` `/page-audit` · `/update`
+`/analytics` `/page-audit` · `/assets` · `/update`

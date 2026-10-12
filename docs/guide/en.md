@@ -26,8 +26,8 @@ A page opens with three panes: your **Studio bot**, your **Publisher bot** and y
 post → the final ✅ in the Publisher pane, and watch it arrive in the channel. Open 📊 Dashboard, 💬 Inbox, send any link.
 Nothing leaves your computer. Stop with Ctrl-C. Add a language: `bash telegram-bot/demo/demo.sh de`.
 
-The visuals are in `examples/bakery/` (a made-up bakery): 10 carousel templates, 10 story templates, highlight covers.
-`fonts/gallery.html` shows the 30 fonts. In Claude Code, `/demo` walks you through all of it.
+The visuals are in `examples/bakery/` (a made-up bakery): 10 carousel templates, 11 story templates, highlight covers.
+`fonts/gallery.html` shows the 51 fonts. In Claude Code, `/demo` walks you through all of it.
 
 ## 2 · What you need
 
@@ -106,6 +106,12 @@ styles, the bot's colours and the bot's voice.
 | `/doodle` | hand-drawn on paper | how-tos, recipes, tips |
 
 Preview any style without rendering: `node tools/style-reel/stills.mjs neon --sheet`.
+
+**Pictures, music, icons: only what you may use** (`/assets`). Built in: ~7,000 icons (Lucide, Tabler, Phosphor, Heroicons),
+CC0 illustrations recoloured to your brand (Open Doodles; Open Peeps people from any word), Noto emoji, 51 open-licence fonts,
+and a `location` story whose map is drawn in your colours from OpenStreetMap data. Fetched per reel with a credits file:
+`node tools/assets/fetch.mjs openverse|commons|pexels|pixabay|unsplash "<what>"` for photos, video b-roll, CC0 music and sound
+effects. Never non-commercial or share-alike material, never Google Images or another page's post; stock is "a cake", never "our cake".
 
 Every reel passes an automatic QA (`qa.py`: no face where b-roll should be, no frozen or blank frames) and an eye check of
 a 3-frames-per-second contact sheet before you see it. Every carousel and story is checked as a contact sheet.
@@ -197,4 +203,4 @@ formats, reels, bot settings: see `.gitattributes`), shows what is new and wheth
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
 `/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
-`/analytics` `/page-audit` · `/update`
+`/analytics` `/page-audit` · `/assets` · `/update`

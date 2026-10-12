@@ -7,6 +7,11 @@ export const SIZE = { w: 1080, h: 1920 };
 export const HL_SIZE = { w: 1080, h: 1080 };
 
 export const CSS = `
+.ill{display:flex;justify-content:center}.ill svg{max-width:100%}
+.map{position:relative;height:700px;border-radius:var(--r);overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.14);flex:none}
+.map .pin{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);filter:drop-shadow(0 8px 10px rgba(0,0,0,.35))}
+.map .pin svg{fill:var(--surface)}
+.map .osm{position:absolute;right:0;bottom:0;background:rgba(255,255,255,.85);color:#333;font:500 22px/1 var(--body);padding:8px 14px}
 .st{position:absolute;inset:0;overflow:hidden}
 .bar{position:absolute;top:250px;left:80px;right:80px;display:flex;justify-content:space-between;align-items:center;font:700 34px/1 var(--body)}
 .chip{background:var(--accent);color:var(--surface);border-radius:999px;padding:14px 30px 17px;font:800 34px/1 var(--display)}
@@ -36,7 +41,7 @@ ${d.text ? `<div class="t2 mut">${esc(d.text)}</div>` : ""}${d.price ? `<div><sp
   poll: { about: "A question with space for the poll sticker.", data: '{"chip": "Poll", "title": "Which cake next week?", "options": ["Pistachio", "Saffron"], "sticker": "Poll sticker here"}',
     frame: (d, ctx) => shell(ctx, `<div class="zone"><div class="t1">${esc(d.title)}</div>${(d.options || []).length ? `<div class="t2 mut">${d.options.map(esc).join(" · ")}</div>` : ""}${stickerBox(d.sticker || "Poll sticker")}</div>`, { chip: d.chip || "Poll" }) },
   question: { about: "Ask-me-anything with space for the question box.", data: '{"chip": "Q&A", "title": "Ask us anything about ...", "text": "...", "sticker": "Question box here"}',
-    frame: (d, ctx) => shell(ctx, `<div class="zone"><div style="font:900 200px/1 var(--display)" class="acc">?</div><div class="t1">${esc(d.title)}</div>${d.text ? `<div class="t2 mut">${esc(d.text)}</div>` : ""}${stickerBox(d.sticker || "Question box")}</div>`, { chip: d.chip }) },
+    frame: (d, ctx) => shell(ctx, `<div class="zone">${d.illustration ? `<div class="ill" style="height:420px">${d.illustration}</div>` : `<div style="font:900 200px/1 var(--display)" class="acc">?</div>`}<div class="t1">${esc(d.title)}</div>${d.text ? `<div class="t2 mut">${esc(d.text)}</div>` : ""}${stickerBox(d.sticker || "Question box")}</div>`, { chip: d.chip }) },
   offer: { about: "A limited offer with a real end date and a countdown sticker.", data: '{"chip": "Offer", "big": "-20%", "title": "...", "until": "until Friday", "sticker": "Countdown sticker"}',
     frame: (d, ctx) => shell(ctx, `<div class="zone" style="text-align:center;align-items:center"><div style="font:900 300px/1 var(--display)" class="acc">${esc(digits(d.big || "", ctx.lang))}</div>
 <div class="t1">${esc(d.title)}</div>${d.until ? `<div class="t2 mut">${esc(d.until)}</div>` : ""}<div style="width:100%">${stickerBox(d.sticker || "Countdown sticker")}</div></div>`, { chip: d.chip }) },
@@ -44,7 +49,8 @@ ${d.text ? `<div class="t2 mut">${esc(d.text)}</div>` : ""}${d.price ? `<div><sp
     frame: (d, ctx) => shell(ctx, `<div class="zone" style="justify-content:flex-end"><div class="big">${esc(d.title)}</div>${d.text ? `<div class="t2 mut">${esc(d.text)}</div>` : ""}</div>`, { chip: d.chip || "New", dark: !!d.image, photo: d.image }) },
   tip: { about: "One useful tip on a card.", data: '{"chip": "Tip", "n": 1, "title": "...", "text": "..."}',
     frame: (d, ctx) => shell(ctx, `<div class="zone"><div style="font:900 240px/0.9 var(--display)" class="acc">${digits(String(d.n ?? 1).padStart(2, "0"), ctx.lang)}</div>
-<div class="card"><div class="t1" style="font-size:70px;margin-bottom:22px">${esc(d.title)}</div><div class="t2 mut">${esc(d.text || "")}</div></div></div>`, { chip: d.chip }) },
+<div class="card"><div class="t1" style="font-size:70px;margin-bottom:22px">${esc(d.title)}</div><div class="t2 mut">${esc(d.text || "")}</div></div>
+${d.illustration ? `<div class="ill" style="height:420px">${d.illustration}</div>` : ""}</div>`, { chip: d.chip }) },
   review: { about: "A real customer review (with consent).", data: '{"chip": "Review", "quote": "...", "name": "...", "stars": 5}',
     frame: (d, ctx) => shell(ctx, `<div class="zone"><div class="stars">${"★".repeat(Math.max(0, Math.min(5, d.stars ?? 5)))}</div><div class="t1" style="font-weight:700">“${esc(d.quote)}”</div><div class="t2 mut">— ${esc(d.name || "")}</div></div>`, { chip: d.chip }) },
   behind: { about: "A behind-the-scenes photo with a caption strip.", data: '{"chip": "Behind the scenes", "image": "kitchen.jpg", "title": "...", "text": "..."}',
@@ -56,6 +62,10 @@ ${d.sticker ? stickerBox(d.sticker) : ""}</div>`, { chip: d.chip }) },
   link: { about: "Point to the link sticker (order, menu, booking).", data: '{"chip": "Order", "title": "Order in one tap", "items": ["...", "..."], "sticker": "Link sticker → ..."}',
     frame: (d, ctx) => shell(ctx, `<div class="zone"><div class="t1">${esc(d.title)}</div>${(d.items || []).map((x) => `<div class="t2" style="display:flex;gap:18px;align-items:center">${icon("check", "var(--accent)", 52)}<span>${esc(x)}</span></div>`).join("")}
 <div class="arrow">↓</div>${stickerBox(d.sticker || "Link sticker")}</div>`, { chip: d.chip }) },
+  location: { about: "Where to find you: a map drawn in your colours from OpenStreetMap data, with a pin (address or lat/lon; © OpenStreetMap contributors).", data: '{"chip": "Find us", "title": "...", "address": "12 Main St, City", "text": "Open every day 8–19", "zoom": 17, "sticker": "Location sticker"}',
+    frame: (d, ctx) => shell(ctx, `<div class="zone" style="justify-content:flex-start;top:360px;gap:28px"><div class="t1">${esc(d.title || "")}</div>
+<div class="map">${d._map || ""}<div class="pin">${icon("map-pin", "var(--accent)", 120)}</div><div class="osm" dir="ltr">© OpenStreetMap contributors</div></div>
+${d.text ? `<div class="t2 mut">${esc(d.text)}</div>` : ""}${d.sticker ? `<div class="sticker" style="height:140px">${esc(d.sticker)}</div>` : ""}</div>`, { chip: d.chip || "Find us" }) },
 };
 
 // highlight covers: an icon on the brand colour; Instagram crops them to a circle (keep the icon in the middle 60 %)

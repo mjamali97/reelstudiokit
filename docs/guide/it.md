@@ -23,8 +23,8 @@ Si apre una pagina con tre colonne: il tuo **bot Studio**, il tuo **bot Publishe
 il ✅ finale nella colonna Publisher, e guardalo arrivare nel canale. Apri 📊 Dashboard e 💬 Posta in arrivo, invia un link.
 Nulla esce dal tuo computer. Fermalo con Ctrl-C.
 
-Gli esempi visivi sono in `examples/bakery/` (una pasticceria inventata): 10 modelli di carosello, 10 modelli di storia, copertine
-in evidenza. `fonts/gallery.html` mostra i 30 font. In Claude Code, `/demo` ti guida attraverso tutto.
+Gli esempi visivi sono in `examples/bakery/` (una pasticceria inventata): 10 modelli di carosello, 11 modelli di storia, copertine
+in evidenza. `fonts/gallery.html` mostra i 51 font. In Claude Code, `/demo` ti guida attraverso tutto.
 
 ## 2 · Cosa ti serve
 
@@ -102,6 +102,12 @@ il tuo ✅ → `/publish` → ✅ sulla scheda in Telegram → `/analytics` una 
 | `/doodle` | disegnato a mano su carta | tutorial, ricette, consigli |
 
 Anteprima senza render: `node tools/style-reel/stills.mjs neon --sheet`.
+
+**Immagini, musica, icone: solo ciò che puoi usare** (`/assets`). Incluso: ~7.000 icone (Lucide, Tabler, Phosphor, Heroicons),
+illustrazioni CC0 ricolorate col tuo brand (Open Doodles; personaggi Open Peeps da qualsiasi parola), emoji Noto, 51 font a licenza libera
+e una storia `location` con la mappa disegnata nei tuoi colori dai dati OpenStreetMap. Per ogni reel, con un file dei crediti:
+`node tools/assets/fetch.mjs openverse|commons|pexels|pixabay|unsplash "<cosa>"` per foto, b-roll video, musica ed effetti sonori CC0.
+Mai materiale non commerciale o share-alike, mai Google Immagini o il post di un'altra pagina; lo stock è «una torta», mai «la nostra torta».
 
 Ogni reel passa un controllo automatico (`qa.py`: nessun volto dove non deve esserci, nessun fotogramma bloccato o vuoto) e un
 controllo a occhio di un provino a 3 fotogrammi al secondo prima che tu lo veda. Ogni carosello e storia viene controllato come provino.
@@ -190,4 +196,4 @@ impostazioni del bot; elenco in `.gitattributes`) e mostra le novità e se serve
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
 `/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
-`/analytics` `/page-audit` · `/update`
+`/analytics` `/page-audit` · `/assets` · `/update`
