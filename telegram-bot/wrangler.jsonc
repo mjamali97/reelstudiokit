@@ -26,6 +26,9 @@
     // 1 = Zernio calls are shown, not sent. Set "0" only after a full dry run looked right.
     "ZERNIO_DRY_RUN": "1",
 
+    // language of the bots and of everything Gemini writes: en | fa | ar | tr | de | fr | it
+    "LANG": "en",
+
     // brand
     "BRAND_NAME": "CHANGE-ME",
     "IG_HANDLE": "@CHANGE-ME",
