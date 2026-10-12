@@ -1,0 +1,23 @@
+name: Commercial licence
+description: An agency, studio or freelancer that uses Reel Studio for clients, or a company that wants to host it
+labels: [commercial-licence]
+body:
+  - type: markdown
+    attributes: { value: "Nothing confidential here: this issue is public. The licensor replies with the terms and continues privately." }
+  - type: input
+    id: company
+    attributes: { label: Company or name }
+    validations: { required: true }
+  - type: input
+    id: country
+    attributes: { label: Country }
+    validations: { required: true }
+  - type: dropdown
+    id: use
+    attributes:
+      label: Use
+      options: [agency / studio / freelancer working for clients, hosted or managed service for others, other]
+    validations: { required: true }
+  - type: input
+    id: size
+    attributes: { label: Number of client brands and staff using it (roughly) }

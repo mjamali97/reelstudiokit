@@ -3,6 +3,25 @@
 Every kit update gets a version and a short entry here; `/update` reads the new entries to you after pulling.
 Format: what changed, then **Action** when you need to do something (most updates need nothing).
 
+## 2.1.0 · 2026-10-12
+**Licence change:** from this version Reel Studio is under the **Business Source License 1.1**. Free in production for
+your own brand, business or page (and its staff); agencies, studios and freelancers using it for clients, and hosted
+services, need a commercial licence (`COMMERCIAL-LICENSE.md`). Each version becomes Apache-2.0 four years after release.
+Versions 2.0.1 and earlier stay MIT. Contributions now go under `CLA.md`.
+- **Icons:** Tabler, Phosphor and Heroicons next to Lucide (~7,000, MIT/ISC): `"tabler:cake"`, `"phosphor:cake:duotone"`,
+  `"hero:cake:solid"`; `node tools/render/icons.mjs <word>` finds them.
+- **Illustrations (CC0), recoloured to the brand:** 32 Open Doodles (`doodle:<name>`) and Open Peeps, Notionists, Lorelei,
+  Thumbs people from any word (`peep:<word>`), on carousel covers, tips, CTAs and stories.
+- **Emoji:** Noto Color Emoji (OFL) in every render, the same on every computer.
+- **Fonts:** 21 more OFL families (51), incl. Noto Nastaliq Urdu for a calligraphic Persian look.
+- **Map story:** the `location` template draws a map in the brand colours from OpenStreetMap data, with the credit on it.
+- **Licensed stock:** `tools/assets/fetch.mjs` gets photos, video b-roll, CC0 music and sound effects from Openverse,
+  Wikimedia Commons, Pexels, Pixabay and Unsplash, with a CREDITS.md per reel; new `/assets` skill with the rules.
+- The five original video styles pass motion QA again (2.0.1).
+
+**Action:** `bash tools/install.sh` (new icon, illustration and emoji packages). If you use Reel Studio for clients, read
+`COMMERCIAL-LICENSE.md`. Optional: free Pexels / Pixabay / Unsplash keys in `.env` for stock video and photos.
+
 ## 2.0.1 · 2026-10-12
 - The five original styles (vogue, vox, swiss, hud, doodle) pass motion QA again: no blank frame entering scene 5 (vox,
   doodle), no still second in swiss's last scene, hud's first scene or doodle's last scene (a slow handheld camera).

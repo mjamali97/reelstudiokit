@@ -1,5 +1,9 @@
 # Maintaining the kit (for the maintainer and contributors)
 
+**Licence:** Business Source License 1.1 with a commercial licence for agencies (`LICENSE`, `COMMERCIAL-LICENSE.md`).
+A pull request means you accept `CLA.md`, so your contribution can ship under both. Never add GPL/AGPL code or NC/SA assets.
+**Each release:** set the Change Date in `LICENSE` to the release date + 4 years and the version in "Licensed Work".
+
 Users copy this repo and pull updates with `/update` (`tools/update.sh`). Keep updates safe for them:
 
 1. **No personal data**, ever: no real handles, ids, keys, numbers, faces, client names. Examples are neutral or a made-up business.

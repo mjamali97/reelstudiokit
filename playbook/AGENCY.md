@@ -2,6 +2,8 @@
 For a freelancer, a social media manager or an agency running several pages. Each client keeps their **own** brand, voice,
 facts, formats, reels and reports; nothing of one client ever reaches another.
 
+**Licence:** using Reel Studio for clients needs a commercial licence (`COMMERCIAL-LICENSE.md`); trying agency mode does not.
+
 ## How it is organised
 | | single brand | agency |
 |---|---|---|

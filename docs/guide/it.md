@@ -145,6 +145,8 @@ conversione, concorrenti): punti di forza e deboli, 5 correzioni principali, pia
 
 ## 9 · Modalità agenzia (più clienti)
 
+Usarlo per i clienti richiede una licenza commerciale (`COMMERCIAL-LICENSE.md`); provare la modalità agenzia è gratuito.
+
 ```bash
 node tools/client.mjs init my-first-client
 node tools/client.mjs new forno-roma "Forno Roma"
@@ -188,7 +190,7 @@ impostazioni del bot; elenco in `.gitattributes`) e mostra le novità e se serve
 
 **Devo mostrare il viso?** No. Ogni manuale ha formati solo mani o solo prodotto.
 **È solo per pagine persiane?** No. L'inglese è la lingua principale; persiano, arabo, turco, tedesco, francese e italiano sono inclusi.
-**Quanto costa?** Il kit è gratuito (MIT). Paghi Claude, e Zernio oltre il piano gratuito.
+**Quanto costa?** Gratuito per il tuo brand o la tua attività (Business Source License 1.1); un'agenzia, uno studio o un freelance che lo usa per i clienti ha bisogno di una licenza commerciale (`COMMERCIAL-LICENSE.md`). Ogni versione diventa Apache-2.0 dopo quattro anni. Paghi Claude, e Zernio oltre il piano gratuito.
 **Posso usare i miei font?** Sì, se la licenza permette social e video; aggiungilo come `{"name","css"}` in `brand/brand.json`.
 **Un aggiornamento cancella il mio lavoro?** No. I tuoi file sono protetti da `.gitattributes`.
 

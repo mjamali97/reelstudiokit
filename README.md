@@ -76,7 +76,7 @@ is listed with its licence and pinned version in [tools/STACK.md](tools/STACK.md
 
 macOS, Linux or Windows (WSL2); git, Node 20+, Python 3.11+, ffmpeg, Google Chrome, uv; Claude Code. To go live: an
 Instagram professional account, [Zernio](https://zernio.com), Telegram, a free Gemini key, free Cloudflare and GitHub
-accounts. The kit is free; you pay for Claude, and for Zernio beyond its free tier.
+accounts. Free for your own brand (agencies: [commercial licence](COMMERCIAL-LICENSE.md)); you pay for Claude, and for Zernio beyond its free tier.
 
 ## Safety
 
@@ -84,8 +84,15 @@ Nothing is published without your ✅ (twice for Telegram), and uploads are draf
 and Cloudflare secrets, never in the chat or in git. Only facts with a source go on screen or in a caption. The kit contains
 no personal data. Bot tests run against fakes: `bash telegram-bot/test/all.sh`. Report a vulnerability: [SECURITY.md](SECURITY.md).
 
-## Updates, contributing, licence
+## Licence
+
+**Free for your own brand, paid for agencies.** Reel Studio is under the Business Source License 1.1: any business,
+brand or creator may use it in production for free for its own content; agencies, studios and freelancers using it for
+clients need a commercial licence ([COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md)). Every version becomes Apache-2.0 four
+years after its release. Versions up to 2.0.1 were MIT and stay MIT. Fonts, icons, illustrations and libraries keep their own
+open licences ([THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)).
+
+## Updates and contributing
 
 `/update` pulls new versions and keeps your profile, brand, formats and reels ([CHANGELOG.md](CHANGELOG.md)).
-Contributing: [CONTRIBUTING.md](CONTRIBUTING.md). MIT licence ([LICENSE](LICENSE)); fonts, icons and libraries keep
-their own licences ([THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)).
+Contributing: [CONTRIBUTING.md](CONTRIBUTING.md) and [CLA.md](CLA.md).

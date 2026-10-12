@@ -1,6 +1,6 @@
 # Third-party notices
 
-The kit's own code and texts are MIT (see `LICENSE`). These parts keep their own licences:
+The kit's own code and texts are under the Business Source License 1.1 from version 2.1.0 (`LICENSE`, `COMMERCIAL-LICENSE.md`; MIT up to 2.0.1). These parts keep their own open licences, whatever the kit's licence:
 
 | what | where | licence |
 |---|---|---|

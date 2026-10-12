@@ -73,6 +73,13 @@ const files = (() => { const out = []; const go = (d) => { for (const e of fs.re
   const p = d ? `${d}/${e.name}` : e.name; if (SKIP.test(p) || e.isSymbolicLink()) continue; e.isDirectory() ? go(p) : out.push(p); } }; go(""); return out; })();
 for (const f of files) { const t = rd(f); for (const re of BANNED) if (re.test(t)) ok(false, `${f}: contains ${re} (personal data must not ship in the kit)`); }
 
+// 8b · licence: BSL 1.1 with the parameters filled, the version and Change Date current
+const L = rd("LICENSE");
+ok(/Business Source License 1\.1/.test(L) && /^Additional Use Grant:/m.test(L) && /^Change License:\s+Apache License, Version 2\.0/m.test(L), "LICENSE must be the BSL 1.1 with an Additional Use Grant and Apache-2.0 as Change License");
+const cd = (L.match(/^Change Date:\s+(\d{4}-\d{2}-\d{2})/m) || [])[1];
+ok(cd && new Date(cd) > new Date(), `LICENSE Change Date must be in the future (got ${cd})`);
+for (const p of [".claude-plugin/marketplace.json", "plugins/reel-studio/.claude-plugin/plugin.json"]) ok(!/"license":\s*"MIT"/.test(rd(p)), `${p}: licence must be BUSL-1.1`);
+
 // 9 · versions agree
 const v = rd("VERSION").trim();
 ok(/^\d+\.\d+\.\d+$/.test(v), "VERSION must be x.y.z");

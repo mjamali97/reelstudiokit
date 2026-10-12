@@ -146,6 +146,8 @@ concurrents) : forces, faiblesses, 5 corrections prioritaires, plan sur deux sem
 
 ## 9 · Mode agence (plusieurs clients)
 
+L'utiliser pour des clients demande une licence commerciale (`COMMERCIAL-LICENSE.md`) ; essayer le mode agence est gratuit.
+
 ```bash
 node tools/client.mjs init my-first-client
 node tools/client.mjs new boulangerie-lyon "Boulangerie Lyon"
@@ -189,7 +191,7 @@ formats, reels, réglages du bot ; liste dans `.gitattributes`) et montre les no
 
 **Dois-je montrer mon visage ?** Non. Chaque guide métier propose des formats mains seules ou produit seul.
 **Est-ce seulement pour les pages persanes ?** Non. L'anglais est la langue principale ; persan, arabe, turc, allemand, français et italien sont intégrés.
-**Combien ça coûte ?** Le kit est gratuit (MIT). Tu paies Claude, et Zernio au-delà de son offre gratuite.
+**Combien ça coûte ?** Gratuit pour ta propre marque ou ton activité (Business Source License 1.1) ; une agence, un studio ou un freelance qui l'utilise pour des clients a besoin d'une licence commerciale (`COMMERCIAL-LICENSE.md`). Chaque version passe sous Apache-2.0 après quatre ans. Tu paies Claude, et Zernio au-delà de son offre gratuite.
 **Puis-je utiliser mes polices ?** Oui si leur licence autorise les réseaux sociaux et la vidéo ; ajoute-la en `{"name","css"}` dans `brand/brand.json`.
 **Une mise à jour écrase-t-elle mon travail ?** Non. Tes fichiers sont protégés par `.gitattributes`.
 

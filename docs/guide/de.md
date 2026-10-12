@@ -145,6 +145,8 @@ Wettbewerber): Stärken, Schwächen, Top-5-Korrekturen, Zwei-Wochen-Plan. Einmal
 
 ## 9 · Agenturmodus (viele Kunden)
 
+Die Nutzung für Kunden braucht eine kommerzielle Lizenz (`COMMERCIAL-LICENSE.md`); den Agenturmodus auszuprobieren ist kostenlos.
+
 ```bash
 node tools/client.mjs init my-first-client
 node tools/client.mjs new baeckerei-berlin "Bäckerei Berlin"
@@ -188,7 +190,7 @@ Reels, Bot-Einstellungen; Liste in `.gitattributes`), und zeigt, was neu ist und
 
 **Muss ich mein Gesicht zeigen?** Nein. Jedes Playbook hat Formate nur mit Händen oder nur mit Produkt.
 **Ist es nur für persische Seiten?** Nein. Englisch ist die Hauptsprache; Persisch, Arabisch, Türkisch, Deutsch, Französisch und Italienisch sind eingebaut.
-**Was kostet es?** Das Kit ist kostenlos (MIT). Du zahlst für Claude und für Zernio über dessen Gratisstufe hinaus.
+**Was kostet es?** Für deine eigene Marke oder dein Geschäft kostenlos (Business Source License 1.1); eine Agentur, ein Studio oder Freelancer, die es für Kunden nutzen, brauchen eine kommerzielle Lizenz (`COMMERCIAL-LICENSE.md`). Jede Version wird nach vier Jahren Apache-2.0. Du zahlst für Claude und für Zernio über dessen Gratisstufe hinaus.
 **Kann ich meine eigenen Schriften nutzen?** Ja, wenn die Lizenz Social Media und Video erlaubt; als `{"name","css"}` in `brand/brand.json` eintragen.
 **Überschreibt ein Update meine Arbeit?** Nein. Deine Dateien sind über `.gitattributes` geschützt.
 

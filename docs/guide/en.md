@@ -150,6 +150,8 @@ conversion, competitors): strengths, weaknesses, top 5 fixes, a two-week plan. O
 
 ## 9 · Agency mode (many clients)
 
+Using Reel Studio for clients needs a commercial licence (`COMMERCIAL-LICENSE.md`); trying agency mode is free.
+
 ```bash
 node tools/client.mjs init my-first-client      # turns the current brand into a client folder
 node tools/client.mjs new bakery-roma "Forno Roma"
@@ -195,7 +197,7 @@ formats, reels, bot settings: see `.gitattributes`), shows what is new and wheth
 
 **Do I need to show my face?** No. Every playbook has hands-only and product-only formats.
 **Is it only for Persian pages?** No. English is the main language; Persian, Arabic, Turkish, German, French and Italian are built in.
-**What does it cost?** The kit is free (MIT). You pay for Claude, and for Zernio beyond its free tier.
+**What does it cost?** Free for your own brand or business (Business Source License 1.1); an agency, studio or freelancer using it for clients needs a commercial licence (`COMMERCIAL-LICENSE.md`). Each version becomes Apache-2.0 after four years. You pay for Claude, and for Zernio beyond its free tier.
 **Can I use my own fonts?** Yes, if your licence allows social media and video use; add it as `{"name","css"}` in `brand/brand.json`.
 **Will an update overwrite my work?** No. Your files are protected by `.gitattributes`.
 

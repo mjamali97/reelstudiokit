@@ -145,6 +145,8 @@ rakipler): güçlü ve zayıf yanlar, ilk 5 düzeltme, iki haftalık plan. Ayda 
 
 ## 9 · Ajans modu (birden çok müşteri)
 
+Müşteriler için kullanım ticari lisans gerektirir (`COMMERCIAL-LICENSE.md`); ajans modunu denemek ücretsiz.
+
 ```bash
 node tools/client.mjs init my-first-client
 node tools/client.mjs new kafe-istanbul "Kafe İstanbul"
@@ -188,7 +190,7 @@ ayarları; liste `.gitattributes` içinde), yenilikleri ve senden bir işlem ger
 
 **Yüzümü göstermem gerekir mi?** Hayır. Her kılavuzda yalnızca el ve yalnızca ürün formatları var.
 **Sadece Farsça sayfalar için mi?** Hayır. Ana dil İngilizce; Farsça, Arapça, Türkçe, Almanca, Fransızca ve İtalyanca dahildir.
-**Ücreti ne?** Kit ücretsiz (MIT). Claude için ve ücretsiz katmanı aşarsan Zernio için ödersin.
+**Ücreti ne?** Kendi markan veya işletmen için ücretsiz (Business Source License 1.1); müşterileri için kullanan ajans, stüdyo veya serbest çalışanların ticari lisansa ihtiyacı var (`COMMERCIAL-LICENSE.md`). Her sürüm dört yıl sonra Apache-2.0 olur. Claude için ve ücretsiz katmanı aşarsan Zernio için ödersin.
 **Kendi fontlarımı kullanabilir miyim?** Lisansı sosyal medya ve video kullanımına izin veriyorsa evet; `brand/brand.json` içine `{"name","css"}` olarak ekle.
 **Güncelleme işimi siler mi?** Hayır. Dosyaların `.gitattributes` ile korunur.
 

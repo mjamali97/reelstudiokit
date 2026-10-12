@@ -8,7 +8,7 @@
       "source": "./plugins/reel-studio",
       "description": "Start a Reel Studio for your brand: clones the kit into a folder, installs its tools, then /setup reads your site and page and builds your voice, design system, formats, plan and Telegram bots.",
       "homepage": "https://github.com/mjamali97/reelstudiokit",
-      "license": "MIT",
+      "license": "BUSL-1.1",
       "category": "productivity",
       "keywords": ["instagram", "reels", "content", "telegram", "marketing", "carousel", "stories", "small business", "agency"]
     }
