@@ -134,12 +134,12 @@ window.STYLES.doodle = {
     draw(s1, T.skills + .4, .3); draw(s2, T.skills + .55, .3); draw(cs, 20.7, .6);
     // B5: thirteen sticky notes, the count circled
     scene("#dB5", T.ye - .25, T.az + .1); swipeIn("#dB5", T.ye - .25); drift("#dP5", T.ye, T.az, { scale: 1 }, { scale: 1.05 });
-    IN("#dB5a", T.ye, { r: -3 }); count("#dN13", 22.6, 1.75, 0, 13);
+    IN("#dB5a", T.ye - .2, { r: -3 }); count("#dN13", 22.6, 1.75, 0, 13);
     SKILLS.forEach((s, i) => tl.fromTo("#dS" + i, { scale: .6, opacity: 0 }, { scale: 1, opacity: 1, duration: .3, ease: "back.out(2.2)" }, 22.62 + i * .13));
     const circ = doodle("#dB5svg", ell(230, 370, 170, 140, 1.15), "do", 8); draw(circ, T.n13, .5);
     IN("#dB5b", T.eskil2 - .1, { dy: 20, dx: 0, r: -2 });
     // B6: two notes, a hand-drawn arrow between
-    scene("#dB6", T.az - .2, 30); swipeIn("#dB6", T.az - .2); drift("#dP6", T.az, 30, { scale: 1 }, { scale: 1.05 });
+    scene("#dB6", T.az - .2, 30); swipeIn("#dB6", T.az - .2); H.camera("#dB6", T.az, 30, { amp: 10 }); drift("#dP6", T.az, 30, { scale: 1 }, { scale: 1.05 });
     tl.fromTo("#dN1", { scale: .6, opacity: 0 }, { scale: 1, opacity: 1, duration: .45, ease: "back.out(1.8)" }, T.az - .15);
     const arr = doodle("#dB6svg", [[540, 720], [640, 850], [460, 960], [540, 1070]], "do", 8), ah = doodle("#dB6svg", [[480, 1020], [540, 1078], [600, 1018]], "do", 5);
     draw(arr, T.etebar + 1.1, 1.5); draw(ah, T.reghaba - .3, .25);

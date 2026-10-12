@@ -3,6 +3,10 @@
 Every kit update gets a version and a short entry here; `/update` reads the new entries to you after pulling.
 Format: what changed, then **Action** when you need to do something (most updates need nothing).
 
+## 2.0.1 · 2026-10-12
+- The five original styles (vogue, vox, swiss, hud, doodle) pass motion QA again: no blank frame entering scene 5 (vox,
+  doodle), no still second in swiss's last scene, hud's first scene or doodle's last scene (a slow handheld camera).
+
 ## 2.0.0 · 2026-10-12
 The studio now fits any brand in any of seven languages, makes carousels, stories and highlight covers, and runs agencies.
 - **Onboarding rebuilt** (`/setup`): it first reads what the brand already has (website, Instagram, brand book, menu),

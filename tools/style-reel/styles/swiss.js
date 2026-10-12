@@ -122,7 +122,7 @@ window.STYLES.swiss = {
     slam("#sN13", T.n13, 1.15); slam("#sB5b", T.eskil2 - .1);
     tl.to("#sB5", { clipPath: "inset(0 100% 0 0%)", duration: .22, ease: "power4.inOut" }, T.az - .15);
     // B6
-    scene("#sB6", T.az - .1, 30); cutIn("#sB6", T.az - .1);
+    scene("#sB6", T.az - .1, 30); cutIn("#sB6", T.az - .1); H.camera("#sB6", T.az, 30, { amp: 10 });
     slam("#sC1", T.az - .05, 1.2); slam("#sC1m", T.etebar);
     tl.fromTo("#sAr", { scaleY: 0 }, { scaleY: 1, duration: 1.6, ease: "power2.inOut" }, T.etebar + 1.0);
     tl.fromTo("#sArH", { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: .2, ease: "power4.out" }, T.reghaba - .35);

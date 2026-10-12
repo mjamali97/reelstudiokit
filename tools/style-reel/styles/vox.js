@@ -147,7 +147,7 @@ window.STYLES.vox = {
     pop("#xLogo", T.skills + .4);
     // B5
     scene("#xB5", T.ye - .25, T.az + .1); slideIn("#xB5", T.ye - .25); drift("#xT5", T.ye, T.az, { x: 0 }, { x: -60 });
-    strip("#xB5a", T.ye);
+    strip("#xB5a", T.ye - .2);
     SKILLS.forEach((s, i) => pop("#xM" + i, 22.6 + i * .13, ((i * 37) % 7) - 3));
     pop("#xC13", 22.55, -4); count("#xN13", 22.6, 1.75, 0, 13);
     tl.fromTo("#xC13", { scale: 1 }, { scale: 1.15, duration: .15, yoyo: true, repeat: 1 }, T.n13);

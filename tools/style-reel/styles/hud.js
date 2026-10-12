@@ -117,7 +117,7 @@ window.STYLES.hud = {
     tl.fromTo("#hProg", { scaleX: 0 }, { scaleX: 1, duration: 30, ease: "none" }, 0);
 
     // B1
-    scene("#hB1", T.qabl - .2, T.ya + .1); glitchIn("#hB1", T.qabl - .2); spot("#hS1", T.qabl, T.ya);
+    scene("#hB1", T.qabl - .2, T.ya + .1); glitchIn("#hB1", T.qabl - .2); H.camera("#hB1", T.qabl, T.ya, { amp: 10 }); spot("#hS1", T.qabl, T.ya);
     IN("#hB1a", T.qabl + .05);
     ["#h1l1", "#h1l2", "#h1l3", "#h1l4", "#h1l5"].forEach((e) => tl.set(e, { clipPath: "inset(-20% 100% -20% 0%)" }, 0));
     type("#h1l1", T.qabl + .2, .45); type("#h1l2", T.qabl + .8, .45); type("#h1l3", T.qabl + 1.35, .15);
