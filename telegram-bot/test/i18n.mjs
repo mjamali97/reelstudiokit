@@ -1,7 +1,7 @@
 // Translation check (no server): every string the code uses exists in every locale (or is the same word on purpose),
 // with the same {0} placeholders and HTML tags. Run: node test/i18n.mjs
 import fs from "node:fs";
-const src = ["index.js", "reports.js", "formats.js"].map((f) => fs.readFileSync(new URL(`../src/${f}`, import.meta.url), "utf8")).join("\n");
+const src = ["index.js", "reports.js", "formats.base.js"].map((f) => fs.readFileSync(new URL(`../src/${f}`, import.meta.url), "utf8")).join("\n");
 const keys = [...new Set([...src.matchAll(/\b_f?\(("(?:[^"\\\n]|\\.)*")/g)].map((m) => JSON.parse(m[1])))];
 let pass = 0, fail = 0;
 const ok = (c, name, extra = "") => { c ? pass++ : fail++; if (!c) console.log(`❌ ${name}${extra ? "  → " + extra : ""}`); };

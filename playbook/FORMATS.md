@@ -13,9 +13,9 @@ let them pick or mix, then save it where the skills and the bot read it.
 | reel captions (subtitles) | pill / outline / brand / word-by-word, 58 px, bottom at y 1580 | `brand/formats/captions.json` ({"style","size","bottom"}) |
 | Telegram channel post | emoji + intro line, label/link pairs, 🔴 tip, 💬 #gateword, ➡️ @channel | `playbook/TELEGRAM-POST.md` and `TG_FORMAT` + `TG_EXAMPLE` in `telegram-bot/src/formats.js` |
 | gate DM (comment-to-DM) | message 1: steps + link; message 2: the thing itself, alone so a long-press copies it | `playbook/CAPTION.md` → "Gate DM" |
-| public reply under a gate comment | 12 short variations ("Sent! Check your DMs 🙌"…) | `replyPool()` in `telegram-bot/src/formats.js` |
+| public reply under a gate comment | 12 short variations ("Sent! Check your DMs 🙌"…) | `REPLIES` in `telegram-bot/src/formats.js` |
 | comment and DM replies (inbox assistant) | warm, ≤ 2 sentences, facts only from BUSINESS_FACTS | `profile/VOICE.md` → "With customers" + `BRAND_VOICE`, `BUSINESS_FACTS` in `wrangler.jsonc` |
-| news digest | news of their field every 3 days (off by default) | `NEWS_PROMPT` in `formats.js`, or `NEWS_CHECK_AT: "off"` |
+| news digest | news of their field every 3 days (off by default) | `NEWS_PROMPT` in `formats.js` (copy it from `formats.base.js`), or `NEWS_CHECK_AT: "off"` |
 | idea score | distance, hook, proof, reward, novelty, length | `SCORE_RULES` in `formats.js` and the table in `playbook/IDEA-TO-REEL.md` |
 
 ## How to run it
@@ -28,7 +28,8 @@ let them pick or mix, then save it where the skills and the bot read it.
 3. **Stories and highlights**: same, with `type: story` and `type: highlights` specs. Highlight covers are uploaded once in
    the Instagram app (Profile → highlight → Edit → Edit cover).
 4. **Reel captions**: burn one test with `node tools/render/captions.mjs` on any of their clips in two styles; they pick.
-5. **Telegram post, gate DM, replies**: write them in `formats.js` (the bot) and the playbook files; render one story frame
+5. **Telegram post, gate DM, replies**: write them in `formats.js` (the bot: only what differs from the defaults in
+   `formats.base.js`, which kit updates replace) and the playbook files; render one story frame
    with their `frameHtml`; run `bash telegram-bot/test/all.sh` after editing `formats.js`.
 6. Read each saved format back in one line and tick it in `profile/SETUP-STATUS.md`.
 

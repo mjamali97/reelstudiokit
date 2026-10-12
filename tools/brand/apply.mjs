@@ -16,6 +16,12 @@ import { ROOT, loadBrand } from "../render/lib.mjs";
 
 const dry = process.argv.includes("--dry"), changes = [];
 const brand = loadBrand("brand/brand.json"), c = brand.colors;
+// never push the kit's example brand onto a real one (e.g. right after updating from 1.x, before /brand ran)
+const setUp = /STATUS:\s*(ready|in setup)/.test(fs.existsSync(path.join(ROOT, "profile/CREATOR.md")) ? fs.readFileSync(path.join(ROOT, "profile/CREATOR.md"), "utf8") : "");
+if (brand.name === "Sweet Corner" && setUp && !process.argv.includes("--force")) {
+  console.error("brand/brand.json is still the kit's example (Sweet Corner) but your profile is set up: run /brand first (or --force).");
+  process.exit(1);
+}
 const LIB = JSON.parse(fs.readFileSync(path.join(ROOT, "fonts/fonts.json"), "utf8"));
 const rd = (p) => fs.readFileSync(path.join(ROOT, p), "utf8");
 const wr = (p, s) => { const old = fs.existsSync(path.join(ROOT, p)) ? rd(p) : null; if (old === s) return; changes.push(p); if (!dry) fs.writeFileSync(path.join(ROOT, p), s); };
@@ -79,6 +85,7 @@ for (const [k, v] of Object.entries(vars)) {
   if (v == null || v === "") continue;
   const re = new RegExp(`("${k}":\\s*)"(?:[^"\\\\]|\\\\.)*"`);
   if (re.test(w)) w = w.replace(re, `$1${JSON.stringify(String(v))}`);
+  else w = w.replace(/("vars"\s*:\s*\{\s*\n)/, `$1    "${k}": ${JSON.stringify(String(v))},\n`);   // a key an older wrangler.jsonc does not have yet
 }
 wr("telegram-bot/wrangler.jsonc", w);
 

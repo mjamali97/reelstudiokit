@@ -18,6 +18,7 @@ total=0
 suite() { echo "== $1"; out=$(node "test/$1" 2>&1); echo "$out" | grep -E "❌|passed"; echo "$out" | grep -q " 0 failed" || total=1; }
 
 echo "== i18n.mjs"; out=$(node test/i18n.mjs 2>&1); echo "$out" | grep -E "❌|passed"; echo "$out" | grep -q " 0 failed" || total=1
+echo "== formats.mjs"; out=$(node test/formats.mjs 2>&1); echo "$out" | grep -E "❌|passed"; echo "$out" | grep -q " 0 failed" || total=1
 cp .dev.vars.example .dev.vars;                                                start; suite run.mjs
 cp .dev.vars.example .dev.vars; echo "ZERNIO_DRY_RUN=0" >> .dev.vars;           start; suite publish.mjs; suite story.mjs; suite reports.mjs
 cp .dev.vars.example .dev.vars; sed -i.bak 's/^PUBLISH_CHAT=.*/PUBLISH_CHAT=@my_channel/' .dev.vars; start; suite flow.mjs

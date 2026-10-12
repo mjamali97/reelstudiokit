@@ -27,7 +27,7 @@ Business example (bakery): `[product name + one sensory line]` → `[price / how
 - Message 2 (optional): the thing itself alone (a prompt, a code, a recipe), so a long-press copies only it.
 - No follow-gate ("follow first, then I send it"): send to everyone who comments.
 - `curl` every link for 200 before it goes out.
-- A short public reply under each matching comment rotates through variations (`REPLY_POOL` in `telegram-bot/src/formats.js`).
+- A short public reply under each matching comment rotates through variations (`REPLIES` in `telegram-bot/src/formats.js`, defaults in `formats.base.js`).
 
 ## YouTube Shorts
 Title ≤ 100 characters (the hook as a statement), description = caption without the DM line + the links.

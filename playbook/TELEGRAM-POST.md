@@ -38,6 +38,6 @@ the fridge]` → `💬 #[gate]` → `➡️ @[channel]`.
 - Persian: «درصد» not ٪, lines start with a Persian word or a number.
 - A series from a source (a thread, an announcement): one frame per item of the source, every item included, the source
   credited; name only what the source names.
-- The story frame design is `frameHtml` in `telegram-bot/src/formats.js` (their brand colours via `STORY_*` vars).
+- The story frame design is `frameHtml` (default in `telegram-bot/src/formats.base.js`; yours, if any, in `formats.js`) (their brand colours via `STORY_*` vars).
 - Ideas for stories the creator rejects go to `profile/RULES.md` (e.g. some creators do not want behind-the-scenes or
   reel reshares; a bakery may live on them).

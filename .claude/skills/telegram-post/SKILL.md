@@ -5,7 +5,7 @@ description: Write a post or a story series for the creator's Telegram channel o
 
 # /telegram-post
 
-Format: `playbook/TELEGRAM-POST.md` (theirs after /setup; the same rules live in `telegram-bot/src/formats.js`). Voice:
+Format: `playbook/TELEGRAM-POST.md` (theirs after /setup; the same rules live in `telegram-bot/src/formats.js`, defaults in `formats.base.js`). Voice:
 `profile/VOICE.md`. Facts only from the source, each link opened (`curl -sL -o /dev/null -w '%{http_code}'`).
 
 Send it as a draft, never to the channel directly:

@@ -10,7 +10,11 @@
 import puppeteer from "@cloudflare/puppeteer";
 import { makeReports } from "./reports.js";
 import { FONT_BLACK, FONT_SEMIBOLD } from "./fonts.js";
-import { brand, NEWS_PROMPT, STORY_PROMPT, SEARCH_PROMPT, RESEARCH_PROMPT, POST_PROMPT, REPLY_PROMPT, storyParts, storyBody, frameHtml, replyPool, tagsDefault } from "./formats.js";
+// formats: the kit's defaults (formats.base.js) with your overrides (formats.js) on top; a missing override falls back
+import * as BASE from "./formats.base.js";
+import * as YOURS from "./formats.js";
+Object.assign(BASE.O, YOURS);
+const { brand, NEWS_PROMPT, STORY_PROMPT, SEARCH_PROMPT, RESEARCH_PROMPT, POST_PROMPT, REPLY_PROMPT, storyParts, storyBody, frameHtml, replyPool, tagsDefault } = { ...BASE, ...YOURS };
 import { _, _f, num, setLang, lang, listSep, grouped } from "./i18n.js";
 
 const fa = (n) => num(n);   // digits in the bot's language (Persian ۰۱۲, Arabic ٠١٢, Latin elsewhere)
