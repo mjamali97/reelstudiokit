@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait"
+  data-composition-variables='[{"id":"style","type":"enum","label":"Style","default":"swiss","options":[
+    {"value":"vogue","label":"Vogue editorial"},{"value":"vox","label":"Vox collage"},
+    {"value":"swiss","label":"Swiss kinetic"},{"value":"hud","label":"HUD terminal"},{"value":"doodle","label":"Hand-drawn doodle"}]},
+    {"id":"face","type":"enum","label":"Face colour","default":"auto","options":[{"value":"auto","label":"Style default"},{"value":"color","label":"Colour"},{"value":"bw","label":"Black and white"}]}]'>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <!-- "Fa", the Persian display face of every style, lives in assets/fonts.css (yours: /setup points it at your brand font) -->
+    <link rel="stylesheet" href="assets/fonts.css" />
+    <style>
+      @font-face{font-family:"Markazi";src:url("assets/fonts/MarkaziText.ttf") format("truetype");font-weight:400 700}
+      @font-face{font-family:"Bodoni";src:url("assets/fonts/BodoniModa.ttf") format("truetype");font-weight:400 900}
+      @font-face{font-family:"Bodoni";src:url("assets/fonts/BodoniModa-Italic.ttf") format("truetype");font-weight:400 900;font-style:italic}
+      *{margin:0;padding:0;box-sizing:border-box}
+      html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+      #root{position:absolute;inset:0;overflow:hidden}
+      #face{position:absolute;left:0;top:0;width:1080px;height:1920px;object-fit:cover;z-index:1}
+      #over{position:absolute;inset:0;z-index:2;pointer-events:none}
+      #cap{position:absolute;left:140px;right:140px;top:1450px;height:130px;z-index:3;pointer-events:none}
+      .cap-c{position:absolute;left:0;right:0;top:0;text-align:center;visibility:hidden;direction:rtl;white-space:nowrap}
+      .cap-c span{border-radius:14px;padding:0 10px}
+      .sc{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+      .abs{position:absolute}
+      .fa{direction:rtl;unicode-bidi:isolate;text-wrap:balance}
+      .ltr{direction:ltr}
+      bdi{direction:ltr;unicode-bidi:isolate}
+      .mask{-webkit-mask:var(--i) center/contain no-repeat;mask:var(--i) center/contain no-repeat}
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1080" data-height="1920">
+      <video id="face" class="clip" src="assets/face.mp4" playsinline data-has-audio="true"
+        data-start="0" data-duration="30" data-track-index="0" data-volume="1"></video>
+      <div id="over"></div>
+      <div id="cap"></div>
+
+      <!-- cues: identical for every style, each starts early by its attack so the hit lands on the frame -->
+      <audio id="wi1" src="assets/sfx/whoosh-in.wav" data-start="1.875" data-duration="0.68" data-track-index="11" data-volume="0.5"></audio>
+      <audio id="wo1" src="assets/sfx/whoosh-out.wav" data-start="5.23" data-duration="0.6" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="wi2" src="assets/sfx/whoosh-in.wav" data-start="7.615" data-duration="0.68" data-track-index="11" data-volume="0.5"></audio>
+      <audio id="wo2" src="assets/sfx/whoosh-out.wav" data-start="14.24" data-duration="0.6" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="wi3" src="assets/sfx/whoosh-in.wav" data-start="16.245" data-duration="0.68" data-track-index="11" data-volume="0.5"></audio>
+      <audio id="wo3" src="assets/sfx/whoosh-out.wav" data-start="18.54" data-duration="0.6" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="wi4" src="assets/sfx/whoosh-in.wav" data-start="20.505" data-duration="0.68" data-track-index="11" data-volume="0.5"></audio>
+      <audio id="po1" src="assets/sfx/pop.wav" data-start="9.265" data-duration="0.3" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="po2" src="assets/sfx/pop.wav" data-start="11.285" data-duration="0.3" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="po3" src="assets/sfx/pop.wav" data-start="13.145" data-duration="0.3" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="po4" src="assets/sfx/pop.wav" data-start="26.665" data-duration="0.3" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="po5" src="assets/sfx/pop.wav" data-start="29.295" data-duration="0.3" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="hi1" src="assets/sfx/hit.wav" data-start="20.245" data-duration="0.7" data-track-index="14" data-volume="0.5"></audio>
+      <audio id="hi2" src="assets/sfx/hit.wav" data-start="23.865" data-duration="0.7" data-track-index="14" data-volume="0.45"></audio>
+      <audio id="tk01" src="assets/sfx/tick.wav" data-start="22.65" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="tk02" src="assets/sfx/tick.wav" data-start="22.78" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="tk03" src="assets/sfx/tick.wav" data-start="22.91" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="tk04" src="assets/sfx/tick.wav" data-start="23.04" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="tk05" src="assets/sfx/tick.wav" data-start="23.17" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="tk06" src="assets/sfx/tick.wav" data-start="23.30" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="tk07" src="assets/sfx/tick.wav" data-start="23.43" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="tk08" src="assets/sfx/tick.wav" data-start="23.56" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="tk09" src="assets/sfx/tick.wav" data-start="23.69" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="tk10" src="assets/sfx/tick.wav" data-start="23.82" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="tk11" src="assets/sfx/tick.wav" data-start="23.95" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="tk12" src="assets/sfx/tick.wav" data-start="24.08" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="tk13" src="assets/sfx/tick.wav" data-start="24.21" data-duration="0.05" data-track-index="15" data-volume="0.3"></audio>
+    </div>
+
+    <script src="assets/brand.js"></script>
+    <script src="assets/words.js"></script>
+    <script src="styles/vogue.js"></script>
+    <script src="styles/vox.js"></script>
+    <script src="styles/swiss.js"></script>
+    <script src="styles/hud.js"></script>
+    <script src="styles/doodle.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const vars = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
+      const name = (vars.style && window.STYLES[vars.style]) ? vars.style : "swiss";
+      const S = window.STYLES[name];
+      const tl = gsap.timeline({ paused: true });
+
+      // The speaker's words on this clip (the demo: a made-up bakery, «شیرینی‌فروشی نمونه») (WhisperX forced alignment of their own SRT). These times belong to the demo;
+      // new_reel.py prints the word table of YOUR take, and you rewrite T, FACE and the cues from it (playbook/STYLE-REEL.md §4–5).
+      const T = { idea: .78, startup: 1.12, qabl: 2.07, sakhtan: 3.41, hatman: 4.0, abzar: 4.85, bebini: 5.21,
+        ya: 5.68, gheymat: 7.81, reghabat: 9.27, mvp: 11.29, bazar: 13.15, beshi: 13.74,
+        in2: 14.69, mon: 15.29, repo: 16.44, sakhte: 17.92, in3: 18.99, eskil: 19.29, founder: 20.76, skills: 21.0,
+        ye: 22.51, open: 23.32, n13: 24.38, eskil2: 25.2, founders: 25.81, az: 26.43, etebar: 26.67, tahlil: 28.73, reghaba: 29.3, end: 30 };
+      // Face windows (everything else is full-screen b-roll): QA checks the render against these.
+      const FACE = [[0, T.qabl], [T.ya, T.gheymat], [T.in2, T.repo], [T.in3, 20.7]];
+      const SKILLS = ["chocolate", "vanilla", "carrot-cake", "red-velvet", "cheesecake", "tiramisu", "lemon-tart", "pistachio",
+        "saffron-rose", "coffee-walnut", "strawberry", "caramel", "date-cake"];
+
+      const css = document.createElement("style"); css.textContent = S.css; document.head.appendChild(css);
+      document.getElementById("over").innerHTML = S.html;
+      document.getElementById("root").classList.add("st-" + name);
+      if (vars.face === "color" || vars.face === "bw") document.getElementById("root").classList.add("face-" + vars.face);
+
+      const q = (s) => document.querySelector(s);
+      const H = {
+        tl, T, FACE, SKILLS, q, fa: new Intl.NumberFormat("fa-IR"),
+        // arrive fast, land soft (expo.out ~20 frames); stagger 2-4 frames; exits 8 frames, 70% of the distance
+        IN: (el, t, o = {}) => tl.fromTo(el, { x: o.dx ?? 70, y: o.dy ?? 0, opacity: 0, scale: o.s ?? 1, rotation: o.r ?? 0 },
+          { x: 0, y: 0, opacity: 1, scale: 1, rotation: 0, duration: o.d ?? .6, ease: o.ease ?? "expo.out", stagger: o.st ?? 0 }, t),
+        OUT: (el, t, o = {}) => tl.to(el, { x: o.dx ?? 0, y: o.dy ?? -40, opacity: 0, duration: o.d ?? .27, ease: "power3.in" }, t),
+        reveal: (el, t, d = .5, ease = "expo.out") => tl.fromTo(el, { clipPath: "inset(-40% 0% -40% 100%)" }, { clipPath: "inset(-40% 0% -40% 0%)", duration: d, ease }, t),
+        revealL: (el, t, d = .5, ease = "expo.out") => tl.fromTo(el, { clipPath: "inset(-40% 100% -40% 0%)" }, { clipPath: "inset(-40% 0% -40% 0%)", duration: d, ease }, t),
+        type: (el, t, d) => tl.fromTo(el, { clipPath: "inset(-30% 100% -30% 0%)" }, { clipPath: "inset(-30% 0% -30% 0%)", duration: d, ease: `steps(${Math.max(6, Math.round(d * 30))})` }, t),
+        draw: (el, t, d = .5, ease = "power2.inOut") => document.querySelectorAll(el).forEach((n) => {
+          const L = n.getTotalLength(); tl.fromTo(n, { strokeDasharray: L, strokeDashoffset: L }, { strokeDashoffset: 0, duration: d, ease }, t); }),
+        count: (el, t, d, a, b, fmt) => { const o = { v: a }; tl.fromTo(o, { v: a }, { v: b, duration: d, ease: "power2.out",
+          onUpdate: () => { q(el).textContent = fmt ? fmt(Math.round(o.v)) : H.fa.format(Math.round(o.v)); } }, t); },
+        // a scene is visible between t0 and t1; transitions are the style's job and must overlap (no empty frames)
+        scene: (el, t0, t1) => { tl.set(el, { visibility: "visible" }, t0); tl.set(el, { visibility: "hidden" }, t1); },
+        // keep every hold alive: a slow drift on the scene's camera
+        drift: (el, t0, t1, a = { scale: 1, x: 0, y: 0 }, b = { scale: 1.05, x: 0, y: -20 }) =>
+          tl.fromTo(el, a, Object.assign({ duration: t1 - t0, ease: "none" }, b), t0),
+      };
+      S.build(H);
+      // Word-by-word captions in the face windows only (the b-roll scenes already set the spoken words on screen).
+      // Whole words change colour as they are said: inline spans, never per-letter boxes.
+      if (S.cap) {
+        const capEl = q("#cap"), on = S.cap.on, off = S.cap.off;
+        FACE.forEach(([w0, w1]) => {
+          const ws = window.WORDS.filter((x) => x.s >= w0 - .05 && x.s < w1 - .05);
+          const chunks = []; let cur = [];
+          ws.forEach((x, i) => { cur.push(x); const nx = ws[i + 1];
+            if (cur.length === 3 || !nx || /[.،,!؟]$/.test(x.t) || nx.s - x.e > .35) { chunks.push(cur); cur = []; } });
+          chunks.forEach((c, k) => {
+            const d = document.createElement("div"); d.className = "cap-c fa";
+            d.innerHTML = c.map((x) => `<span>${/^[A-Za-z]/.test(x.t) ? `<bdi>${x.t}</bdi>` : x.t}</span>`).join(" ");
+            capEl.appendChild(d);
+            const t0 = k === 0 ? w0 : c[0].s, t1 = k === chunks.length - 1 ? w1 : chunks[k + 1][0].s;
+            tl.set(d, { visibility: "visible" }, t0); tl.set(d, { visibility: "hidden" }, t1);
+            tl.fromTo(d, { scale: 1.06, y: 8 }, { scale: 1, y: 0, duration: .25, ease: "expo.out" }, t0);
+            const sp = d.querySelectorAll("span");
+            c.forEach((x, j) => { tl.set(sp[j], off, 0); tl.set(sp[j], on, x.s); if (c[j + 1]) tl.set(sp[j], off, c[j + 1].s); });
+          });
+        });
+      }
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

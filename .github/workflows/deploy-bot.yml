@@ -1,0 +1,75 @@
+# Deploys the Telegram bots (telegram-bot/) to YOUR Cloudflare account on every push that touches them.
+# Needs repo secrets CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID (and the bot secrets), and the repo variable BOT_URL.
+name: Deploy Telegram bot
+on:
+  push:
+    branches: [main]
+    paths: ["telegram-bot/**", ".github/workflows/deploy-bot.yml"]
+  workflow_dispatch:
+concurrency: deploy-bot
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: telegram-bot
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      W: npx -y wrangler@4
+      DB_NAME: reel-studio-bot
+    steps:
+      - uses: actions/checkout@v4
+      - name: Secrets present?
+        id: gate
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::warning::CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID not set yet; nothing deployed."; echo "go=0" >> "$GITHUB_OUTPUT"
+          elif grep -q '"CHANGE-ME"\|"@CHANGE-ME"' wrangler.jsonc; then
+            echo "::error::wrangler.jsonc still has CHANGE-ME values (run /setup in Claude Code first)."; exit 1
+          else echo "go=1" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.go == '1'
+        with: { node-version: 22 }
+      - name: Install (puppeteer for story frames)
+        if: steps.gate.outputs.go == '1'
+        run: npm ci --no-audit --no-fund
+      - name: D1 database (created on the first run)
+        if: steps.gate.outputs.go == '1'
+        run: |
+          find_id() { $W d1 list --json | node -e 'const l=JSON.parse(require("fs").readFileSync(0,"utf8"));const d=l.find(x=>x.name===process.env.DB_NAME);process.stdout.write(d?(d.uuid||d.database_id||""):"")'; }
+          ID=$(find_id)
+          if [ -z "$ID" ]; then $W d1 create "$DB_NAME"; ID=$(find_id); fi
+          [ -n "$ID" ] || { echo "::error::could not create or find the D1 database"; exit 1; }
+          sed -i "s/\"database_id\": \"[^\"]*\"/\"database_id\": \"$ID\"/" wrangler.jsonc
+          $W d1 migrations apply "$DB_NAME" --remote
+      - name: Deploy
+        if: steps.gate.outputs.go == '1'
+        run: $W deploy
+      - name: Worker secrets (only the ones set in GitHub)
+        if: steps.gate.outputs.go == '1'
+        env:
+          STUDIO_BOT_TOKEN: ${{ secrets.STUDIO_BOT_TOKEN }}
+          PUBLISHER_BOT_TOKEN: ${{ secrets.PUBLISHER_BOT_TOKEN }}
+          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+          SETUP_KEY: ${{ secrets.SETUP_KEY }}
+          INGEST_KEY: ${{ secrets.INGEST_KEY }}
+        run: |
+          node -e 'const k=["STUDIO_BOT_TOKEN","PUBLISHER_BOT_TOKEN","ZERNIO_API_KEY","GEMINI_API_KEY","WEBHOOK_SECRET","SETUP_KEY","INGEST_KEY"];const o={};for(const x of k)if(process.env[x])o[x]=process.env[x];require("fs").writeFileSync("/tmp/s.json",JSON.stringify(o));console.log("secrets:",Object.keys(o).join(", "))'
+          $W secret bulk /tmp/s.json; rm -f /tmp/s.json
+      - name: Point both Telegram webhooks at the Worker
+        if: steps.gate.outputs.go == '1'
+        env:
+          SETUP_KEY: ${{ secrets.SETUP_KEY }}
+          HAS_TOKENS: ${{ secrets.STUDIO_BOT_TOKEN }}
+          BOT_URL: ${{ vars.BOT_URL }}
+        run: |
+          if [ -z "$SETUP_KEY" ] || [ -z "$HAS_TOKENS" ] || [ -z "$BOT_URL" ]; then echo "::warning::bot tokens, SETUP_KEY or the BOT_URL variable not set yet; open $BOT_URL/setup?key=… yourself later"; exit 0; fi
+          for i in $(seq 1 20); do
+            R=$(curl -s "$BOT_URL/setup?key=$SETUP_KEY" || true)
+            echo "$R" | grep -q '"studio":{"ok":true' && echo "$R" | grep -q '"publisher":{"ok":true' && { echo "webhooks set"; exit 0; }
+            echo "try $i: ${R:0:160}"; sleep 30
+          done
+          echo "::warning::webhooks not set yet; the bot's own cron retries the Studio webhook"

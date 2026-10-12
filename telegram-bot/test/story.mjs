@@ -1,0 +1,41 @@
+// Local check: story text first, per-frame edit, confirmations. Mock Telegram.
+import fs from "node:fs";
+const W = "http://127.0.0.1:8787", OWNER = 100000001, LOG = new URL("./calls.jsonl", import.meta.url);
+const calls = () => fs.readFileSync(LOG, "utf8").trim().split("\n").filter(Boolean).map((l) => JSON.parse(l));
+let uid = 20000, pass = 0, fail = 0;
+const ok = (c, name, extra = "") => { c ? pass++ : fail++; console.log(`${c ? "✅" : "❌"} ${name}${!c && extra ? "  → " + String(extra).slice(0, 300) : ""}`); };
+const post = (u) => fetch(W + "/tg/studio", { method: "POST", headers: { "content-type": "application/json", "x-telegram-bot-api-secret-token": "test-secret" }, body: JSON.stringify({ update_id: uid++, ...u }) });
+async function step(u) { const n = calls().length; await post(u); for (let t = 0; t < 40; t++) { await new Promise((r) => setTimeout(r, 150)); if (calls().length > n) { await new Promise((r) => setTimeout(r, 400)); break; } } return calls().slice(n); }
+const msg = (text) => ({ message: { message_id: uid, chat: { id: OWNER, type: "private" }, from: { id: OWNER }, text } });
+const cb = (data) => ({ callback_query: { id: "q" + uid, from: { id: OWNER }, data, message: { message_id: 5, chat: { id: OWNER }, text: "x" } } });
+const api = (p, m = "GET", b) => fetch(W + p, { method: m, headers: { "x-api-key": "test-ingest", "content-type": "application/json" }, body: b ? JSON.stringify(b) : undefined }).then((r) => r.json());
+const btns = (c) => (c?.body?.reply_markup?.inline_keyboard || []).flat().map((b) => b.text + "|" + b.callback_data);
+const d = await api("/api/drafts", "POST", { kind: "story_manual", title: "کیک هفته", body: "استوری ۱:\nخط اول\n\nپاراگراف دوم\n\nاستوری ۲:\nفریم دوم\n\n🔗 استیکر لینک: https://example.com/menu" });
+await new Promise((r) => setTimeout(r, 400));
+const card = calls().slice(-1)[0];
+ok(btns(card).some((x) => x.startsWith("✅ متن اوکیه")) && !btns(card).some((x) => x.includes("منتشرش کردم")), "new story: only «✅ متن اوکیه», no «منتشر کردم» yet", btns(card).join(" "));
+ok(btns(card).filter((x) => x.includes("|sf:")).length === 2, "one ✏️ button per frame (2)");
+let r = await step(cb(`sf:${d.id}:0`));
+ok(r.some((c) => c.body.text === "خط اول\n\nپاراگراف دوم"), "✏️ استوری ۱ sends its current text alone, easy to copy");
+r = await step(msg("خط اول عوض‌شده"));
+const after = (await api("/api/drafts")).find((x) => x.id === d.id);
+ok(after.body === "استوری ۱:\nخط اول عوض‌شده\n\nاستوری ۲:\nفریم دوم\n\n🔗 استیکر لینک: https://example.com/menu", "frame 1 replaced, frame 2 and sticker kept", after.body);
+r = await step(cb(`d:rej:${d.id}`));
+ok(r.some((c) => /مطمئنی ردش کنم/.test(c.body.text || "")) && (await api("/api/drafts")).find((x) => x.id === d.id).status === "draft", "❌ asks first, nothing changed yet");
+r = await step(cb(`d:show:${d.id}`));
+ok((await api("/api/drafts")).find((x) => x.id === d.id).status === "draft", "↩️ نه keeps it");
+// simulate images built
+await fetch(W + "/api/notify", { method: "POST", headers: { "x-api-key": "test-ingest" }, body: "{}" });
+const tg = await api("/api/drafts", "POST", { kind: "telegram", body: "x" });
+r = await step(cb(`d:done:${d.id}`));
+ok(r.some((c) => /واقعاً توی اینستاگرام منتشرش کردی/.test(c.body.text || "")), "«منتشر کردم» asks «واقعاً…؟»");
+r = await step(cb(`d:done2:${d.id}`));
+ok((await api("/api/drafts")).find((x) => x.id === d.id).status === "published", "only «✅ آره» marks it published");
+r = await step(cb(`d:undo:${d.id}`));
+ok((await api("/api/drafts")).find((x) => x.id === d.id).status === "draft", "«↩️ اشتباه زدم» puts it back to draft");
+const idea = (await api("/api/ideas?status=new")).slice(-1)[0] || await (async () => { await post(msg("ایده‌ی تست برای حذف")); await new Promise((r) => setTimeout(r, 800)); return (await api("/api/ideas?status=new"))[0]; })();
+r = await step(cb(`i:del:${idea.id}`));
+ok(r.some((c) => /مطمئنی حذفش کنم/.test(c.body.text || "")), "🗑 on an idea asks first");
+r = await step(cb(`io2:${idea.id}`));
+ok(r.some((c) => /💡 <b>ایده #/.test(c.body.text || "") && !/مطمئنی/.test(c.body.text || "")), "↩️ نه restores the idea card");
+console.log(`\n${pass} passed, ${fail} failed`);

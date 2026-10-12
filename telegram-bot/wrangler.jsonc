@@ -1,0 +1,66 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Reel Studio bot: Telegram webhooks + D1 idea/draft store + Zernio scheduling. No server: Cloudflare runs it (free plan).
+  // /setup fills the CHANGE-ME values with you. Deploy = push to GitHub (.github/workflows/deploy-bot.yml), or `npx wrangler deploy`
+  // from a machine whose `npx wrangler whoami` shows YOUR Cloudflare account.
+  "name": "reel-studio-bot",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // headless Chrome for story frames (free plan: a few minutes a day is plenty)
+  "browser": { "binding": "BROWSER" },
+  "workers_dev": true,
+  // Optional custom domain (a domain already on this Cloudflare account):
+  // "routes": [{ "pattern": "bot.example.com", "custom_domain": true }],
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  // one trigger: every minute runs queued jobs; every 5th minute publishes due drafts; the daily jobs fire at NEWS_CHECK_AT / STORY_IDEA_AT local time
+  "triggers": { "crons": ["* * * * *"] },
+  // database_id is filled by the GitHub workflow on its first run (or paste the id printed by `npx wrangler d1 create reel-studio-bot`)
+  "d1_databases": [{ "binding": "DB", "database_name": "reel-studio-bot", "database_id": "00000000-0000-0000-0000-000000000000", "migrations_dir": "migrations" }],
+  "vars": {
+    // your numeric Telegram user id (message @userinfobot). The bots answer only this person.
+    "OWNER_ID": "CHANGE-ME",
+    // where approved posts go. Start with your OWNER_ID (test: posts come to you, marked «تست»); switch to "@yourchannel" when ready.
+    "PUBLISH_CHAT": "CHANGE-ME",
+    // 1 = Zernio calls are shown, not sent. Set "0" only after a full dry run looked right.
+    "ZERNIO_DRY_RUN": "1",
+
+    // brand
+    "BRAND_NAME": "CHANGE-ME",
+    "IG_HANDLE": "@CHANGE-ME",
+    "TG_CHANNEL": "@CHANGE-ME",
+    "CREATOR_NAME": "CHANGE-ME",
+    "AUDIENCE": "CHANGE-ME",
+    "NEWS_TOPIC": "حوزه‌ی کار من",
+    "STORY_IDEA_KIND": "یه محصول یا خدمت امروز، یه نکته‌ی کاربردی، یا یه سؤال برای نظرسنجی",
+    "AUDIENCE_NOTE": "",
+    "AUDIO_NAME": "",
+    "TAGS": "محصول,پشت‌صحنه,سؤال مشتری,آموزش,قیمت,مناسبت,نظر مشتری,خبر",
+
+    // story frame colours (from your design system)
+    "STORY_BG": "#101418",
+    "STORY_INK": "#F2F0EA",
+    "STORY_ACCENT": "#E8B04B",
+    "STORY_MUTED": "#A9B0B8",
+
+    // time: any IANA zone (Asia/Tehran, Europe/Berlin, America/Toronto…); 0 = Sunday … 6 = Saturday; "off" disables a daily job
+    "TZ_NAME": "Asia/Tehran",
+    "TZ_LABEL": "تهران",
+    "REEL_DAYS": "0,2,4",
+    "REEL_TIME": "18:30",
+    "STORY_IDEA_AT": "08:30",
+    "STORY_POST_TIME": "10:00",
+    "NEWS_CHECK_AT": "off",
+    "NEWS_POST_TIME": "20:00",
+    "DAILY_REPORT_AT": "09:00",            // daily page report in Telegram ("off" to disable)
+    "POST_REPORTS": "on",                  // a report 24 h and 7 days after every post ("off" to disable)
+
+    "TG_API": "https://api.telegram.org"
+  }
+  // What each brand var means: README.md → "Settings". Your post format, prompts, story template and comment replies
+  // live in src/formats.js (examples until /setup rewrites them with you).
+  // Secrets (never in this file): GitHub → Settings → Secrets and variables → Actions (the workflow copies them to Cloudflare).
+  // STUDIO_BOT_TOKEN, PUBLISHER_BOT_TOKEN, ZERNIO_API_KEY, GEMINI_API_KEY   (you create these)
+  // WEBHOOK_SECRET, SETUP_KEY, INGEST_KEY                                    (random strings: `openssl rand -hex 24`)
+}

@@ -1,0 +1,18 @@
+# Local tests only: fake tokens, mock Telegram + Zernio on localhost (node test/mock-telegram.mjs). Copy to .dev.vars.
+# Nothing here reaches Telegram or Zernio.
+STUDIO_BOT_TOKEN=TEST_STUDIO
+PUBLISHER_BOT_TOKEN=TEST_PUBLISHER
+WEBHOOK_SECRET=test-secret
+SETUP_KEY=test-setup
+INGEST_KEY=test-ingest
+TG_API=http://127.0.0.1:8790
+ZERNIO_API=http://127.0.0.1:8790/zernio
+ZERNIO_API_KEY=test-zernio
+FAKE_SHOTS=1
+OWNER_ID=100000001
+PUBLISH_CHAT=100000001
+BRAND_NAME=My Studio
+IG_HANDLE=@mybrand
+TG_CHANNEL=@my_channel
+CREATOR_NAME=سارا
+AUDIENCE=خانواده‌هایی که کیک تولد سفارش می‌دن

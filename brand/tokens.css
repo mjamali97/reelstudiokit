@@ -1,0 +1,11 @@
+/* Filled by /setup from brand/BRAND.md. Covers, gate images and any brand page link this file. */
+:root {
+  --bg: #101418;
+  --ink: #F2F0EA;
+  --accent: #E8B04B;
+  --muted: #A9B0B8;
+  --ok: #3FB97A;
+  --font-fa: "Fa", "Vazirmatn", sans-serif;
+  --font-body: "Vazirmatn", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+}

@@ -1,0 +1,39 @@
+# Publish · after the creator approved the final render
+
+Nothing before their approval. Nothing goes live without their ✅ on the bot card. Everything uploaded is a DRAFT.
+
+## 1 · Package the reel
+Ready in `reels/<slug>/`: the final render (audio pass done, QA passed), a YouTube cut if different, the cover, `CAPTION.md`
+(Instagram caption + YouTube title/description), `gate/` (gate image + `dm.md`), `TELEGRAM.md` (the channel post).
+
+## 2 · Upload to Zernio as a draft
+```bash
+python3 -I tools/zernio/zernio.py upload reels/<slug>/final.mp4          # → video URL
+python3 -I tools/zernio/zernio.py upload reels/<slug>/cover/cover.jpg     # → cover URL
+python3 -I tools/zernio/zernio.py upload reels/<slug>/gate/gate.jpg       # → DM image URL (optional)
+python3 -I tools/zernio/zernio.py draft --video <video URL> --caption reels/<slug>/CAPTION.ig.txt --cover <cover URL> \
+  [--yt-video <yt URL> --yt-title "…" --yt-desc reels/<slug>/CAPTION.yt.txt]   # → DRAFT post id
+```
+Limits: Instagram reels ≤ 90 s / 300 MB via the API; ~25 posts per hour per account.
+
+## 3 · Send the publish card to the Studio bot
+```bash
+curl -s -X POST "$BOT_URL/api/packages" -H "X-Api-Key: $INGEST_KEY" -H "content-type: application/json" -d @package.json
+```
+`package.json`: `{slug, title, zernio_post_id, video_url, yt_url?, cover_url?, ig_caption, yt_title?, yt_desc?, gate?, dm?,
+dm_media?, comment_reply?, telegram?}` (read `BOT_URL`/`INGEST_KEY` from `.env`; never echo them). The card arrives with
+the cover, a suggested day (next free `REEL_DAYS` slot, never two Instagram posts on one day), 🧪 trial (shown to
+non-followers first) and 🎵 audio-name toggles, 👀/✏️ for every text.
+
+One ✅ on the card: Zernio schedules Instagram (+ YouTube), arms the comment-to-DM automation for the gate word (no
+follow-gate, rotating public replies), and sends the Telegram post to the Publisher bot for its own final ✅ at the same
+time. ↩️ cancels everything (Zernio back to draft, automation deleted). If the creator asks in chat for a specific time:
+`POST /api/packages/<id>/schedule {"at": "<UTC ISO>"}`.
+
+## 4 · Order of the grid
+- Batch-filmed reels in the same outfit never go out back to back: tag each take's outfit, interleave with other days'
+  reels and carousels, and show the planned order with the outfits before scheduling.
+- Two or three reels a week on their best days beats a burst followed by silence.
+
+## 5 · After posting
+Day 1 and day 7: `/analytics`. Note what the reel taught in `profile/HOOKS.md`.

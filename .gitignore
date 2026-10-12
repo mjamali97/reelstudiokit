@@ -1,0 +1,23 @@
+.env
+.DS_Store
+tools/.venv/
+**/node_modules/
+**/.wrangler/
+telegram-bot/.dev.vars
+telegram-bot/test/*.log
+telegram-bot/test/calls.jsonl
+tools/style-reel/renders/
+tools/style-reel/qa/
+tools/capture/ocrfind
+# videos, takes and big media stay on the machine (and in Zernio), not in git
+*.mp4
+*.mov
+*.MOV
+*.MP4
+*.m4a
+*.wav
+!tools/style-reel/assets/sfx/*.wav
+reels/**/raw/
+tools/style-reel/assets/words.js
+research/analytics/*.json
+tools/capture/package-lock.json

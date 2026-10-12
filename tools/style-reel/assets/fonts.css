@@ -1,0 +1,5 @@
+/* "Fa" = the Persian display face of every style. YOUR file: /setup points it at your brand font (a licence that allows
+   embedding in video). Kit updates never overwrite it. Default: Vazirmatn (SIL OFL 1.1). Keep the three weights. */
+@font-face{font-family:"Fa";src:url("fonts/Vazirmatn-Black.ttf") format("truetype");font-weight:900}
+@font-face{font-family:"Fa";src:url("fonts/Vazirmatn-Bold.ttf") format("truetype");font-weight:700}
+@font-face{font-family:"Fa";src:url("fonts/Vazirmatn-Medium.ttf") format("truetype");font-weight:500}

@@ -1,0 +1,13 @@
+# Files that are YOURS after /setup. When the kit updates (/update), these keep your version if you changed them;
+# if you never changed one, you get the kit's new version. (Needs `git config merge.ours.driver true`; update.sh sets it.)
+profile/**                         merge=ours
+brand/**                           merge=ours
+reels/**                           merge=ours
+research/**                        merge=ours
+playbook/CAPTION.md                merge=ours
+playbook/TELEGRAM-POST.md          merge=ours
+telegram-bot/wrangler.jsonc        merge=ours
+telegram-bot/src/formats.js        merge=ours
+telegram-bot/src/fonts.js          merge=ours
+tools/style-reel/assets/brand.js   merge=ours
+tools/style-reel/assets/fonts.css  merge=ours
