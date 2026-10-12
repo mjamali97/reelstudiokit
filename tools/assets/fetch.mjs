@@ -6,8 +6,8 @@
 //   source      key needed (in .env)        what                         licence
 //   openverse   none                        images, audio (music, sfx)   CC0 / public domain (CC BY with --allow-by)
 //   commons     none                        images (Wikimedia Commons)   CC0 / public domain (CC BY with --allow-by)
-//   pexels      PEXELS_API_KEY (free)       photos, videos               Pexels License
-//   pixabay     PIXABAY_API_KEY (free)      photos, videos               Pixabay Content License
+//   pexels      PEXELS_API_KEY (free)       photos, videos               Pexels License (new keys were paused on 2026-10-12)
+//   pixabay     PIXABAY_API_KEY (free)      photos, videos               Pixabay Content License (tested 2026-10-12)
 //   unsplash    UNSPLASH_ACCESS_KEY (free)  photos                       Unsplash License
 //
 // Writes the files, credits.json and CREDITS.md (creator, source page, licence, what the licence asks) into --out.
@@ -65,7 +65,7 @@ const SOURCES = {
       const j = await get(`https://pixabay.com/api/videos/?key=${key}&q=${encodeURIComponent(query)}&per_page=${Math.max(N, 3)}&safesearch=true`);
       return (j.hits || []).map((v) => ({ url: (v.videos.large?.url || v.videos.medium?.url), ext: "mp4", creator: v.user, page: v.pageURL, licence: "Pixabay Content License", licenceUrl: "https://pixabay.com/service/license-summary/", ask: "nothing required; do not sell unaltered or as stock", title: `pixabay-${v.id}` }));
     }
-    const j = await get(`https://pixabay.com/api/?key=${key}&q=${encodeURIComponent(query)}&per_page=${Math.max(N, 3)}&safesearch=true${portrait ? "&orientation=vertical" : ""}`);
+    const j = await get(`https://pixabay.com/api/?key=${key}&q=${encodeURIComponent(query)}&per_page=${Math.max(N, 3)}&safesearch=true&image_type=photo${portrait ? "&orientation=vertical" : ""}`);
     return (j.hits || []).map((p) => ({ url: p.largeImageURL, ext: "jpg", creator: p.user, page: p.pageURL, licence: "Pixabay Content License", licenceUrl: "https://pixabay.com/service/license-summary/", ask: "nothing required; do not sell unaltered or as stock", title: p.tags }));
   },
   async unsplash() {

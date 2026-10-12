@@ -3,6 +3,10 @@
 Every kit update gets a version and a short entry here; `/update` reads the new entries to you after pulling.
 Format: what changed, then **Action** when you need to do something (most updates need nothing).
 
+## 2.1.1 · 2026-10-12
+- `fetch.mjs pixabay`: photo searches return real photos only (no AI-generated illustrations); Pixabay photos and videos
+  tested end to end. Pexels has paused new API keys; existing keys still work.
+
 ## 2.1.0 · 2026-10-12
 **Licence change:** from this version Reel Studio is under the **Business Source License 1.1**. Free in production for
 your own brand, business or page (and its staff); agencies, studios and freelancers using it for clients, and hosted

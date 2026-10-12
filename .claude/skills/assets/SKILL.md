@@ -24,7 +24,8 @@ filmed (a city, an ingredient field, a texture), illustrations for explanations,
 | video b-roll | `pexels "<query>" --type video --portrait` · `pixabay "<query>" --type video` | Pexels / Pixabay licences |
 | music | `openverse "<mood, genre>" --type music` | CC0 |
 | sound effects | `openverse "<sound>" --type sfx` (Freesound CC0 among them) | CC0 |
-Files land in `reels/<slug>/stock/` (pass `--out`) with `CREDITS.md`; keep it with the reel. `--allow-by` adds CC BY (then the
+Pixabay is tested and the easiest key to get (sign in, the key shows on pixabay.com/api/docs). Pexels paused new API keys
+(checked 2026-10-12); Unsplash needs a developer app (unsplash.com/oauth/applications). Files land in `reels/<slug>/stock/` (pass `--out`) with `CREDITS.md`; keep it with the reel. `--allow-by` adds CC BY (then the
 credit line from CREDITS.md goes in the caption or the description).
 
 ## Rules
