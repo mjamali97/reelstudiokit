@@ -27,6 +27,8 @@ const out = path.resolve(opt("--out", path.join(ROOT, "reels/_stock", `${source}
 const env = { ...Object.fromEntries((fs.existsSync(path.join(ROOT, ".env")) ? fs.readFileSync(path.join(ROOT, ".env"), "utf8") : "").split("\n").filter((l) => /^[A-Z_]+=./.test(l)).map((l) => [l.split("=")[0], l.slice(l.indexOf("=") + 1).trim()])), ...process.env };
 const need = (k) => { if (!env[k]) { console.error(`${k} is not set: get a free key (see the table above) and add ${k}=… to .env yourself`); process.exit(1); } return env[k]; };
 const UA = "ReelStudio/2 (+https://github.com/mjamali97/reelstudiokit)";
+// API hosts (overridable only for the offline test, tools/assets/test-fetch.mjs)
+const PEXELS = env.PEXELS_API_BASE || "https://api.pexels.com", UNSPLASH = env.UNSPLASH_API_BASE || "https://api.unsplash.com";
 const get = async (url, headers = {}) => { const r = await fetch(url, { headers: { "User-Agent": UA, ...headers } }); if (!r.ok) throw new Error(`${new URL(url).host} ${r.status}: ${(await r.text()).slice(0, 200)}`); return r.json(); };
 const SAFE = (l) => /^(cc0|pdm|public ?domain|pd)/i.test(l) || (allowBy && /^(cc[- ]?)?by( |-)?\d?(\.\d)?$/i.test(l.replace(/^cc /i, "cc-")));
 
@@ -52,11 +54,11 @@ const SOURCES = {
   async pexels() {
     const key = need("PEXELS_API_KEY"), h = { Authorization: key };
     if (type === "video") {
-      const j = await get(`https://api.pexels.com/videos/search?query=${encodeURIComponent(query)}&per_page=${N}${portrait ? "&orientation=portrait" : ""}`, h);
+      const j = await get(`${PEXELS}/videos/search?query=${encodeURIComponent(query)}&per_page=${N}${portrait ? "&orientation=portrait" : ""}`, h);
       return (j.videos || []).map((v) => { const f = v.video_files.filter((x) => x.file_type === "video/mp4").sort((a, b) => Math.abs((a.height || 0) - 1920) - Math.abs((b.height || 0) - 1920))[0];
         return { url: f?.link, ext: "mp4", creator: v.user?.name, page: v.url, licence: "Pexels License", licenceUrl: "https://www.pexels.com/license/", ask: "nothing required; a credit is appreciated; do not resell unaltered", title: `pexels-${v.id}` }; });
     }
-    const j = await get(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${N}${portrait ? "&orientation=portrait" : ""}`, h);
+    const j = await get(`${PEXELS}/v1/search?query=${encodeURIComponent(query)}&per_page=${N}${portrait ? "&orientation=portrait" : ""}`, h);
     return (j.photos || []).map((p) => ({ url: p.src.large2x, ext: "jpg", creator: p.photographer, page: p.url, licence: "Pexels License", licenceUrl: "https://www.pexels.com/license/", ask: "nothing required; a credit is appreciated; do not resell unaltered", title: p.alt || `pexels-${p.id}` }));
   },
   async pixabay() {
@@ -70,10 +72,11 @@ const SOURCES = {
   },
   async unsplash() {
     const key = need("UNSPLASH_ACCESS_KEY"), h = { Authorization: `Client-ID ${key}`, "Accept-Version": "v1" };
-    const j = await get(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${N}${portrait ? "&orientation=portrait" : ""}`, h);
+    const j = await get(`${UNSPLASH}/search/photos?query=${encodeURIComponent(query)}&per_page=${N}${portrait ? "&orientation=portrait" : ""}`, h);
     const items = [];
     for (const p of j.results || []) {
-      await get(p.links.download_location, h).catch(() => {});   // the API guidelines require registering every download
+      // the API guidelines require registering every download (links.download_location; the documented endpoint if absent)
+      await get(p.links?.download_location || `${UNSPLASH}/photos/${p.id}/download`, h).catch((e) => console.warn("download event not registered:", e.message));
       items.push({ url: p.urls.full + "&w=2160&fm=jpg&q=85", ext: "jpg", creator: p.user?.name, page: p.links.html + "?utm_source=reel_studio&utm_medium=referral", licence: "Unsplash License", licenceUrl: "https://unsplash.com/license", ask: `credit "Photo by ${p.user?.name} on Unsplash" where possible; do not sell unaltered or build a rival library`, title: p.alt_description || p.id });
     }
     return items;

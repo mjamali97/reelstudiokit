@@ -3,6 +3,11 @@
 Every kit update gets a version and a short entry here; `/update` reads the new entries to you after pulling.
 Format: what changed, then **Action** when you need to do something (most updates need nothing).
 
+## 2.1.2 · 2026-10-12
+- Stock fetcher verified for every source: Pixabay, Openverse and Wikimedia Commons live; Pexels (photos, videos) and
+  Unsplash against their documented responses in a new offline test (`node tools/assets/test-fetch.mjs`, in CI) and their
+  live endpoints. Unsplash download events are registered also when a result has no `download_location`.
+
 ## 2.1.1 · 2026-10-12
 - `fetch.mjs pixabay`: photo searches return real photos only (no AI-generated illustrations); Pixabay photos and videos
   tested end to end. Pexels has paused new API keys; existing keys still work.

@@ -1,6 +1,6 @@
 {
   "name": "reel-studio",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Start a Reel Studio for your brand: clones the kit, installs its tools, and hands over to /setup.",
   "author": { "name": "Reel Studio", "url": "https://github.com/mjamali97/reelstudiokit" },
   "homepage": "https://github.com/mjamali97/reelstudiokit",

@@ -14,6 +14,8 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - run: node tools/ci/check.mjs
+      - name: stock fetcher against the documented Pexels and Unsplash responses (offline)
+        run: node tools/assets/test-fetch.mjs
 
   bot:
     runs-on: ubuntu-latest
