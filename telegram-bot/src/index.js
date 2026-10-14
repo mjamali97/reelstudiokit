@@ -21,7 +21,13 @@ const fa = (n) => num(n);   // digits in the bot's language (Persian ۰۱۲, Ara
 const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const now = () => new Date().toISOString();
 
-const hm = (v, dflt) => { const [H, M] = String(v || dflt).split(":").map(Number); return { H, M, s: `${String(H).padStart(2, "0")}:${String(M).padStart(2, "0")}` }; };
+// "HH:MM" → {H, M, s}; a missing, "off" or malformed value falls back to the default (never NaN:undefined on a screen)
+const hm = (v, dflt) => {
+  const m = /^\s*(\d{1,2}):(\d{2})\s*$/.exec(String(v ?? "")), d = /^(\d{1,2}):(\d{2})$/.exec(dflt);
+  const [H, M] = (m && +m[1] < 24 && +m[2] < 60 ? m : d).slice(1, 3).map(Number);
+  return { H, M, s: `${String(H).padStart(2, "0")}:${String(M).padStart(2, "0")}` };
+};
+const hmOrOff = (v, dflt) => (v === "off" ? _("off") : fa(hm(v, dflt).s));   // a daily job's time on a screen
 const reelTime = (env) => hm(env.REEL_TIME, "18:30");
 const storyTime = (env) => hm(env.STORY_POST_TIME, "10:00");
 const newsTime = (env) => hm(env.NEWS_POST_TIME, "20:00");
@@ -357,7 +363,7 @@ async function status(env) {
     `📲 Zernio: ${z}${env.ZERNIO_DRY_RUN !== "0" ? _(" · 🧪 sending off") : ""}`,
     _f("🤖 Publisher bot: {0}", env.PUBLISHER_BOT_TOKEN ? _("token set") : _("no token")),
     "",
-    _f("Schedule: reels {0} · story idea {1} (posted {2}) · news every three days {3} (posted {4}), {5} time.", fa(reelTime(env).s), fa(hm(env.STORY_IDEA_AT, "08:30").s), fa(storyTime(env).s), fa(hm(env.NEWS_CHECK_AT, "18:00").s), fa(newsTime(env).s), esc(brand(env).tz)),
+    _f("Schedule: reels {0} · story idea {1} (posted {2}) · news every three days {3} (posted {4}), {5} time.", fa(reelTime(env).s), hmOrOff(env.STORY_IDEA_AT, "08:30"), fa(storyTime(env).s), hmOrOff(env.NEWS_CHECK_AT, "18:00"), fa(newsTime(env).s), esc(brand(env).tz)),
     _("Every Telegram post needs a final OK in the publisher bot first."),
   ].join("\n");
 }
