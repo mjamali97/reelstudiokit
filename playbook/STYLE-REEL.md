@@ -1,7 +1,9 @@
 # Styled motion reel · the runbook
 
-**Trigger:** `/vogue`, `/hud`, `/swiss`, `/vox`, `/doodle` (or «با سبک ووگ ادیت کن»), or `/reel-style` to pick one first.
-**Template:** `tools/style-reel/` (HyperFrames engine shell, five style modules, `qa.py`, fonts, icons, sfx, `new_reel.py`).
+**Trigger:** any of the 13 style skills, `/vogue` `/vox` `/swiss` `/hud` `/doodle` `/clean` `/neon` `/retro` `/brutal` `/luxe`
+`/pop` `/chalk` `/receipt` (or «با سبک ووگ ادیت کن»), or `/reel-style` to pick one first.
+**Template:** `tools/style-reel/` (HyperFrames engine shell, one style module per style in `styles/`, `qa.py`, fonts, icons,
+sfx, `new_reel.py`).
 **Worked example:** the demo in the template (a made-up bakery, every scene type in every style). Rewrite
 the scenes for each new reel; never paste the demo text.
 **Sibling:** `BUSINESS-REEL.md` + their `business/<file>` are the source for facts, gates and footage. This
