@@ -5,6 +5,8 @@
     python3 -I tools/zernio/zernio.py upload <file>                        → prints the public URL
     python3 -I tools/zernio/zernio.py draft --video <url> --caption <CAPTION.md> [--cover <url>]
                                            [--yt-video <url> --yt-title "…" --yt-desc <file>]   → prints the DRAFT post id
+    python3 -I tools/zernio/zernio.py draft --images <url> <url>… --caption <CAPTION.md>      → an Instagram carousel DRAFT
+                                           (2–10 slides in order, JPEG/PNG ≤ 8 MB each, all the shape of the first)
     python3 -I tools/zernio/zernio.py analytics [--out research/analytics/posts.json]
     python3 -I tools/zernio/zernio.py insights                               → account totals (30 days) + best times
     python3 -I tools/zernio/zernio.py audit [--out research/analytics/audit.json]   → everything /page-audit needs, one file
@@ -65,10 +67,19 @@ def cmd_upload(a):
 
 
 def cmd_draft(a):
+    if a.images and not 2 <= len(a.images) <= 10:
+        sys.exit("a carousel has 2 to 10 slides (Instagram's limit)")
+    if a.images and (a.cover or a.yt_video):
+        sys.exit("--cover and --yt-* are for reels: a carousel's cover is its first slide, and YouTube takes no carousels")
     ig = acc("instagram")
     if not ig:
         sys.exit("no Instagram account connected in Zernio")
     caption = Path(a.caption).read_text().strip()
+    if a.images:   # Zernio: several mediaItems on one Instagram post = a carousel, slides in this order
+        r = call("POST", "/posts", {"content": caption, "mediaItems": [{"type": "image", "url": u} for u in a.images],
+                                    "platforms": [{"platform": "instagram", "accountId": ig["_id"]}], "isDraft": True})
+        print((r.get("post") or r).get("_id"))
+        return
     media = [{"type": "video", "url": a.video, **({"thumbnail": a.cover} if a.cover else {})}]
     platforms = [{"platform": "instagram", "accountId": ig["_id"], "platformSpecificData": {"shareToFeed": True, **({"instagramThumbnail": a.cover} if a.cover else {})}}]
     yt = acc("youtube") if a.yt_video else None
@@ -166,7 +177,9 @@ ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDe
 sub = ap.add_subparsers(dest="cmd", required=True)
 sub.add_parser("accounts").set_defaults(f=cmd_accounts)
 s = sub.add_parser("upload"); s.add_argument("file"); s.set_defaults(f=cmd_upload)
-s = sub.add_parser("draft"); s.add_argument("--video", required=True); s.add_argument("--caption", required=True); s.add_argument("--cover")
+s = sub.add_parser("draft"); m = s.add_mutually_exclusive_group(required=True)
+m.add_argument("--video", help="the reel's public URL (from upload)"); m.add_argument("--images", nargs="+", metavar="URL", help="carousel slides' public URLs, in order")
+s.add_argument("--caption", required=True); s.add_argument("--cover")
 s.add_argument("--yt-video"); s.add_argument("--yt-title"); s.add_argument("--yt-desc"); s.set_defaults(f=cmd_draft)
 s = sub.add_parser("schedule"); s.add_argument("post_id"); s.add_argument("at", help="UTC ISO, e.g. 2026-11-03T15:00:00Z"); s.set_defaults(f=cmd_schedule)
 s = sub.add_parser("analytics"); s.add_argument("--out"); s.set_defaults(f=cmd_analytics)

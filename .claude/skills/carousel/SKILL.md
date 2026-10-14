@@ -18,4 +18,5 @@ formats). Talk in their language.
    `tools/py tools/render/sheet.py reels/<slug>/carousel reels/<slug>/carousel-sheet.jpg` and look at every slide: text
    fits, nothing cut, the arrow on every slide but the last, RTL text aligned right with the arrow still pointing right.
 4. Show the sheet; fix what they point at; re-render. Then the caption (`playbook/CAPTION.md`) and, when approved,
-   `/publish` uploads the slides as one carousel draft.
+   `/publish` uploads the slides as one Instagram carousel DRAFT in Zernio (`playbook/PUBLISH.md` § Carousels). The
+   one-tap card in the Studio bot is for reels only: they schedule the carousel in Zernio, or tell you a time in chat.
