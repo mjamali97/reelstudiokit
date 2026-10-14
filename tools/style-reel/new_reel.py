@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Start a styled motion reel from your take: copy the template, cut the face clip, word-align your SRT.
 
-    python3 tools/style-reel/new_reel.py --take <face-cut.mov> --srt <take.srt> --out reels/<slug>/motion \
+    tools/py tools/style-reel/new_reel.py --take <face-cut.mov> --srt <take.srt> --out reels/<slug>/motion \
         [--start 0] [--dur 30] [--style swiss] [--lang fa]
 
 --take   your take with the pauses already cut (playbook/TAKE.md), and --srt timed to that file.

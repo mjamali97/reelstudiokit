@@ -9,13 +9,15 @@ a command or a screenshot before ticking it in `profile/SETUP-STATUS.md`.
 
 Check `git --version`, `node -v`, `python3 --version`, `ffmpeg -version`, Chrome installed, `uv --version`. On macOS
 install what is missing with Homebrew (`brew install git node python ffmpeg uv`; Chrome from google.com/chrome). On
-Windows use WSL2 (Ubuntu) for everything except Chrome. `tools/capture/ocrfind` (placing highlights on screenshots of their own site) is macOS-only;
+Linux and WSL2: `sudo apt install git ffmpeg python3 python3-venv` (Python 3.11+), Node 20+ from nvm (`nvm install --lts`)
+or NodeSource, not apt's `nodejs` (usually older than 20), uv with its install script. `bash tools/install.sh` checks the
+versions and prints the right command. On Windows use WSL2 (Ubuntu) for everything except Chrome. `tools/capture/ocrfind` (placing highlights on screenshots of their own site) is macOS-only;
 skip it elsewhere.
 
 ## B · Video tools
 
 ```bash
-bash tools/install.sh video      # Python tools, the HyperFrames engine check, WhisperX, the Persian typography linter
+bash tools/install.sh video      # the HyperFrames engine check, WhisperX, the Persian typography linter
 bash tools/install.sh all        # optional: HyperFrames skills and the NextWork editor plugin for Claude Code
 swiftc -O tools/capture/ocrfind.swift -o tools/capture/ocrfind   # macOS only: finding text on screenshots of their own site
 ```

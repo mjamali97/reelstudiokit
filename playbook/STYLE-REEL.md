@@ -21,7 +21,7 @@ source. A style is a look, never a reason to invent a figure.
 
 ## 3 · Start the project
 ```bash
-tools/.venv/bin/python tools/style-reel/new_reel.py --take reels/<slug>/take/face-cut.mp4 --srt reels/<slug>/take/face-cut.srt \
+tools/py tools/style-reel/new_reel.py --take reels/<slug>/take/face-cut.mp4 --srt reels/<slug>/take/face-cut.srt \
   --out reels/<slug>/motion --dur <seconds> --style <style> [--lang fa]
 ```
 It copies the template, cuts `assets/face.mp4`, force-aligns their SRT words (WhisperX aligner only, no ASR, no API),
@@ -66,7 +66,7 @@ npx --yes hyperframes@0.8.46 check
 npx --yes hyperframes@0.8.46 snapshot --at <mid-transition times> --no-end --describe false
 npx --yes hyperframes@0.8.46 render --variables '{"style":"<style>"}' --strict-variables -o renders/<slug>-<style>.mp4
 echo '{"face": [[0, 2.07], ...]}' > qa/plan.json          # the FACE windows
-../../../tools/.venv/bin/python qa.py renders/<slug>-<style>.mp4 --plan qa/plan.json --sheet qa/<style>-sheet.jpg
+../../../tools/py qa.py renders/<slug>-<style>.mp4 --plan qa/plan.json --sheet qa/<style>-sheet.jpg
 bash ../../../tools/take/audio.sh measure renders/<slug>-<style>.mp4
 ```
 Zero FAIL, then the 3 fps sheet eye pass with the `MOTION-QA.md` checklist. Known traps: a `mix-blend-mode` layer cannot

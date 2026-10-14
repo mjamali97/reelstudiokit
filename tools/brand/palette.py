@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Brand colours from pictures: a logo, brand-book pages, a screenshot of the Instagram grid, product photos.
 
-    python3 tools/brand/palette.py <image or folder>... [--k 8] [--out palette.json] [--sheet palette.png]
+    tools/py tools/brand/palette.py <image or folder>... [--k 8] [--out palette.json] [--sheet palette.png]
 
 Prints the main colours with the share of pixels they cover, plus a role guess (background, text, accent) that
 /brand shows the owner to confirm. A PDF brand book: export its pages as images first (macOS Preview, or

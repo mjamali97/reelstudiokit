@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Contact sheet of rendered images, to look at a whole deck at once.
-    tools/.venv/bin/python tools/render/sheet.py <dir-or-images...> <out.jpg> [--cols 5] [--w 300]
+    tools/py tools/render/sheet.py <dir-or-images...> <out.jpg> [--cols 5] [--w 300]
 """
 import sys
 from pathlib import Path
