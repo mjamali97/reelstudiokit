@@ -12,6 +12,7 @@ description: Show what the studio does before any account exists - the Telegram 
    are canned in the demo; in the real bot they are written from the page. Stop with Ctrl-C (their own `.dev.vars` is restored).
 2. **The visuals**: open the contact sheets in `examples/bakery/` (carousels: 10 templates in English + one in Persian; stories;
    highlight covers in three styles) or render one again: `node tools/render/render.mjs examples/bakery/carousels/tips.json`.
-   `node tools/brand/preview.mjs` shows the bakery brand on every kind of frame; `fonts/gallery.html` shows the 30 fonts.
+   `node tools/brand/preview.mjs` shows the bakery brand on every kind of frame; `fonts/gallery.html` shows every font
+   in the library (`fonts/fonts.json`).
 3. **The video styles**: `docs/showcase/` has a still of each style; `/reel-style` explains when each one fits.
 4. Then ask whether to start `/setup` (it begins by reading their own site and page, no accounts needed).
