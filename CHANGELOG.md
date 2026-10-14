@@ -3,6 +3,27 @@
 Every kit update gets a version and a short entry here; `/update` reads the new entries to you after pulling.
 Format: what changed, then **Action** when you need to do something (most updates need nothing).
 
+## 2.2.0 · 2026-10-14
+- **All 13 styles start a reel:** `new_reel.py --style` took only the five original styles (`/clean`, `/neon`, `/retro`,
+  `/brutal`, `/luxe`, `/pop`, `/chalk`, `/receipt` stopped at "invalid choice"); it now reads them from `styles/`.
+- **Python tools from `tools/.venv` everywhere:** `tools/py <script>` runs a kit script with the venv's Python (macOS,
+  Linux, WSL, Git Bash). `/carousel` (contact sheet), `/setup` and `/brand` (palette) used the system `python3` and stopped
+  at "No module named PIL". The core install now makes the venv (it was only in `video`).
+- **`install.sh`:** checks Python ≥ 3.11 and Node ≥ 20 with the right command per system (Linux/WSL: Node from nvm or
+  NodeSource, not apt's old `nodejs`; `python3-venv`). `check` really tests HyperFrames and the HyperFrames skills, and
+  `check [core|video|all]` counts only that level, so a complete core install no longer ends in "Some pieces are missing".
+- **Carousels to Zernio:** `zernio.py draft --images <url>…` makes an Instagram carousel draft (2–10 slides); `/publish`
+  and `PUBLISH.md` show how. The one-tap card in the bot stays for reels; a carousel is scheduled in Zernio or by a time
+  you give in chat.
+- **Persian linter in one run:** `tools/render/lint_fa.py [--fix]` reports Arabic ي/ك and the missing half-space they hide
+  together, and knows spoken verbs («میشه» → «می‌شه», «میتونم», «نمیدونم»…). `/captions` uses it.
+- Bot: the status screen showed «خبر هر سه روز NaN:undefined» while the news check is off; it now says off. The demo is
+  in Persian for `fa` (sample post, comment, voice) and shows the news check at 18:00.
+- Docs match the code: `/reel-idea` saves to `reels/<slug>/` like the rest of the pipeline; `/demo` no longer says 30 fonts
+  (CI now checks every font count in the docs).
+
+**Action:** `bash tools/install.sh` once (it adds `tools/.venv` to the core install), then push to deploy the bot.
+
 ## 2.1.2 · 2026-10-12
 - Stock fetcher verified for every source: Pixabay, Openverse and Wikimedia Commons live; Pexels (photos, videos) and
   Unsplash against their documented responses in a new offline test (`node tools/assets/test-fetch.mjs`, in CI) and their
