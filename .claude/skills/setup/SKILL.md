@@ -60,7 +60,7 @@ Do the reading yourself while they wait (tell them it takes a few minutes):
   themselves (WebFetch or the screenshots) for facts: products and prices, hours, address, delivery, how to order, story,
   claims and proof. Note the page URL as the source of each fact.
 - **Instagram** (screenshots or viewing) → bio, name field, highlights, grid look, posting rhythm, what their top posts
-  are; captions → voice material. Grid screenshot → `python3 tools/brand/palette.py <img> --sheet brand/extracted/ig-palette.png`.
+  are; captions → voice material. Grid screenshot → `tools/py tools/brand/palette.py <img> --sheet brand/extracted/ig-palette.png`.
 - **Brand book / logo / files** → read the PDF directly for the stated hex codes, fonts, logo rules, tone of voice;
   `palette.py` on the logo and on brand-book pages. A stated hex code beats a measured one.
 - **Menu / price list** → the Offer table, each line with the file as source.

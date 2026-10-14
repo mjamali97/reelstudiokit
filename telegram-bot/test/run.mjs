@@ -38,7 +38,9 @@ ok(/My Studio/.test(r[0]?.body.text || ""), "help text carries BRAND_NAME");
 for (const b of ["📊 داشبورد", "🎬 ریل‌ها", "💡 ایده‌ها", "📝 پیش‌نویس‌ها", "📅 برنامه", "📸 استوری", "📰 خبر", "⚙️ وضعیت"]) {
   r = (await step(msg(b))).filter((c) => c.bot); ok(r.length === 1 && r[0].method === "sendMessage" && !/خطا/.test(txt(r)), `menu button ${b} answers`, txt(r).slice(0, 120));
 }
-ok(/حالت تست/.test(txt(await step(msg("⚙️ وضعیت")))), "status says test mode (not live)");
+r = txt(await step(msg("⚙️ وضعیت")));
+ok(/حالت تست/.test(r), "status says test mode (not live)");
+ok(!/NaN|undefined/.test(r) && /خبر هر سه روز خاموش/.test(r) && /پیشنهاد استوری ۰۸:۳۰/.test(r), "status schedule: news check off (not NaN:undefined), story idea at ۰۸:۳۰", r.split("\n").slice(-2).join(" "));
 
 // ideas
 r = await step(msg("https://example.com برای ریل منو"), 8000);

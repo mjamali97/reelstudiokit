@@ -16,6 +16,8 @@ jobs:
       - run: node tools/ci/check.mjs
       - name: stock fetcher against the documented Pexels and Unsplash responses (offline)
         run: node tools/assets/test-fetch.mjs
+      - name: Persian linter (Arabic letters and spoken half-spaces in one run)
+        run: python3 -I tools/render/lint_fa.py --self-test
 
   bot:
     runs-on: ubuntu-latest

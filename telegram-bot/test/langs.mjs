@@ -13,4 +13,5 @@ ok(menu.includes(t("📊 Dashboard")) && menu.includes(t("💡 Ideas")) && menu.
 n = calls().length; await post(t("⚙️ Status")); await sleep(1500);
 const st = calls().slice(n).find((c) => c.method === "sendMessage")?.body.text || "";
 ok(st.includes(t("⚙️ <b>Status</b>")), `${L}: the status button answers in the language`, st.slice(0, 80));
+ok(!/NaN|undefined/.test(st) && st.includes(t("off")), `${L}: the schedule shows the news check as off (NEWS_CHECK_AT "off"), never NaN`, st.split("\n").slice(-2).join(" "));
 console.log(`${pass} passed, ${fail} failed`);

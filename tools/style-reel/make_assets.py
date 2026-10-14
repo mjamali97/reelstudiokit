@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Paper textures and every sound cue of the style kit, all generated from code (no third-party files, no licence questions).
 
-    tools/.venv/bin/python tools/style-reel/make_assets.py
+    tools/py tools/style-reel/make_assets.py
 
 Writes assets/paper-{cream,tan,white}.jpg and assets/sfx/{whoosh-in,whoosh-out,pop,hit,tick,zoom,shutter,swish}.wav.
 Swap any of them for your own (same names) when your design system has its own sounds or textures.

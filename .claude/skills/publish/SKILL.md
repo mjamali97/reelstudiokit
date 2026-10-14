@@ -14,3 +14,7 @@ Only after they approved the final render in this conversation. Follow `playbook
    with a suggested day; their ✅ there schedules Instagram/YouTube, arms the DM gate and queues the Telegram post for the
    Publisher bot's final ✅.
 4. Batch-filmed reels: show the planned order with each outfit before they schedule; no two same-outfit reels in a row.
+
+**A carousel** (after they approved the contact sheet): upload every slide, then `draft --images <url1> <url2>…` (in
+order) → one Instagram carousel DRAFT. No bot card for carousels: they schedule the draft in the
+Zernio dashboard, or say a time in chat and you run `zernio.py schedule <id> <UTC ISO>`. `playbook/PUBLISH.md` § Carousels.

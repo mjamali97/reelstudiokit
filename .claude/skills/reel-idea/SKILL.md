@@ -17,4 +17,5 @@ Read `profile/CREATOR.md`, `VOICE.md`, `HOOKS.md`, `RULES.md`, `IDEAS-REMOVED.md
 4. Wait. They film and pick; then `playbook/TAKE.md` → `STYLE-REEL.md` → `MOTION-QA.md` before showing anything.
 
 Never invent a number, a price, a review or a result. Never start editing before they picked. Save the script to
-`reels/draft-<slug>/SCRIPT.md`.
+`reels/<slug>/SCRIPT.md` (a short slug in Latin letters, e.g. `reels/autumn-menu/`): the folder the take, the motion edit, the
+cover, the gate and `/publish` use next (`STYLE-REEL.md`, `PUBLISH.md`).

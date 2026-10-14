@@ -38,6 +38,13 @@ for (const f of fonts) {
   if (ex(f.css)) for (const u of rd(f.css).matchAll(/url\("([^"]+)"\)/g)) ok(ex(path.join(path.dirname(f.css), u[1])), `font ${f.id}: ${u[1]} missing`);
 }
 
+// 3b · a font count written in the docs is the real one (fonts/fonts.json); the safest is to write none
+const digits = (x) => Number(x.replace(/[۰-۹]/g, (c) => c.charCodeAt(0) - 0x6f0).replace(/[٠-٩]/g, (c) => c.charCodeAt(0) - 0x660));
+const docs = ["README.md", "CLAUDE.md", "tools/STACK.md", ...fs.readdirSync(path.join(ROOT, "docs/guide")).map((f) => `docs/guide/${f}`),
+  ...skills.map((d) => `.claude/skills/${d}/SKILL.md`)];
+for (const p of docs) for (const m of rd(p).matchAll(/(?<![\d۰-۹٠-٩.])([\d۰-۹٠-٩]+)\s+(?:open-licence\s+|Open-Licence-)?(?:fonts?\b|font famil|families|polices?\b|Schrift|فونت)/gi))
+  ok(digits(m[1]) === fonts.length, `${p}: says "${m[0]}" but fonts/fonts.json has ${fonts.length} fonts`);
+
 // 4 · brand files point at real fonts
 for (const p of ["brand/brand.json", "templates/client/brand/brand.json"]) {
   const b = JSON.parse(rd(p));

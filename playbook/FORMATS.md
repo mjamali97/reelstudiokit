@@ -24,7 +24,7 @@ let them pick or mix, then save it where the skills and the bot read it.
 2. **Carousel**: pick 2–3 templates that fit their playbook (a bakery: tips, price-menu, showcase; a clinic: myth-fact,
    faq, before-after). Write the specs with their real content into `brand/formats/`, render
    (`node tools/render/render.mjs brand/formats/<spec>.json`), show the contact sheet
-   (`python3 tools/render/sheet.py <dir> <out.jpg>`). Fix what they point at, re-render.
+   (`tools/py tools/render/sheet.py <dir> <out.jpg>`). Fix what they point at, re-render.
 3. **Stories and highlights**: same, with `type: story` and `type: highlights` specs. Highlight covers are uploaded once in
    the Instagram app (Profile → highlight → Edit → Edit cover).
 4. **Reel captions**: burn one test with `node tools/render/captions.mjs` on any of their clips in two styles; they pick.

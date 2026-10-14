@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Motion QA for a rendered reel. Run it on every render before anyone sees it.
 
-    tools/.venv/bin/python tools/style-reel/qa.py <video.mp4> [--plan plan.json] [--sheet out.jpg]
+    tools/py tools/style-reel/qa.py <video.mp4> [--plan plan.json] [--sheet out.jpg]
 
 plan.json (optional): {"face": [[0, 2.07], [5.68, 7.81], ...]}, the windows where your face is meant to be on
 screen. Everywhere else is full-screen b-roll and must show no face.

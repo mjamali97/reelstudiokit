@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """A stand-in take so the 13 styles can be previewed and rendered before you record anything.
 
-    tools/.venv/bin/python tools/style-reel/make_demo.py
+    tools/py tools/style-reel/make_demo.py
 
 Writes assets/face.mp4 (30 s, 1080×1920, a placeholder where your face will be, silent) and assets/words.js (placeholder
 caption words in the demo's face windows). new_reel.py replaces both with your own take and your own words.

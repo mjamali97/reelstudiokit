@@ -73,18 +73,17 @@ else {
   if (args.includes("--proof")) cues = await proofread(cues);
   fs.writeFileSync(side, JSON.stringify(cues, null, 1));
 }
-// Persian: the persian-motion-director linter (tools/install.sh video) flags Arabic ي/ك, wrong digits, missing half-spaces
+// Persian: tools/render/lint_fa.py flags Arabic ي/ك, wrong digits, missing half-spaces (incl. spoken «میشه»), with the
+// persian-motion-director rules on top when tools/install.sh video has installed them
 if (lang === "fa") {
   // always safe in Persian text: Arabic yeh/kaf and Arabic-Indic digits → Persian
   const norm = (t) => t.replace(/ي/g, "ی").replace(/ك/g, "ک").replace(/[٠-٩]/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d.charCodeAt(0) - 0x660]);
   cues = cues.map((c) => ({ ...c, t: norm(c.t), ...(c.words ? { words: c.words.map((w) => ({ ...w, t: norm(w.t) })) } : {}) }));
-  const lint = path.join(path.dirname(new URL(import.meta.url).pathname), "../vendor/persian-motion-director/scripts/lint_persian.py");
-  if (fs.existsSync(lint)) {
-    const f = path.join(os.tmpdir(), `cues-${process.pid}.txt`); fs.writeFileSync(f, cues.map((c) => c.t).join("\n"));
-    try { execFileSync("python3", ["-I", lint, "copy", f], { stdio: "pipe" }); console.log("persian lint: clean"); }
-    catch (e) { console.warn(`persian lint (fix in ${path.basename(side)} and run again if needed):\n${String(e.stdout || e.message).trim().split("\n").slice(0, 12).join("\n")}`); }
-    fs.rmSync(f, { force: true });
-  }
+  const lint = path.join(path.dirname(new URL(import.meta.url).pathname), "lint_fa.py");
+  const f = path.join(os.tmpdir(), `cues-${process.pid}.txt`); fs.writeFileSync(f, cues.map((c) => c.t).join("\n"));
+  try { execFileSync("python3", ["-I", lint, f], { stdio: "pipe" }); console.log("persian lint: clean"); }
+  catch (e) { console.warn(`persian lint (line = cue number; fix in ${path.basename(side)} and run again):\n${String(e.stdout || e.message).trim().split("\n").slice(0, 12).join("\n")}`); }
+  fs.rmSync(f, { force: true });
 }
 if (style === "word" && !cues.every((c) => c.words?.length)) { console.error("--style word needs word timings: give a words.json or WhisperX JSON, not an .srt"); process.exit(2); }
 if (!cues.length) { console.error("no captions found in the input"); process.exit(2); }

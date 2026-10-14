@@ -30,6 +30,18 @@ follow-gate, rotating public replies), and sends the Telegram post to the Publis
 time. ↩️ cancels everything (Zernio back to draft, automation deleted). If the creator asks in chat for a specific time:
 `POST /api/packages/<id>/schedule {"at": "<UTC ISO>"}`.
 
+## 3b · Carousels
+After they approved the contact sheet and the caption. Zernio makes an Instagram carousel from one post with several
+image `mediaItems` (2–10 slides, JPEG/PNG ≤ 8 MB each, every slide the shape of the first; the kit's 1080×1350 slides fit).
+```bash
+for f in reels/<slug>/carousel/slide-*.png; do python3 -I tools/zernio/zernio.py upload "$f"; done   # → one URL per slide
+python3 -I tools/zernio/zernio.py draft --images <url1> <url2> … --caption reels/<slug>/CAPTION.ig.txt   # → DRAFT post id
+```
+The Studio bot's one-tap card (step 3) is for reels only, so a carousel is scheduled by hand: the owner schedules the draft in the
+Zernio dashboard, or names a time in chat and you run
+`python3 -I tools/zernio/zernio.py schedule <post id> <UTC ISO>`. Check 📅 Schedule in the bot first: never two Instagram
+posts on one day. The comment-to-DM gate is set up in Zernio for a carousel, or left out.
+
 ## 4 · Order of the grid
 - Batch-filmed reels in the same outfit never go out back to back: tag each take's outfit, interleave with other days'
   reels and carousels, and show the planned order with the outfits before scheduling.

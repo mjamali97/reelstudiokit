@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Abstract placeholder 'photos' for the examples (generated, no licence questions). Replace them with your own photos.
-    tools/.venv/bin/python tools/render/make_placeholders.py examples/bakery/media
+    tools/py tools/render/make_placeholders.py examples/bakery/media
 """
 import sys, random
 from pathlib import Path

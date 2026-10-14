@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Start a styled motion reel from your take: copy the template, cut the face clip, word-align your SRT.
 
-    python3 tools/style-reel/new_reel.py --take <face-cut.mov> --srt <take.srt> --out reels/<slug>/motion \
+    tools/py tools/style-reel/new_reel.py --take <face-cut.mov> --srt <take.srt> --out reels/<slug>/motion \
         [--start 0] [--dur 30] [--style swiss] [--lang fa]
 
 --take   your take with the pauses already cut (playbook/TAKE.md), and --srt timed to that file.
---style  vogue | vox | swiss | hud | doodle (the default the render uses; any can still be rendered).
+--style  any style in tools/style-reel/styles/ (vogue, vox, swiss, hud, doodle, clean, neon, retro, brutal, luxe, pop,
+         chalk, receipt): the default the render uses; any can still be rendered. `--help` lists the ones installed.
 --lang   language of the take for the aligner (fa, en, de…); the Persian proofreading runs only for fa.
 
 Writes <out>/assets/face.mp4, <out>/assets/words.js (your SRT words on the audio, no ASR; Persian proofread) and
@@ -16,6 +17,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
+# every style module in styles/ is a valid --style (check.mjs keeps them registered in index.html and as a skill)
+STYLES = sorted(p.stem for p in (HERE / "styles").glob("*.js"))
 # the Python that has whisperx (`uv tool install whisperx` puts it here); override with WHISPERX_PY=/path/to/python
 import os
 WHISPERX_PY = Path(os.environ.get("WHISPERX_PY", Path.home() / ".local/share/uv/tools/whisperx/bin/python"))
@@ -29,7 +32,7 @@ FA_DIGITS = str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹")
 def proof(t):
     core = t.rstrip(".,،!؟?")
     tail = t[len(core):]
-    core = FIXES.get(core, core)
+    core = FIXES.get(core.replace("ي", "ی").replace("ك", "ک"), core.replace("ي", "ی").replace("ك", "ک"))   # Arabic ي/ك first, so the half-space below sees «ميشه» too
     core = re.sub(rf"^(ن?می)(?=(?:{STEMS}))", rf"\1{Z}", core) if Z not in core else core
     if re.fullmatch(r"\d+", core):
         core = core.translate(FA_DIGITS)
@@ -37,10 +40,11 @@ def proof(t):
 
 
 def main():
-    ap = argparse.ArgumentParser()
+    ap = argparse.ArgumentParser(description="Start a styled motion reel from your take (playbook/STYLE-REEL.md).")
     ap.add_argument("--take", required=True); ap.add_argument("--srt", required=True); ap.add_argument("--out", required=True)
     ap.add_argument("--start", type=float, default=0.0); ap.add_argument("--dur", type=float, default=30.0)
-    ap.add_argument("--style", default="swiss", choices=["vogue", "vox", "swiss", "hud", "doodle"])
+    ap.add_argument("--style", default="swiss", choices=STYLES, metavar="STYLE",
+                    help="the style the render uses by default: " + ", ".join(STYLES) + " (default: swiss)")
     ap.add_argument("--lang", default="fa")
     a = ap.parse_args()
     out = Path(a.out)
