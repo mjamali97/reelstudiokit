@@ -32,7 +32,7 @@ FA_DIGITS = str.maketrans("0123456789", "۰۱۲۳۴۵۶۷۸۹")
 def proof(t):
     core = t.rstrip(".,،!؟?")
     tail = t[len(core):]
-    core = FIXES.get(core, core)
+    core = FIXES.get(core.replace("ي", "ی").replace("ك", "ک"), core.replace("ي", "ی").replace("ك", "ک"))   # Arabic ي/ك first, so the half-space below sees «ميشه» too
     core = re.sub(rf"^(ن?می)(?=(?:{STEMS}))", rf"\1{Z}", core) if Z not in core else core
     if re.fullmatch(r"\d+", core):
         core = core.translate(FA_DIGITS)

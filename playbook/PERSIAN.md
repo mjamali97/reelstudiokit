@@ -4,6 +4,9 @@
   direction on the element (`.fa { direction: rtl; unicode-bidi: isolate }`).
 - **Half-space (ZWNJ, U+200C)** in compounds and prefixes: «می‌شه», «قیمت‌گذاری», «ایده‌ها». Never strip it (some
   "humanizer" tools do). Proofread aligned words for missing half-spaces.
+- **Lint every Persian text** (script, captions, slide copy) once: `python3 -I tools/render/lint_fa.py <file> [--fix]`.
+  One run reports Arabic ي/ك, wrong digits and missing half-spaces together, spoken forms included («میشه» → «می‌شه»);
+  `--fix` writes the safe fixes. `/captions` runs it on every Persian caption file.
 - **Digits:** Persian digits (۰–۹) in Persian text. Some Persian fonts leave Latin digits out of their `unicode-range` on
   purpose, so a Latin digit falls back to another font. «درصد» rather than ٪ in stories and captions.
 - **Latin inside Persian:** wrap every Latin word that touches punctuation or a digit in `<bdi>` («به AI. ۹ تاش» rendered
