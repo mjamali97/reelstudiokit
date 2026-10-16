@@ -7,7 +7,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-const rd = (p) => fs.readFileSync(path.join(ROOT, p), "utf8");
+const rd = (p) => fs.readFileSync(path.join(ROOT, p), "utf8").replace(/\r\n/g, "\n");   // a CRLF checkout reads the same
 const ex = (p) => fs.existsSync(path.join(ROOT, p));
 let fail = 0, pass = 0;
 const ok = (c, msg) => { c ? pass++ : fail++; if (!c) console.log("❌", msg); };
