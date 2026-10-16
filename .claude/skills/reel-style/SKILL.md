@@ -24,15 +24,16 @@ then the commands (`/vogue`, `/swiss`, `/clean`…). Then wait for their pick. N
 | an evening crowd: café at night, bar, event, beauty | `/neon` 8 | `/pop` 7 | night contrast stops the scroll |
 | warm and friendly: a bakery, a family café, kids, vintage | `/retro` 7.5 | `/pop` 7.5 | nostalgic, shareable |
 | young and loud: streetwear, merch drop, app, course, Gen-Z food | `/brutal` 8 | `/pop` 7.5 | meme-native energy |
+| a person talking to camera: the owner, a coach, a doctor; tips, opinions, "4 questions to ask" | `/depth` 7.5 | `/vogue` 7.5 | the face keeps trust, words behind the head look hand-edited |
 | playful: snacks, toys, games, parties, street food | `/pop` 7.5 | `/retro` 7.5 | comic energy, bursts on the beat |
 
-All 13 can be previewed without rendering: `node tools/style-reel/stills.mjs <style> --sheet` (a row of 12 frames), or see
+All 14 can be previewed without rendering: `node tools/style-reel/stills.mjs <style> --sheet` (a row of 12 frames), or see
 `docs/showcase/styles.png`.
 
 ## Signals that move the pick
 - Real footage exists (the product, the place, the process) → use it inside the style; proof beats
   decoration.
-- The hero is a person → `/vogue`. The hero is a number → `/vox` or `/swiss`.
+- The hero is a person → `/vogue`; a person talking to camera with a steady take → `/depth`. The hero is a number → `/vox` or `/swiss`.
 - The point happens on a screen (ordering, booking) → `/hud`, only their real pages.
 - Beginners need a concept explained → `/doodle`.
 - Distance ladder first: if the topic is far from the viewer, no style saves it; say so.

@@ -6,7 +6,9 @@
 
 --take   your take with the pauses already cut (playbook/TAKE.md), and --srt timed to that file.
 --style  any style in tools/style-reel/styles/ (vogue, vox, swiss, hud, doodle, clean, neon, retro, brutal, luxe, pop,
-         chalk, receipt): the default the render uses; any can still be rendered. `--help` lists the ones installed.
+         chalk, receipt, depth): the default the render uses; any can still be rendered. `--help` lists the ones installed.
+A take from tools/take/assemble.py (--take <project>/assets/aroll.mp4 --srt <project>/assets/aroll.srt) also brings its
+subject.webm and headpos.js along when they sit next to it (cutout.py, headpos.py): the /depth style needs both.
 --lang   language of the take for the aligner (fa, en, de…); the Persian proofreading runs only for fa.
 
 Writes <out>/assets/face.mp4, <out>/assets/words.js (your SRT words on the audio, no ASR; Persian proofread) and
@@ -57,6 +59,15 @@ def main():
                     "-c:v", "libx264", "-crf", "17", "-pix_fmt", "yuv420p", "-r", "30", "-c:a", "aac", "-b:a", "192k",
                     str(out / "assets/face.mp4")], check=True)
 
+    # the cutout and head positions of a multi-clip take (they must start where face.mp4 starts)
+    for n in ("subject.webm", "headpos.js"): (out / "assets" / n).unlink(missing_ok=True)   # never the demo's
+    extra = [Path(a.take).parent / n for n in ("subject.webm", "headpos.js") if (Path(a.take).parent / n).exists()]
+    for f in extra:
+        if a.start: print(f"note: {f.name} not copied: --start {a.start:g} would put it out of step with face.mp4"); continue
+        shutil.copy2(f, out / "assets" / f.name)
+    if a.style == "depth" and not (out / "assets/subject.webm").exists() and not a.start:
+        print("note: /depth needs assets/subject.webm and headpos.js: run tools/take/cutout.py and headpos.py on the take")
+
     raw = out / "qa/words.raw.json"
     if not WHISPERX_PY.exists():
         sys.exit(f"whisperx Python not found at {WHISPERX_PY}: run `uv tool install whisperx` or set WHISPERX_PY")
@@ -69,6 +80,8 @@ def main():
     html = (out / "index.html").read_text()
     html = re.sub(r'"default":"[a-z]+"', f'"default":"{a.style}"', html, count=1)
     html = html.replace('data-duration="30"', f'data-duration="{a.dur:g}"')
+    if not (out / "assets/subject.webm").exists():   # no cutout: no video element pointing at a missing file
+        html = re.sub(r'\s*<video id="subject"[^>]*></video>', "", html)
     (out / "index.html").write_text(html)
 
     print(f"{len(out_w)} words -> {out}/assets/words.js   (style default: {a.style}, {a.dur:g} s)\n")

@@ -35,7 +35,7 @@ with a real end date, a free consultation slot. Worth the comment and true. DM i
 ## 4 · B-roll bank
 Real footage beats graphics. Once a week the owner films the type file's shot list: 3–5 s vertical clips, good light,
 one clear motion each. Keep them in `reels/_bank/<date>/` with a line per clip in `reels/_bank/INDEX.md` (what, where,
-outfit). Edits pull from the bank; the 13 styles carry the words and numbers (price card, LIST-N for steps, NAME for
+outfit). Edits pull from the bank; the 14 styles carry the words and numbers (price card, LIST-N for steps, NAME for
 the product). Screens of their own site, menu page or booking page: `tools/capture/webcap.mjs`.
 
 ## 5 · Then

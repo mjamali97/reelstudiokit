@@ -22,7 +22,7 @@ bash tools/install.sh all        # optional: HyperFrames skills and the NextWork
 swiftc -O tools/capture/ocrfind.swift -o tools/capture/ocrfind   # macOS only: finding text on screenshots of their own site
 ```
 Show them every style without rendering: `node tools/style-reel/stills.mjs <style> --sheet` for the two or three that fit their
-playbook (or `docs/showcase/styles.png` for all 13). Render one demo in the style they like
+playbook (or `docs/showcase/styles.png` for all 14). Render one demo in the style they like
 (`cd tools/style-reel && npx --yes hyperframes@0.8.46 render --variables '{"style":"<name>"}' --strict-variables -o renders/demo-<name>.mp4`)
 and show its 3 fps sheet (`qa.py --sheet`). Delete `tools/style-reel/renders/` afterwards.
 

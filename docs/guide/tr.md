@@ -3,7 +3,7 @@
 **Diller:** [English](en.md) · [فارسی](fa.md) · [العربية](ar.md) · Türkçe · [Deutsch](de.md) · [Français](fr.md) · [Italiano](it.md)
 
 Reel Studio, [Claude Code](https://claude.com/claude-code) içinde çalışan bir içerik stüdyosudur. Claude ile kendi dilinde
-konuşursun; paylaşımlarını planlar, markanın sesiyle yazar, reels videolarını 13 hareketli stilde kurgular, karuselleri,
+konuşursun; paylaşımlarını planlar, markanın sesiyle yazar, reels videolarını 14 hareketli stilde kurgular, karuselleri,
 hikâyeleri ve öne çıkan kapaklarını markanın renk ve fontlarıyla hazırlar, senin ✅ onayından sonra Zernio üzerinden yayınlar
 ve her sabah rakamları Telegram'dan gönderir. Her sayfa için çalışır: pastane, restoran, fotoğraf stüdyosu, kuaför, klinik,
 online mağaza, uzman, kişisel sayfa ya da birden çok müşterisi olan bir ajans.
@@ -83,7 +83,7 @@ gösterir, sonra `node tools/brand/apply.mjs` değişikliği video stillerine, b
 | öne çıkan kapakları | `/story` → öne çıkanlar | yiyecek, mağaza, hizmet, içerik üreticisi için üç stilde ikon setleri |
 | videoya altyazı | `/captions` | fontunla, Instagram'ın güvenli alanında, isteğe bağlı kelime kelime altyazı |
 
-**13 video stili:**
+**14 video stili:**
 
 | stil | his | en uygun |
 |---|---|---|
@@ -100,6 +100,7 @@ gösterir, sonra `node tools/brand/apply.mjs` değişikliği video stillerine, b
 | `/receipt` | fiş yazıcısı | fiyatlar, "paranın karşılığı", teslimat |
 | `/hud` | ekran arayüzü | sipariş, rezervasyon, online mağaza |
 | `/doodle` | kâğıda el çizimi | nasıl yapılır, tarifler, ipuçları |
+| `/depth` | başının arkasında kelimeler | kameraya konuşma: ipuçları, görüşler, uzmanlar |
 
 Render almadan önizleme: `node tools/style-reel/stills.mjs neon --sheet`.
 
@@ -197,5 +198,5 @@ ayarları; liste `.gitattributes` içinde), yenilikleri ve senden bir işlem ger
 ## 15 · Tüm komutlar
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
-`/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
+`/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` `/depth` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
 `/analytics` `/page-audit` · `/assets` · `/update`

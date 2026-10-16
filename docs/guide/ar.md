@@ -5,7 +5,7 @@
 **اللغات:** [English](en.md) · [فارسی](fa.md) · العربية · [Türkçe](tr.md) · [Deutsch](de.md) · [Français](fr.md) · [Italiano](it.md)
 
 ريل ستوديو استوديو محتوى يعمل داخل [Claude Code](https://claude.com/claude-code). تتحدث مع Claude بلغتك؛ فيخطط منشوراتك،
-ويكتبها بصوت علامتك التجارية، ويحرّر الريلز بـ13 أسلوب موشن، ويصمّم الكاروسيل والستوري وأغلفة الهايلايت بألوان علامتك وخطوطها،
+ويكتبها بصوت علامتك التجارية، ويحرّر الريلز بـ14 أسلوب موشن، ويصمّم الكاروسيل والستوري وأغلفة الهايلايت بألوان علامتك وخطوطها،
 وينشر عبر Zernio بعد موافقتك ✅، ويرسل لك الأرقام كل صباح على تيليغرام. يناسب أي صفحة: مخبز، مطعم، استوديو تصوير، صالون،
 عيادة، متجر إلكتروني، خبير، صفحة شخصية، أو وكالة لديها عدة عملاء.
 
@@ -87,7 +87,7 @@ bash telegram-bot/demo/demo.sh ar
 | أغلفة الهايلايت | `/story` ← هايلايت | مجموعات أيقونات للطعام والمتجر والخدمات وصانع المحتوى بثلاثة أساليب |
 | ترجمة على الفيديو | `/captions` | ترجمة مدمجة بخطك داخل المنطقة الآمنة في إنستغرام، وكلمة بكلمة اختيارياً |
 
-**أساليب الفيديو الثلاثة عشر:**
+**أساليب الفيديو الأربعة عشر:**
 
 | الأسلوب | الإحساس | الأنسب لـ |
 |---|---|---|
@@ -104,6 +104,7 @@ bash telegram-bot/demo/demo.sh ar
 | `/receipt` | طابعة إيصالات | أسعار، «ماذا تحصل مقابل المال»، توصيل |
 | `/hud` | واجهة شاشة | الطلب، الحجز، المتاجر الإلكترونية |
 | `/doodle` | رسم يدوي على ورق | شروحات، وصفات، نصائح |
+| `/depth` | كلمات خلف رأسك | الحديث أمام الكاميرا: نصائح، آراء، خبراء |
 
 معاينة أي أسلوب بلا تصيير: `node tools/style-reel/stills.mjs neon --sheet`.
 
@@ -206,7 +207,7 @@ node tools/client.mjs use cafe-dubai
 <div dir="ltr">
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
-`/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
+`/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` `/depth` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
 `/analytics` `/page-audit` · `/assets` · `/update`
 
 </div>

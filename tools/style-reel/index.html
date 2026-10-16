@@ -3,8 +3,9 @@
   data-composition-variables='[{"id":"style","type":"enum","label":"Style","default":"swiss","options":[
     {"value":"vogue","label":"Vogue editorial"},{"value":"vox","label":"Vox collage"},
     {"value":"swiss","label":"Swiss kinetic"},{"value":"hud","label":"HUD terminal"},{"value":"doodle","label":"Hand-drawn doodle"},
-    {"value":"clean","label":"Clean (your brand colours)"},{"value":"neon","label":"Neon night"},{"value":"retro","label":"Retro 70s"},{"value":"brutal","label":"Neo-brutal"},{"value":"luxe","label":"Luxe black and gold"},{"value":"pop","label":"Pop comic"},{"value":"chalk","label":"Chalkboard"},{"value":"receipt","label":"Receipt printer"}]},
-    {"id":"face","type":"enum","label":"Face colour","default":"auto","options":[{"value":"auto","label":"Style default"},{"value":"color","label":"Colour"},{"value":"bw","label":"Black and white"}]}]'>
+    {"value":"clean","label":"Clean (your brand colours)"},{"value":"neon","label":"Neon night"},{"value":"retro","label":"Retro 70s"},{"value":"brutal","label":"Neo-brutal"},{"value":"luxe","label":"Luxe black and gold"},{"value":"pop","label":"Pop comic"},{"value":"chalk","label":"Chalkboard"},{"value":"receipt","label":"Receipt printer"},{"value":"depth","label":"Depth (words behind your head)"}]},
+    {"id":"face","type":"enum","label":"Face colour","default":"auto","options":[{"value":"auto","label":"Style default"},{"value":"color","label":"Colour"},{"value":"bw","label":"Black and white"}]},
+    {"id":"grade","type":"enum","label":"Grade of your footage","default":"auto","options":[{"value":"auto","label":"Style default"},{"value":"natural","label":"Natural"},{"value":"warm","label":"Warm"},{"value":"editorial","label":"Editorial (dark room, lit face)"},{"value":"bright","label":"Bright and clean"}]}]'>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1080, height=1920" />
@@ -22,7 +23,18 @@
       #root{position:absolute;inset:0;overflow:hidden}
       #face{position:absolute;left:0;top:0;width:1080px;height:1920px;object-fit:cover;z-index:1}
       #over{position:absolute;inset:0;z-index:2;pointer-events:none}
-      #cap{position:absolute;left:140px;right:140px;top:1450px;height:130px;z-index:3;pointer-events:none}
+      /* the speaker cut out of the background (tools/take/cutout.py): anything in #over sits BEHIND the head, #front in front */
+      #subject{position:absolute;left:0;top:0;width:1080px;height:1920px;object-fit:cover;z-index:3;display:none;pointer-events:none}
+      .has-subject #subject{display:block}
+      #front{position:absolute;inset:0;z-index:4;pointer-events:none}
+      #cap{position:absolute;left:140px;right:140px;top:1450px;height:130px;z-index:5;pointer-events:none}
+      /* grades: the same filter on the footage and on its cutout so they always match; the vignette darkens the room only */
+      #vig{position:absolute;inset:0;z-index:1;pointer-events:none;display:none}
+      .grade-warm #face,.grade-warm #subject{filter:sepia(.16) saturate(.95) contrast(.96) brightness(1.04) hue-rotate(-6deg)}
+      .grade-editorial #face{filter:contrast(1.1) saturate(.82) brightness(.82) hue-rotate(-4deg)}
+      .grade-editorial #subject{filter:contrast(1.06) saturate(.86) brightness(.98)}
+      .grade-editorial #vig{display:block;background:radial-gradient(120% 80% at 50% 38%,transparent 45%,rgba(0,0,0,.55) 100%)}
+      .grade-bright #face,.grade-bright #subject{filter:brightness(1.07) contrast(1.03) saturate(1.06)}
       .cap-c{position:absolute;left:0;right:0;top:0;text-align:center;visibility:hidden;direction:rtl;white-space:nowrap}
       .cap-c span{border-radius:14px;padding:0 10px}
       .sc{position:absolute;inset:0;overflow:hidden;visibility:hidden}
@@ -39,7 +51,10 @@
     <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1080" data-height="1920">
       <video id="face" class="clip" src="assets/face.mp4" playsinline data-has-audio="true"
         data-start="0" data-duration="30" data-track-index="0" data-volume="1"></video>
+      <div id="vig"></div>
       <div id="over"></div>
+      <video id="subject" class="clip" src="assets/subject.webm" playsinline muted data-start="0" data-duration="30" data-track-index="1"></video>
+      <div id="front"></div>
       <div id="cap"></div>
 
       <!-- cues: identical for every style, each starts early by its attack so the hit lands on the frame -->
@@ -74,6 +89,7 @@
 
     <script src="assets/brand.js"></script>
     <script src="assets/words.js"></script>
+    <script src="assets/headpos.js"></script>
     <script src="styles/vogue.js"></script>
     <script src="styles/vox.js"></script>
     <script src="styles/swiss.js"></script>
@@ -87,6 +103,7 @@
     <script src="styles/pop.js"></script>
     <script src="styles/chalk.js"></script>
     <script src="styles/receipt.js"></script>
+    <script src="styles/depth.js"></script>
     <script>
       window.__timelines = window.__timelines || {};
       const vars = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) ||
@@ -108,6 +125,10 @@
 
       const css = document.createElement("style"); css.textContent = S.css; document.head.appendChild(css);
       document.getElementById("over").innerHTML = S.html;
+      document.getElementById("front").innerHTML = S.front || "";
+      if (S.subject) document.getElementById("root").classList.add("has-subject");
+      const grade = vars.grade && vars.grade !== "auto" ? vars.grade : (S.grade || "natural");
+      document.getElementById("root").classList.add("grade-" + grade);
       document.getElementById("root").classList.add("st-" + name);
       if (window.BRAND && BRAND.dir === "ltr") document.getElementById("root").classList.add("dir-ltr");
       if (vars.face === "color" || vars.face === "bw") document.getElementById("root").classList.add("face-" + vars.face);

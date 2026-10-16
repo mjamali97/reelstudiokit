@@ -27,3 +27,6 @@ brand/extracted/
 brand/preview/
 reels/_stock/
 __pycache__/
+tools/style-reel/assets/subject.webm
+tools/style-reel/assets/headpos.js
+*.webm

@@ -45,6 +45,20 @@ Every rule below is a real defect that a render once shipped with. Run all of it
   `document.fonts.load(...)`, and fail the render if `document.fonts.check` is false. A page built with `setContent` silently
   ignores `file://` fonts and falls back. Look at one rendered frame and confirm the letterforms.
 
+- **Seek-safe timelines** (the renderer jumps to any frame; the browser preview plays forward and hides these):
+  - `fromTo` placed later in the timeline gets `immediateRender: false`, or its start state shows from frame 0.
+  - State changes are `tl.set`, never `tl.call` (a call does not replay when the renderer seeks backwards).
+  - No `Date()`, `Math.random()` without a seed, or timers: the renderer's clock is not the wall clock.
+  - Hide with `opacity`, not `visibility` (a later `visibility: visible` override shows elements outside their scene).
+  - A change on a cut lands 2 ms before the cut frame (`cut - .002`), or it shows one frame late.
+  - Never end a line of code with a `//` comment and then join lines: the comment swallows the code after it.
+- **Layer order with a cutout:** footage → shade/vignette → words behind → `#subject` (the cutout) → front words →
+  captions. A shade under the cutout leaves the speaker brighter than the room. A VP9 alpha webm decodes with alpha only
+  through `-c:v libvpx-vp9` in ffmpeg; the default decoder drops it silently.
+- **Words behind a head never hide a number or the middle of a word**: only the lower ~30 % of the letters, and numbers
+  sit above the head. Check every behind-the-head word in a still on the real footage, not the demo silhouette.
+- `stills.mjs <style> --safe` paints the unsafe areas red over any frame: the fastest check while building.
+
 ## 3 · After the render, before showing (every time, all of it)
 1. `qa.py <video> --plan qa/plan.json --sheet qa/sheet.jpg`: zero FAIL. Face matches the plan, no freeze ≥ 1 s, no dead
    frame, frame 0 has content.

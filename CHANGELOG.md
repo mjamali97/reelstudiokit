@@ -3,6 +3,20 @@
 Every kit update gets a version and a short entry here; `/update` reads the new entries to you after pulling.
 Format: what changed, then **Action** when you need to do something (most updates need nothing).
 
+## 2.3.0 · 2026-10-16
+- **New style `/depth` (14 styles):** your talking head stays on screen and the punch word of each line sits behind your
+  head, the speaker cut out locally (HyperFrames `remove-background`, no upload). Lines never cover the face (placed
+  from the chin found by the face detector); numbers sit above the head; a punch-in on every cut; follow card at the end.
+- **Several clips → one reel** (`playbook/TAKE.md` → "Several clips"): `tools/take/intake.py` (contact sheets, word
+  timings with your brand names as hotwords, repeated lines with the last take marked), `assemble.py` (cut by an edit
+  list with punch-ins, frame-exact 30 fps, an SRT for the edit), `cutout.py`, `headpos.py`, `check_cuts.py` (before/after
+  frame of every cut, and a phone copy).
+- **Grades:** a `grade` variable on every style (`natural`, `warm`, `editorial`, `bright`), on the face and cutout together.
+- `stills.mjs --safe` paints Instagram's unsafe areas red; `--grade` previews a grade.
+- `new_reel.py` brings a take's cutout and head positions along; MOTION-QA lists the seek-safety traps.
+- Ideas credited to tenfoldmarc/video-edit-skill (that repo has no licence; no code from it is used).
+**Action:** none. For `/depth`, the first `cutout.py` run downloads the segmentation model once.
+
 ## 2.2.0 · 2026-10-14
 - **All 13 styles start a reel:** `new_reel.py --style` took only the five original styles (`/clean`, `/neon`, `/retro`,
   `/brutal`, `/luxe`, `/pop`, `/chalk`, `/receipt` stopped at "invalid choice"); it now reads them from `styles/`.

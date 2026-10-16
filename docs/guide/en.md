@@ -3,7 +3,7 @@
 **Languages:** English · [فارسی](fa.md) · [العربية](ar.md) · [Türkçe](tr.md) · [Deutsch](de.md) · [Français](fr.md) · [Italiano](it.md)
 
 Reel Studio is a content studio that runs inside [Claude Code](https://claude.com/claude-code). You talk to Claude in your
-language; it plans your posts, writes them in your brand's voice, edits reels in 13 motion styles, renders carousels,
+language; it plans your posts, writes them in your brand's voice, edits reels in 14 motion styles, renders carousels,
 stories and highlight covers in your brand, publishes through Zernio after your ✅, and sends you the numbers every
 morning in Telegram. It works for any page: a bakery, a restaurant, a photo studio, a salon, a clinic, an online shop, an
 expert, a personal page, or an agency with many clients.
@@ -87,7 +87,7 @@ styles, the bot's colours and the bot's voice.
 | highlight covers | `/story` → highlights | icon sets for food, shop, service, creator in three styles |
 | subtitles on a video | `/captions` | burned-in captions in your font, inside Instagram's safe zone, word-by-word optional |
 
-**The 13 video styles:**
+**The 14 video styles:**
 
 | style | feel | best for |
 |---|---|---|
@@ -104,6 +104,7 @@ styles, the bot's colours and the bot's voice.
 | `/receipt` | thermal printer | prices, "what you get", delivery |
 | `/hud` | screen interface | ordering, booking, online shops |
 | `/doodle` | hand-drawn on paper | how-tos, recipes, tips |
+| `/depth` | words behind your head | talking to camera: tips, opinions, experts |
 
 Preview any style without rendering: `node tools/style-reel/stills.mjs neon --sheet`.
 
@@ -204,5 +205,5 @@ formats, reels, bot settings: see `.gitattributes`), shows what is new and wheth
 ## 15 · All commands
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
-`/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
+`/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` `/depth` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
 `/analytics` `/page-audit` · `/assets` · `/update`

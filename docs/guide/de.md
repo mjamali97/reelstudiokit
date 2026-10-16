@@ -3,7 +3,7 @@
 **Sprachen:** [English](en.md) · [فارسی](fa.md) · [العربية](ar.md) · [Türkçe](tr.md) · Deutsch · [Français](fr.md) · [Italiano](it.md)
 
 Reel Studio ist ein Content-Studio, das in [Claude Code](https://claude.com/claude-code) läuft. Du sprichst mit Claude in deiner
-Sprache; es plant deine Beiträge, schreibt sie in der Stimme deiner Marke, schneidet Reels in 13 Motion-Stilen, gestaltet
+Sprache; es plant deine Beiträge, schreibt sie in der Stimme deiner Marke, schneidet Reels in 14 Motion-Stilen, gestaltet
 Karussells, Stories und Highlight-Cover in deinen Markenfarben und -schriften, veröffentlicht nach deinem ✅ über Zernio und
 schickt dir jeden Morgen die Zahlen in Telegram. Es passt zu jeder Seite: Bäckerei, Restaurant, Fotostudio, Salon, Praxis,
 Onlineshop, Expertin oder Experte, persönliche Seite – oder eine Agentur mit vielen Kunden.
@@ -83,7 +83,7 @@ Vorschau, dann überträgt `node tools/brand/apply.mjs` die Änderung in die Vid
 | Highlight-Cover | `/story` → Highlights | Icon-Sets für Essen, Shop, Dienstleistung, Creator in drei Stilen |
 | Untertitel im Video | `/captions` | eingebrannte Untertitel in deiner Schrift, im sicheren Bereich von Instagram, optional Wort für Wort |
 
-**Die 13 Videostile:**
+**Die 14 Videostile:**
 
 | Stil | Gefühl | ideal für |
 |---|---|---|
@@ -100,6 +100,7 @@ Vorschau, dann überträgt `node tools/brand/apply.mjs` die Änderung in die Vid
 | `/receipt` | Bondrucker | Preise, „was du fürs Geld bekommst“, Lieferung |
 | `/hud` | Bildschirm-Interface | Bestellen, Buchen, Onlineshops |
 | `/doodle` | handgezeichnet auf Papier | Anleitungen, Rezepte, Tipps |
+| `/depth` | Wörter hinter deinem Kopf | in die Kamera sprechen: Tipps, Meinungen, Expert:innen |
 
 Vorschau ohne Rendern: `node tools/style-reel/stills.mjs neon --sheet`.
 
@@ -197,5 +198,5 @@ Reels, Bot-Einstellungen; Liste in `.gitattributes`), und zeigt, was neu ist und
 ## 15 · Alle Befehle
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
-`/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
+`/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` `/depth` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
 `/analytics` `/page-audit` · `/assets` · `/update`

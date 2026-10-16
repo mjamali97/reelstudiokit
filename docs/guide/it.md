@@ -3,7 +3,7 @@
 **Lingue:** [English](en.md) · [فارسی](fa.md) · [العربية](ar.md) · [Türkçe](tr.md) · [Deutsch](de.md) · [Français](fr.md) · Italiano
 
 Reel Studio è uno studio di contenuti che gira dentro [Claude Code](https://claude.com/claude-code). Parli con Claude nella tua
-lingua; pianifica i tuoi post, li scrive con la voce del tuo brand, monta i reel in 13 stili animati, crea caroselli, storie e
+lingua; pianifica i tuoi post, li scrive con la voce del tuo brand, monta i reel in 14 stili animati, crea caroselli, storie e
 copertine delle storie in evidenza con i colori e i font del tuo brand, pubblica tramite Zernio dopo il tuo ✅ e ogni mattina ti
 manda i numeri su Telegram. Va bene per qualsiasi pagina: pasticceria, ristorante, studio fotografico, salone, studio medico,
 negozio online, professionista, pagina personale, o un'agenzia con molti clienti.
@@ -83,7 +83,7 @@ il tuo ✅ → `/publish` → ✅ sulla scheda in Telegram → `/analytics` una 
 | copertine in evidenza | `/story` → in evidenza | set di icone per cibo, negozio, servizi, creator in tre stili |
 | sottotitoli sul video | `/captions` | sottotitoli impressi nel tuo font, nella zona sicura di Instagram, parola per parola a scelta |
 
-**I 13 stili video:**
+**I 14 stili video:**
 
 | stile | atmosfera | ideale per |
 |---|---|---|
@@ -100,6 +100,7 @@ il tuo ✅ → `/publish` → ✅ sulla scheda in Telegram → `/analytics` una 
 | `/receipt` | stampante di scontrini | prezzi, «cosa ottieni con i tuoi soldi», consegne |
 | `/hud` | interfaccia a schermo | ordini, prenotazioni, negozi online |
 | `/doodle` | disegnato a mano su carta | tutorial, ricette, consigli |
+| `/depth` | parole dietro la tua testa | parlare in camera: consigli, opinioni, esperti |
 
 Anteprima senza render: `node tools/style-reel/stills.mjs neon --sheet`.
 
@@ -197,5 +198,5 @@ impostazioni del bot; elenco in `.gitattributes`) e mostra le novità e se serve
 ## 15 · Tutti i comandi
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
-`/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
+`/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` `/depth` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
 `/analytics` `/page-audit` · `/assets` · `/update`

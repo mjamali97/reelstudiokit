@@ -82,7 +82,7 @@ fi
 [ "$LEVEL" = core ] && { echo; [ $MISSING = 0 ] && echo "Core tools ready. Video tools: bash tools/install.sh video" || { echo "Some core pieces failed (✗ above); fix them and run this again."; exit 1; }; exit 0; }
 
 TIER=video
-info "5 · HyperFrames 0.8.46 (HTML → MP4 engine of the 13 video styles; Apache-2.0)"
+info "5 · HyperFrames 0.8.46 (HTML → MP4 engine of the 14 video styles; Apache-2.0)"
 if [ "$LEVEL" = check ]; then
   HFV=$(cd tools/style-reel && npx --no -- hyperframes@0.8.46 --version 2>/dev/null </dev/null | tail -1)
   [ "$HFV" = 0.8.46 ] && ok "hyperframes $HFV" || no "hyperframes 0.8.46 (bash tools/install.sh video)"

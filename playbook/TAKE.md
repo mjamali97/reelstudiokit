@@ -33,3 +33,30 @@ bash tools/take/audio.sh measure reels/<slug>/take/face-cut.mp4
 - Never a compressor on a good take: it raised the room noise between words by 11 dB once, and the creator heard it at once.
 - After any change compare the noise floor between words with the source, not only the LUFS number.
 - Apply the audio pass to the final render (the motion render carries the take's audio plus the cues).
+
+## Several clips · pick the takes, cut by an edit list
+For a reel filmed as many raw clips (a line repeated until it lands, two angles, a 4K phone). The originals are only read.
+```bash
+tools/py tools/take/intake.py reels/<slug>/take <clips or folder> [--newest 5] --lang fa --names "Brand, Product"
+```
+- Look at `work/sheets.jpg` (angles, framing, light) and read `transcript.md`: every line with times, and REPEATS (a line
+  said more than once, the last full take marked; usually the best, check it).
+- Write `reels/<slug>/take/edl.json`, one entry per kept line, in reel order:
+  `{"id": "hook", "clip": "c2", "in": 12.66, "out": 15.72, "zoom": 1.3, "cx": 0.5, "cy": 0.4}`.
+  `in` ~0.06 s before the first word, `out` where the silence after the last word starts (never on a word: `stumbles.py`
+  logic applies). `zoom` > 1 punches in; vary it between neighbouring segments from the same angle so a cut never looks
+  like a jump. `line` is optional (taken from the clip's words).
+```bash
+tools/py tools/take/assemble.py reels/<slug>/take       # assets/aroll.mp4 (CFR 30, 1080x1920), aroll.srt, segments.json
+tools/py tools/take/cutout.py   reels/<slug>/take       # assets/subject.webm: the speaker cut out (local, no upload)
+tools/py tools/take/headpos.py reels/<slug>/take   # assets/headpos.js: head top, chin, MOVES per segment
+```
+- `assemble.py` prints `OK` only when the file has exactly the planned frames. A mismatch breaks every overlay: fix it first.
+- Proofread `assets/aroll.srt` (the words the ASR heard, `PERSIAN.md`), then start the edit from `aroll.mp4` + `aroll.srt`
+  with `new_reel.py` (`STYLE-REEL.md` step 3); it copies `subject.webm` and `headpos.js` along (the `/depth` style needs both).
+- `cutout.py` and `headpos.py` only when the style puts words behind the speaker (`/depth`). A busy background or a head
+  that moves a lot (headpos says `MOVES`) → words in front for that segment.
+- After the render: `tools/py tools/take/check_cuts.py reels/<slug>/take <render.mp4> --phone`: the frame before and after
+  every cut, side by side (`work/cut_check.jpg`), and a 720p copy to watch on a phone before anyone else sees it.
+- The grade: `index.html`'s `grade` variable (`auto` = the style's own, or `natural`, `warm`, `editorial`, `bright`); preview
+  with `stills.mjs <style> --grade warm`. Grade the face and the cutout together, never one of them.

@@ -19,7 +19,8 @@ The kit's own code and texts are under the Business Source License 1.1 from vers
 | HyperFrames | fetched by `npx hyperframes@0.8.46` | Apache 2.0 |
 | Playwright | `tools/package.json` (render, captions, brand tools, capture) | Apache 2.0 |
 | @cloudflare/puppeteer | `telegram-bot` (npm) | Apache 2.0 |
-| YuNet face detector (OpenCV Zoo) | downloaded by `qa.py` on first use | MIT |
+| YuNet face detector (OpenCV Zoo) | downloaded by `qa.py` / `tools/take/headpos.py` on first use | MIT |
+| U²-Net human segmentation (Qin et al.) | downloaded by HyperFrames `remove-background` (`tools/take/cutout.py`) on first use | Apache 2.0 |
 | persian-motion-director (atmirrr) | cloned to `tools/vendor/` by `tools/install.sh video` (not in this repo) | MIT |
 | WhisperX (Max Bain) | installed by `uv tool install whisperx` (not in this repo) | BSD 2-Clause |
 | NextWork AI video editor | Claude Code plugin installed by `tools/install.sh all` (not in this repo) | MIT |

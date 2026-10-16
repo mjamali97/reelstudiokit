@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// showcase.mjs · rebuild the images in docs/showcase/ that the README shows: the 13 video styles, the 10 carousel templates,
+// showcase.mjs · rebuild the images in docs/showcase/ that the README shows: the 14 video styles, the 10 carousel templates,
 // the story templates, highlight covers. Run it before a release when anything visual changed.
 //
 //   node tools/render/showcase.mjs [--only styles,carousels,stories,highlights]
@@ -15,7 +15,7 @@ const OUT = path.join(ROOT, "docs/showcase"); fs.mkdirSync(OUT, { recursive: tru
 const only = (process.argv[process.argv.indexOf("--only") + 1] || "styles,carousels,stories,highlights").split(",");
 const url = (p) => pathToFileURL(p).href;
 const STYLES = [["clean", 8.6], ["vogue", 8.6], ["luxe", 8.9], ["vox", 8.6], ["swiss", 8.6], ["brutal", 10.4], ["pop", 10.6],
-  ["retro", 8.6], ["neon", 8.9], ["chalk", 8.9], ["receipt", 10.4], ["hud", 8.6], ["doodle", 8.6]];
+  ["retro", 8.6], ["neon", 8.9], ["chalk", 8.9], ["receipt", 10.4], ["hud", 8.6], ["doodle", 8.6], ["depth", 8.9]];
 
 async function sheet(name, cells, { cols, w, title }) {
   const h = Math.round(w * cells[0].ratio);
@@ -34,7 +34,7 @@ ${cells.map((c) => `<figure style="margin:0"><img src="${url(c.file)}" style="wi
 if (only.includes("styles")) {
   const dir = path.join(ROOT, "tools/style-reel/renders/showcase");
   for (const [s, t] of STYLES) execFileSync("node", [path.join(ROOT, "tools/style-reel/stills.mjs"), s, "--t", String(t), "--out", dir], { stdio: "ignore" });
-  await sheet("styles", STYLES.map(([s, t]) => ({ file: path.join(dir, `${s}-${String(t).replace(".", "_")}.png`), label: `/${s}`, ratio: 1920 / 1080 })), { cols: 7, w: 230, title: "13 video styles · the same reel, 13 looks" });
+  await sheet("styles", STYLES.map(([s, t]) => ({ file: path.join(dir, `${s}-${String(t).replace(".", "_")}.png`), label: `/${s}`, ratio: 1920 / 1080 })), { cols: 7, w: 230, title: "14 video styles · the same reel, 14 looks" });
 }
 if (only.includes("carousels")) {
   const base = path.join(ROOT, "examples/bakery/carousels");

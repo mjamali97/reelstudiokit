@@ -2,7 +2,8 @@
 // stills.mjs · frames of a style without rendering the video: opens index.html in Chrome, seeks the timeline, screenshots.
 // For quick looks while building a style, and for the showcase images.
 //
-//   node tools/style-reel/stills.mjs <style> [--t 1,3.5,8,15,22,27] [--out renders/stills] [--sheet] [--w 270]
+//   node tools/style-reel/stills.mjs <style> [--t 1,3.5,8,15,22,27] [--out renders/stills] [--sheet] [--w 270] [--safe] [--grade warm]
+//   --safe draws Instagram's unsafe areas in red (top 250, bottom from 1580, the button rail x>940 y>1100); --grade previews a grade
 //
 // Writes <out>/<style>-<t>.png, and with --sheet one row <out>/<style>-sheet.png. The face video is a still here.
 import fs from "node:fs";
@@ -22,12 +23,16 @@ const files = [];
 try {
   const pg = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   const errs = []; pg.on("pageerror", (e) => errs.push(e.message));
-  await pg.goto(pathToFileURL(path.join(HERE, "index.html")).href + "?style=" + encodeURIComponent(style));
+  await pg.goto(pathToFileURL(path.join(HERE, "index.html")).href + "?style=" + encodeURIComponent(style) + (opt("--grade") ? "&grade=" + opt("--grade") : ""));
+  if (args.includes("--safe")) await pg.addStyleTag({ content: `body::after{content:"";position:fixed;inset:0;z-index:99;pointer-events:none;background:
+    linear-gradient(rgba(255,0,0,.28),rgba(255,0,0,.28)) top/100% 250px no-repeat,linear-gradient(rgba(255,0,0,.28),rgba(255,0,0,.28)) bottom/100% 340px no-repeat,
+    linear-gradient(rgba(255,0,0,.28),rgba(255,0,0,.28)) right 0 top 1100px/140px 480px no-repeat}` });
   for (let i = 0; i < 100 && !(await pg.evaluate(() => !!(window.__timelines && window.__timelines.main))); i++) await pg.waitForTimeout(150);
   await pg.evaluate(() => document.fonts.ready);
   if (errs.length) throw new Error("page errors: " + errs.join(" | "));
   for (const t of times) {
-    await pg.evaluate((t) => { window.__timelines.main.seek(t, false); const v = document.getElementById("face"); if (v) v.currentTime = Math.min(t, (v.duration || 30) - .05); }, t);
+    await pg.evaluate((t) => { window.__timelines.main.seek(t, false); document.querySelectorAll("video").forEach((v) => { v.currentTime = Math.min(t, (v.duration || 30) - .05); }); }, t);
+    await pg.evaluate(() => Promise.all([...document.querySelectorAll("video")].map((v) => v.seeking ? new Promise((r) => v.addEventListener("seeked", r, { once: true })) : 0)));
     await pg.waitForTimeout(120);
     const f = path.join(out, `${style}-${String(t).replace(".", "_")}.png`); await pg.screenshot({ path: f }); files.push([t, f]);
   }

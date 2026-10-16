@@ -3,7 +3,7 @@
 **Langues :** [English](en.md) · [فارسی](fa.md) · [العربية](ar.md) · [Türkçe](tr.md) · [Deutsch](de.md) · Français · [Italiano](it.md)
 
 Reel Studio est un studio de contenu qui tourne dans [Claude Code](https://claude.com/claude-code). Tu parles à Claude dans ta
-langue ; il planifie tes publications, les écrit avec la voix de ta marque, monte tes reels dans 13 styles animés, crée
+langue ; il planifie tes publications, les écrit avec la voix de ta marque, monte tes reels dans 14 styles animés, crée
 carrousels, stories et couvertures de stories à la une aux couleurs et polices de ta marque, publie via Zernio après ton ✅,
 et t'envoie les chiffres chaque matin sur Telegram. Il convient à toute page : boulangerie, restaurant, studio photo, salon,
 cabinet, boutique en ligne, expert, page personnelle, ou agence avec plusieurs clients.
@@ -83,7 +83,7 @@ ton ✅ → `/publish` → ✅ sur la carte dans Telegram → `/analytics` une f
 | des couvertures à la une | `/story` → à la une | jeux d'icônes pour restauration, boutique, service, créateur en trois styles |
 | des sous-titres | `/captions` | sous-titres incrustés dans ta police, dans la zone sûre d'Instagram, mot à mot en option |
 
-**Les 13 styles vidéo :**
+**Les 14 styles vidéo :**
 
 | style | ambiance | idéal pour |
 |---|---|---|
@@ -100,6 +100,7 @@ ton ✅ → `/publish` → ✅ sur la carte dans Telegram → `/analytics` une f
 | `/receipt` | imprimante à tickets | prix, « ce que tu as pour ton argent », livraison |
 | `/hud` | interface écran | commande, réservation, boutique en ligne |
 | `/doodle` | dessiné à la main | tutoriels, recettes, astuces |
+| `/depth` | des mots derrière ta tête | face caméra : conseils, avis, experts |
 
 Aperçu sans rendu : `node tools/style-reel/stills.mjs neon --sheet`.
 
@@ -198,5 +199,5 @@ formats, reels, réglages du bot ; liste dans `.gitattributes`) et montre les no
 ## 15 · Toutes les commandes
 
 `/setup` `/brand` `/demo` · `/content-plan` `/reel-idea` `/reel-style` · `/clean` `/vogue` `/luxe` `/vox` `/swiss` `/brutal`
-`/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
+`/pop` `/retro` `/neon` `/chalk` `/receipt` `/hud` `/doodle` `/depth` · `/carousel` `/story` `/captions` · `/publish` `/telegram-post` ·
 `/analytics` `/page-audit` · `/assets` · `/update`

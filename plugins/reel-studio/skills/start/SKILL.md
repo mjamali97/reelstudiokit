@@ -17,7 +17,7 @@ Talk in the user's language.
    then run it again until it says the core tools are ready. Video tools come later (`bash tools/install.sh video`).
 4. Offer, with AskUserQuestion: **Start setup** (recommended) · **Try the demo first** (`bash <folder>/telegram-bot/demo/demo.sh <lang>`:
    their bots running locally with fake Telegram, Instagram and Gemini, in a browser page; no accounts).
-5. Hand over: the studio's own skills (`/setup`, `/demo`, `/carousel`, the 13 styles…) load when Claude Code runs **inside
+5. Hand over: the studio's own skills (`/setup`, `/demo`, `/carousel`, the 14 styles…) load when Claude Code runs **inside
    that folder**. Tell them to run `cd <folder> && claude` and type `/setup`, or, if this session can change its working
    directory, continue there. The guide in their language: `<folder>/docs/guide/<en|fa|ar|tr|de|fr|it>.md`.
 

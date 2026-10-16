@@ -1,13 +1,13 @@
 # Reel Studio
 
 **A content studio for Instagram, YouTube Shorts and Telegram that runs inside Claude Code.** It learns your brand (your
-site, your page, your files), writes in your voice, edits reels in 13 motion styles, makes carousels, stories and
+site, your page, your files), writes in your voice, edits reels in 14 motion styles, makes carousels, stories and
 highlight covers in your colours and fonts, publishes after your ✅, and sends you the numbers every morning. For any
 business: a bakery, a restaurant, a photo studio, a salon, a clinic, a shop, an expert, or an agency with many clients.
 
 **Guide:** [English](docs/guide/en.md) · [فارسی](docs/guide/fa.md) · [العربية](docs/guide/ar.md) · [Türkçe](docs/guide/tr.md) · [Deutsch](docs/guide/de.md) · [Français](docs/guide/fr.md) · [Italiano](docs/guide/it.md)
 
-![13 video styles](docs/showcase/styles.png)
+![14 video styles](docs/showcase/styles.png)
 
 ## Try it in five minutes, no accounts
 
@@ -62,7 +62,7 @@ inbox, their own reports and dashboard link. See [playbook/AGENCY.md](playbook/A
 
 | | |
 |---|---|
-| `.claude/skills/` | 28 skills: onboarding, planning, 13 video styles, carousels, stories, captions, licensed assets, publishing, analytics, audits, updates |
+| `.claude/skills/` | 29 skills: onboarding, planning, 14 video styles, carousels, stories, captions, licensed assets, publishing, analytics, audits, updates |
 | `playbook/` | the runbooks behind them, and 20 business playbooks (restaurant, bakery, photo studio, online shop, salon, clinic, gym, real estate, florist, jewellery, travel, weddings…) |
 | `tools/` | renderers (carousels, stories, captions), brand tools (extract from a website, palette from images, preview, apply), the HyperFrames reel engine, QA, Zernio CLI, agency folders |
 | `fonts/` + `assets/` | 51 open-licence font families (Latin, Persian incl. Nastaliq, Arabic), ~7,000 icons, CC0 illustrations recoloured to your brand, Noto emoji; `tools/assets/fetch.mjs` for CC0/stock photos, video, music and sound effects with a credits file |

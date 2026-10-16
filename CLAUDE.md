@@ -11,8 +11,8 @@ If CREATOR.md still says `STATUS: not set up`, run `/setup` first. In agency mod
 `node tools/client.mjs list` first: profile/, brand/ and reels/ belong to the ▶ active client.
 
 ## What is where
-- `.claude/skills/` · onboarding `/setup` `/brand` `/demo` · planning `/content-plan` `/reel-idea` `/reel-style` · 13 video styles
-  `/vogue` `/vox` `/swiss` `/hud` `/doodle` `/clean` `/neon` `/retro` `/brutal` `/luxe` `/pop` `/chalk` `/receipt` · other formats
+- `.claude/skills/` · onboarding `/setup` `/brand` `/demo` · planning `/content-plan` `/reel-idea` `/reel-style` · 14 video styles
+  `/vogue` `/vox` `/swiss` `/hud` `/doodle` `/clean` `/neon` `/retro` `/brutal` `/luxe` `/pop` `/chalk` `/receipt` `/depth` · other formats
   `/carousel` `/story` `/captions` `/assets` · out `/publish` `/telegram-post` · numbers `/analytics` `/page-audit` · `/update`
 - `playbook/` · runbooks: IDEA-TO-REEL, BUSINESS-REEL, STYLE-REEL, MOTION-QA, TAKE, CAPTION, COVER-AND-GATE, PUBLISH,
   TELEGRAM-POST, FORMATS (the brand's own formats), SETUP-ACCOUNTS, AGENCY, PERSIAN (RTL rules)
@@ -24,7 +24,7 @@ If CREATOR.md still says `STATUS: not set up`, run `/setup` first. In agency mod
 - `fonts/` · 51 open-licence families (`fonts/gallery.html`) · `assets/illustrations/` CC0 doodles · `tools/assets/fetch.mjs` licensed stock with credits · · `tools/brand/` extract (website → brand), palette (images → colours),
   preview (brand on real frames), apply
 - `tools/render/` · carousels (10 templates), stories (11, incl. a brand-coloured OpenStreetMap map) + highlight covers, captions burner, icons (4 sets), illustrations · `tools/style-reel/` HyperFrames
-  engine + 13 styles (`stills.mjs` previews) · `tools/take/` cut + audio · `tools/capture/` their own site · `tools/zernio/` CLI
+  engine + 14 styles (`stills.mjs` previews) · `tools/take/` cut + audio · `tools/capture/` their own site · `tools/zernio/` CLI
 - `tools/install.sh` + `tools/STACK.md` · every tool (HyperFrames, WhisperX, Playwright, persian-motion-director, the NextWork
   editor plugin…) pinned, with licences · `tools/client.mjs` agency folders
 - `telegram-bot/` · Studio + Publisher bots (Cloudflare Worker), 7 languages, reports, inbox, competitors, agency; deploy = push to

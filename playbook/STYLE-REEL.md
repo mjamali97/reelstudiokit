@@ -1,7 +1,7 @@
 # Styled motion reel · the runbook
 
-**Trigger:** any of the 13 style skills, `/vogue` `/vox` `/swiss` `/hud` `/doodle` `/clean` `/neon` `/retro` `/brutal` `/luxe`
-`/pop` `/chalk` `/receipt` (or «با سبک ووگ ادیت کن»), or `/reel-style` to pick one first.
+**Trigger:** any of the 14 style skills, `/vogue` `/vox` `/swiss` `/hud` `/doodle` `/clean` `/neon` `/retro` `/brutal` `/luxe`
+`/pop` `/chalk` `/receipt` `/depth` (or «با سبک ووگ ادیت کن»), or `/reel-style` to pick one first.
 **Template:** `tools/style-reel/` (HyperFrames engine shell, one style module per style in `styles/`, `qa.py`, fonts, icons,
 sfx, `new_reel.py`).
 **Worked example:** the demo in the template (a made-up bakery, every scene type in every style). Rewrite
@@ -18,6 +18,7 @@ source. A style is a look, never a reason to invent a figure.
 
 ## 2 · Their take → a cut take and SRT
 `TAKE.md`: silence cuts, the SRT retimed to the cut file (`face-cut.mp4`), audio measured.
+Filmed as several clips (retakes, angles)? `TAKE.md` → "Several clips": the take is `aroll.mp4` + `aroll.srt`.
 
 ## 3 · Start the project
 ```bash
