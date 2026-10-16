@@ -125,7 +125,7 @@ approvals, reports and inbox on the phone; Cloudflare + GitHub = where the bots 
 time; they can stop after any block. Test mode until phase 10: posts reach only their own chat, Zernio in dry run.
 
 ## 9 · Baseline from data
-`python3 -I tools/zernio/zernio.py audit` → HOOKS.md (their top posts and what the hooks did), REEL_DAYS/REEL_TIME from their
+`tools/py -I tools/zernio/zernio.py audit` → HOOKS.md (their top posts and what the hooks did), REEL_DAYS/REEL_TIME from their
 audience's online hours, then the full `/page-audit` with numbers, compared with phase 5. New account (< 10 posts): keep
 the defaults and say so.
 

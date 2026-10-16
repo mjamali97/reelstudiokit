@@ -8,7 +8,7 @@ import html, json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-F = json.loads((ROOT / "fonts/fonts.json").read_text())
+F = json.loads((ROOT / "fonts/fonts.json").read_text(encoding="utf-8"))
 SAMPLE = {
     "persian": "کیک تولد سه طبقه، با ۲۰ درصد تخفیف",
     "arabic": "كعكة عيد ميلاد بثلاث طبقات، بخصم ٢٠٪",
@@ -38,5 +38,5 @@ header{{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}}header span{{
 </style></head><body><main><h1>Font library</h1><p>{len(F)} families, all SIL Open Font License 1.1 (free to use in videos, images and web pages; the licence file is in each folder).
 Use one in your brand by pointing <code>tools/style-reel/assets/fonts.css</code> and <code>brand/tokens.css</code> at its <code>font.css</code>.</p>
 {"".join(rows)}</main></body></html>"""
-(ROOT / "fonts/gallery.html").write_text(page)
+(ROOT / "fonts/gallery.html").write_text(page, encoding="utf-8")
 print("fonts/gallery.html:", len(F), "families")

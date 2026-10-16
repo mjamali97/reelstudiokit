@@ -19,6 +19,8 @@ bash tools/install.sh
 bash telegram-bot/demo/demo.sh it
 ```
 
+**Windows:** in PowerShell, `powershell -ExecutionPolicy Bypass -File tools\install.ps1` (con `-Install` installa Git, Node, Python, ffmpeg, uv e Chrome tramite winget), poi `node telegram-bot\demo\demo.mjs`. Claude Code esegue i comandi del kit in Git Bash, quindi il resto di questa guida funziona così com'è.
+
 Si apre una pagina con tre colonne: il tuo **bot Studio**, il tuo **bot Publisher** e il tuo **canale**. Premi 📝 Bozze → ✅ sul post →
 il ✅ finale nella colonna Publisher, e guardalo arrivare nel canale. Apri 📊 Dashboard e 💬 Posta in arrivo, invia un link.
 Nulla esce dal tuo computer. Fermalo con Ctrl-C.
@@ -30,7 +32,7 @@ in evidenza. `fonts/gallery.html` mostra i 51 font. In Claude Code, `/demo` ti g
 
 | | |
 |---|---|
-| Computer | macOS, Linux, o Windows con WSL2 |
+| Computer | macOS, Linux, o Windows 10/11 (senza WSL; funziona anche con WSL2) |
 | Software | git, Node 20+, Python 3.11+, ffmpeg, Google Chrome, uv (`bash tools/install.sh` ti dice cosa manca e come installarlo) |
 | Claude Code | un abbonamento Claude o una chiave API |
 | Account (solo per andare online) | un account Instagram professionale, [Zernio](https://zernio.com) (pubblicazione e statistiche), Telegram, una chiave Gemini gratuita, un account Cloudflare gratuito, GitHub |
@@ -182,6 +184,7 @@ impostazioni del bot; elenco in `.gitattributes`) e mostra le novità e se serve
 | problema | soluzione |
 |---|---|
 | `install.sh` dice che manca qualcosa | installalo con il comando che stampa, poi rilancia |
+| Windows: `python3` non trovato o testo persiano illeggibile | avvia gli strumenti Python con `tools/py` (Git Bash) o `tools\py.cmd` (PowerShell) |
 | un render dice che un font non è stato caricato | l'id del font in `brand/brand.json` non è in `fonts/fonts.json`, o il percorso `css` del tuo font è sbagliato |
 | il bot non risponde | apri tu `<BOT_URL>/setup?key=<SETUP_KEY>&info=1` e controlla entrambi i webhook |
 | nessun numero nel rapporto | l'account Instagram deve essere professionale e collegato in Zernio; un account nuovo ha bisogno di qualche giorno di dati |

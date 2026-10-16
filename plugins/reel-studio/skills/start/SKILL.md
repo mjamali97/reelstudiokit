@@ -12,7 +12,8 @@ Talk in the user's language.
    If the folder exists and already has `profile/CREATOR.md`, it is a studio: skip to step 4.
 2. Clone it: `git clone https://github.com/mjamali97/reelstudiokit.git <folder>`. No git: download
    https://github.com/mjamali97/reelstudiokit/archive/refs/heads/main.zip and unzip it there.
-3. Install the core tools: `bash <folder>/tools/install.sh`. It checks git, Node 20+, Python 3.11+, ffmpeg, Chrome and uv
+3. Install the core tools: `bash <folder>/tools/install.sh` (on Windows this runs `tools\install.ps1`, the same installer for
+   PowerShell; with `-Install` it installs missing programs with winget, which the user approves). It checks git, Node 20+, Python 3.11+, ffmpeg, Chrome and uv
    and prints how to install anything missing; fix those with the user (they run installers that need a password themselves),
    then run it again until it says the core tools are ready. Video tools come later (`bash tools/install.sh video`).
 4. Offer, with AskUserQuestion: **Start setup** (recommended) · **Try the demo first** (`bash <folder>/telegram-bot/demo/demo.sh <lang>`:

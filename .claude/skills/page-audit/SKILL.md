@@ -21,7 +21,7 @@ their voice), so the audit ends with something they can use in the next ten minu
 
 ## 1 · Collect
 
-1. **Numbers (Zernio, read-only):** `python3 -I tools/zernio/zernio.py audit` → `research/analytics/audit.json`
+1. **Numbers (Zernio, read-only):** `tools/py -I tools/zernio/zernio.py audit` → `research/analytics/audit.json`
    (30-day totals, follower history, audience of followers and of engaged viewers by age/gender/city/country, online
    hours, best times, posting frequency vs engagement, content decay, every post's numbers). Pieces a small or new
    account lacks are listed as "not available"; say so, do not fill them in.

@@ -24,7 +24,7 @@ BASE = os.environ.get("ZERNIO_API", "https://zernio.com/api/v1")
 def key():
     k = os.environ.get("ZERNIO_API_KEY")
     if not k and (ROOT / ".env").exists():
-        for line in (ROOT / ".env").read_text().splitlines():
+        for line in (ROOT / ".env").read_text(encoding="utf-8").splitlines():
             if line.startswith("ZERNIO_API_KEY="):
                 k = line.split("=", 1)[1].strip().strip('"')
     if not k:
@@ -74,7 +74,7 @@ def cmd_draft(a):
     ig = acc("instagram")
     if not ig:
         sys.exit("no Instagram account connected in Zernio")
-    caption = Path(a.caption).read_text().strip()
+    caption = Path(a.caption).read_text(encoding="utf-8").strip()
     if a.images:   # Zernio: several mediaItems on one Instagram post = a carousel, slides in this order
         r = call("POST", "/posts", {"content": caption, "mediaItems": [{"type": "image", "url": u} for u in a.images],
                                     "platforms": [{"platform": "instagram", "accountId": ig["_id"]}], "isDraft": True})
@@ -84,7 +84,7 @@ def cmd_draft(a):
     platforms = [{"platform": "instagram", "accountId": ig["_id"], "platformSpecificData": {"shareToFeed": True, **({"instagramThumbnail": a.cover} if a.cover else {})}}]
     yt = acc("youtube") if a.yt_video else None
     if a.yt_video and yt:
-        platforms.append({"platform": "youtube", "accountId": yt["_id"], "customContent": Path(a.yt_desc).read_text().strip() if a.yt_desc else caption,
+        platforms.append({"platform": "youtube", "accountId": yt["_id"], "customContent": Path(a.yt_desc).read_text(encoding="utf-8").strip() if a.yt_desc else caption,
                           "customMedia": [{"type": "video", "url": a.yt_video, **({"thumbnail": a.cover} if a.cover else {})}],
                           "platformSpecificData": {"title": (a.yt_title or "")[:100], "visibility": "public", "madeForKids": False}})
     r = call("POST", "/posts", {"content": caption, "mediaItems": media, "platforms": platforms, "isDraft": True})
@@ -116,7 +116,7 @@ def cmd_analytics(a):
     rows.sort(key=lambda r: r["posted"], reverse=True)
     if a.out:
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-        Path(a.out).write_text(json.dumps(rows, ensure_ascii=False, indent=1))
+        Path(a.out).write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"{'posted':10} {'views':>8} {'saves/1k':>8} {'shares/1k':>9} {'skip%':>6}  hook")
     for r in rows:
         print(f"{r['posted']:10} {r['views']:>8} {str(r['savesPer1k']):>8} {str(r['sharesPer1k']):>9} {str(r['skipRate']):>6}  {r['hook']}")
@@ -168,7 +168,7 @@ def cmd_audit(a):
         page += 1
     out["posts"] = posts
     path = Path(a.out or ROOT / "research/analytics/audit.json"); path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(out, ensure_ascii=False, indent=1))
+    path.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     missing = [k for k, v in out.items() if isinstance(v, dict) and "error" in v]
     print(f"audit data → {path} · {len(posts)} posts" + (f" · not available: {', '.join(missing)}" if missing else ""))
 

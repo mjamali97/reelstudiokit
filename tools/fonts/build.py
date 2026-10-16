@@ -129,12 +129,12 @@ def main():
         for w, f, rng in faces:
             css.append(f'@font-face{{font-family:"{name}";src:url("{f}") format("woff2");font-weight:{w};font-style:normal;font-display:block'
                        + (f";unicode-range:{rng}" if rng else "") + "}")
-        (dst / "font.css").write_text("\n".join(css) + "\n")
+        (dst / "font.css").write_text("\n".join(css) + "\n", encoding="utf-8")
         size = sum(p.stat().st_size for p in dst.glob("*.woff2"))
         manifest.append({"id": fid, "name": name, "scripts": scripts, "kind": kind, "weights": got, "license": "OFL-1.1",
                          "source": f"https://www.npmjs.com/package/{PERSIAN_PKGS.get(fid, '@fontsource/' + fid)}", "css": f"fonts/{fid}/font.css", "kb": round(size / 1024), "note": note})
         print(f"{fid:22} {','.join(map(str, got)):12} {round(size/1024):5} KB  licence={'yes' if (dst/'OFL.txt').exists() else 'MISSING'}")
-    (OUT / "fonts.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1))
+    (OUT / "fonts.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
     print("total", round(sum(m["kb"] for m in manifest) / 1024, 1), "MB ·", len(manifest), "families")
 
 

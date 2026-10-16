@@ -73,7 +73,7 @@ for c in cols:
     print(f"  {c['hex']}  {c['share'] * 100:5.1f}%  {'█' * max(1, int(c['share'] * 60))}")
 print("role guess (confirm with the owner):", json.dumps(roles))
 if opt("--out"):
-    Path(opt("--out")).write_text(json.dumps({"files": [str(f) for f in files], "colors": cols, "roles": roles}, indent=1))
+    Path(opt("--out")).write_text(json.dumps({"files": [str(f) for f in files], "colors": cols, "roles": roles}, indent=1), encoding="utf-8")
 if opt("--sheet"):
     W = 900; S = Image.new("RGB", (W, 160), "white"); x = 0
     for c in cols:

@@ -12,3 +12,11 @@ telegram-bot/src/fonts.js          merge=ours
 tools/style-reel/assets/brand.js   merge=ours
 tools/style-reel/assets/fonts.css  merge=ours
 clients/** merge=ours
+
+# Line endings: LF on every system (Git Bash needs it for the shell scripts, and the kit's parsers expect it; Windows
+# editors handle LF), except the Windows launchers, which keep CRLF
+* text=auto eol=lf
+*.sh text eol=lf
+tools/py text eol=lf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf

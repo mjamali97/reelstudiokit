@@ -23,7 +23,10 @@ ROOT = HERE.parents[1]
 STYLES = sorted(p.stem for p in (HERE / "styles").glob("*.js"))
 # the Python that has whisperx (`uv tool install whisperx` puts it here); override with WHISPERX_PY=/path/to/python
 import os
-WHISPERX_PY = Path(os.environ.get("WHISPERX_PY", Path.home() / ".local/share/uv/tools/whisperx/bin/python"))
+# (uv's tool folder: ~/.local/share/uv/tools on macOS and Linux, %APPDATA%\uv\tools on Windows, or UV_TOOL_DIR)
+_UVT = Path(os.environ.get("UV_TOOL_DIR") or (Path(os.environ["APPDATA"]) / "uv/tools" if os.name == "nt" and os.environ.get("APPDATA")
+                                             else Path.home() / ".local/share/uv/tools")) / "whisperx"
+WHISPERX_PY = Path(os.environ.get("WHISPERX_PY") or (_UVT / "Scripts/python.exe" if os.name == "nt" else _UVT / "bin/python"))
 Z = "‌"
 STEMS = ("کن|شو|خواه|ده|دون|تون|گیر|رو|ساز|نویس|گ|گوی|بین|دان|رس|زن|خور|مون|کش|فرست|خون|پرس|یار|آر|بر|دار|ذار|گذار|"
          "یاب|پذیر|ترس|خند|گرد|افت|اندیش|خوا|شه|ره|زنه|بینه|سازه|کنه|دونه|خوای|خوام|بینی|سازی|کنی")
@@ -73,16 +76,16 @@ def main():
         sys.exit(f"whisperx Python not found at {WHISPERX_PY}: run `uv tool install whisperx` or set WHISPERX_PY")
     subprocess.run([str(WHISPERX_PY), str(HERE / "srt_words.py"), a.take, a.srt, str(raw), "--lang", a.lang], check=True,
                    stderr=subprocess.DEVNULL)
-    words = [w for w in json.loads(raw.read_text()) if w["type"] == "word" and a.start <= w["start"] < a.start + a.dur]
+    words = [w for w in json.loads(raw.read_text(encoding="utf-8")) if w["type"] == "word" and a.start <= w["start"] < a.start + a.dur]
     out_w = [{"t": proof(w["text"]) if a.lang == "fa" else w["text"], "s": round(w["start"] - a.start, 3), "e": round(w["end"] - a.start, 3)} for w in words]
-    (out / "assets/words.js").write_text("window.WORDS=" + json.dumps(out_w, ensure_ascii=False) + ";")
+    (out / "assets/words.js").write_text("window.WORDS=" + json.dumps(out_w, ensure_ascii=False) + ";", encoding="utf-8")
 
-    html = (out / "index.html").read_text()
+    html = (out / "index.html").read_text(encoding="utf-8")
     html = re.sub(r'"default":"[a-z]+"', f'"default":"{a.style}"', html, count=1)
     html = html.replace('data-duration="30"', f'data-duration="{a.dur:g}"')
     if not (out / "assets/subject.webm").exists():   # no cutout: no video element pointing at a missing file
         html = re.sub(r'\s*<video id="subject"[^>]*></video>', "", html)
-    (out / "index.html").write_text(html)
+    (out / "index.html").write_text(html, encoding="utf-8")
 
     print(f"{len(out_w)} words -> {out}/assets/words.js   (style default: {a.style}, {a.dur:g} s)\n")
     for w in out_w:

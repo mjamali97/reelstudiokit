@@ -19,6 +19,8 @@ bash tools/install.sh            # checks your computer, installs the core tools
 bash telegram-bot/demo/demo.sh   # the bots, running locally with fake Telegram, Instagram and Gemini
 ```
 
+**Windows:** in PowerShell, `powershell -ExecutionPolicy Bypass -File tools\install.ps1` (add `-Install` and it installs Git, Node, Python, ffmpeg, uv and Chrome with winget), then `node telegram-bot\demo\demo.mjs`. Claude Code runs the kit's commands in Git Bash, so the rest of this guide works as written.
+
 From inside Claude Code you can also install it as a plugin: `/plugin install reel-studio --marketplace mjamali97/reelstudiokit`,
 then `/reel-studio:start` clones the kit into a folder you choose and installs the tools.
 
@@ -33,7 +35,7 @@ The visuals are in `examples/bakery/` (a made-up bakery): 10 carousel templates,
 
 | | |
 |---|---|
-| Computer | macOS, Linux, or Windows with WSL2 |
+| Computer | macOS, Linux, or Windows 10/11 (no WSL needed; WSL2 works too) |
 | Software | git, Node 20+, Python 3.11+, ffmpeg, Google Chrome, uv (`bash tools/install.sh` tells you what is missing and how to get it) |
 | Claude Code | a Claude subscription or API key: [claude.com/claude-code](https://claude.com/claude-code) |
 | Accounts (only for going live) | Instagram professional account, [Zernio](https://zernio.com) (publishing and numbers; the first two social accounts free at the time of writing), Telegram, a free Gemini key, a free Cloudflare account, GitHub |
@@ -188,6 +190,7 @@ formats, reels, bot settings: see `.gitattributes`), shows what is new and wheth
 | problem | fix |
 |---|---|
 | `install.sh` says something is missing | install it with the command it prints, run it again |
+| Windows: `python3` not found, or Persian text comes out garbled | run Python tools with `tools/py` (Git Bash) or `tools\py.cmd` (PowerShell) |
 | a render says a font did not load | the font id in `brand/brand.json` is not in `fonts/fonts.json`, or your own font's `css` path is wrong |
 | the bot does not answer | open `<BOT_URL>/setup?key=<SETUP_KEY>&info=1` (you open it; the key stays with you) and check both webhooks |
 | no numbers in the report | the Instagram account needs to be a professional account connected in Zernio; new accounts need a few days of data |

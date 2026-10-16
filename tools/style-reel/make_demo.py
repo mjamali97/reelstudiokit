@@ -22,7 +22,7 @@ words = []
 for s, e, text in WINDOWS:
     ws = text.split(); step = (e - s - .1) / len(ws)
     words += [{"t": w, "s": round(s + .05 + i * step, 3), "e": round(s + .05 + (i + 1) * step - .04, 3)} for i, w in enumerate(ws)]
-(A / "words.js").write_text("window.WORDS=" + json.dumps(words, ensure_ascii=False) + ";")
+(A / "words.js").write_text("window.WORDS=" + json.dumps(words, ensure_ascii=False) + ";", encoding="utf-8")
 
 # a still placeholder (Pillow, so any ffmpeg build works) with a slow push-in, plus silent audio
 from PIL import Image, ImageDraw, ImageFont
@@ -50,6 +50,6 @@ subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", str(A / "face.m
                 str(A / "subject.webm")], check=True)
 # where the head is (tools/take/headpos.py writes this for a real take)
 (A / "headpos.js").write_text("window.HEAD=" + json.dumps([{"id": "demo", "start": 0, "end": 30, "head_top": 520, "head_x": [340, 740],
-                                                             "face_bottom": 1000, "body": [220, 520, 860, 1920], "moves": False}]) + ";\n")
+                                                             "face_bottom": 1000, "body": [220, 520, 860, 1920], "moves": False}]) + ";\n", encoding="utf-8")
 still.unlink(); mpath.unlink()
 print(f"demo ok: {A / 'face.mp4'}, subject.webm, headpos.js and {len(words)} placeholder words")

@@ -1,10 +1,11 @@
 #!/bin/sh
 # py · runs a kit script with the Python in tools/.venv, where Pillow, numpy and OpenCV live (bash tools/install.sh makes it).
 #   tools/py tools/render/sheet.py <dir> <out.jpg>        (instead of python3, which has no PIL)
-# Works on macOS, Linux, WSL and Git Bash on Windows (a venv there keeps python.exe in Scripts/).
+# Works on macOS, Linux, WSL and Git Bash on Windows (a venv there keeps python.exe in Scripts/); PowerShell and cmd use
+# tools\py.cmd. -X utf8: Persian text is read, written and printed as UTF-8 also where the system default is not (Windows).
 D=$(cd "$(dirname "$0")" && pwd)
 for p in "$D/.venv/bin/python" "$D/.venv/Scripts/python.exe"; do
-  [ -x "$p" ] && exec "$p" "$@"
+  [ -x "$p" ] && exec "$p" -X utf8 "$@"
 done
 echo "tools/.venv is missing: run bash tools/install.sh (it installs Pillow, numpy and OpenCV there)" >&2
 exit 1

@@ -14,13 +14,13 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 proj, render = Path(sys.argv[1]).expanduser().resolve(), Path(sys.argv[2]).expanduser().resolve()
-segs = json.loads((proj / "segments.json").read_text())
+segs = json.loads((proj / "segments.json").read_text(encoding="utf-8"))
 tmp = Path(tempfile.mkdtemp()); tiles = []
 for s in segs[1:]:
     pair = []
     for n in (s["frame"] - 1, s["frame"]):
         p = tmp / f"f{n}.png"
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(render), "-vf", f"select=eq(n\\,{n}),scale=180:-2", "-vsync", "0", "-frames:v", "1", str(p)], check=True)
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(render), "-vf", f"select=eq(n\\,{n}),scale=180:-2", "-fps_mode", "passthrough", "-frames:v", "1", str(p)], check=True)
         pair.append(Image.open(p).convert("RGB"))
     w, h = pair[0].size; t = Image.new("RGB", (w * 2 + 6, h + 22), "black"); d = ImageDraw.Draw(t)
     t.paste(pair[0], (0, 22)); t.paste(pair[1], (w + 6, 22)); d.text((4, 4), f"{s['id']} @ {s['frame'] / 30:.2f}s  before | after", fill="yellow")

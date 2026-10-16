@@ -62,10 +62,10 @@ def main():
         _, d = det.detect(fr)
         face.append(d is not None and any(b[2] * b[3] >= .02 * 270 * 480 for b in d))
     if a.plan:
-        plan = json.load(open(a.plan))["face"]
+        plan = json.load(open(a.plan, encoding="utf-8"))["face"]
         want = [any(s <= i * step < e for s, e in plan) for i in range(n)]
         # allow 0.2 s at every boundary for transitions
-        allow = json.load(open(a.plan)).get("allow", [])   # b-roll windows that show a real photo of someone else
+        allow = json.load(open(a.plan, encoding="utf-8")).get("allow", [])   # b-roll windows that show a real photo of someone else
         def near(i): return any(abs(i * step - x) <= .2 for s, e in plan for x in (s, e)) or any(s <= i * step < e for s, e in allow)
         extra = runs([f and not w and not near(i) for i, (f, w) in enumerate(zip(face, want))], step, .2)
         miss = runs([w and not f and not near(i) for i, (f, w) in enumerate(zip(face, want))], step, .3)

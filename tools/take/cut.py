@@ -19,7 +19,7 @@ en = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", log)]
 dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", take],
                            capture_output=True, text=True).stdout)
 def ts(s): h, m, r = s.split(":"); sec, ms = r.split(","); return int(h) * 3600 + int(m) * 60 + int(sec) + int(ms) / 1000
-cues = re.findall(r"(\d+)\n(\d\d:\d\d:\d\d,\d+) --> (\d\d:\d\d:\d\d,\d+)\n(.+?)(?:\n\n|\n*$)", Path(srt).read_text(), re.S)
+cues = re.findall(r"(\d+)\n(\d\d:\d\d:\d\d,\d+) --> (\d\d:\d\d:\d\d,\d+)\n(.+?)(?:\n\n|\n*$)", Path(srt).read_text(encoding="utf-8"), re.S)
 first, last = ts(cues[0][1]), ts(cues[-1][2])
 snap = lambda t: round(t * FPS) / FPS
 keep, cur = [], snap(max(0, first - .12))
@@ -52,8 +52,8 @@ def remap(t):
 fmt = lambda t: f"{int(t // 3600):02d}:{int(t % 3600 // 60):02d}:{int(t % 60):02d},{int(round(t % 1 * 1000)) % 1000:03d}"
 kept = [(a, b, txt) for _, a, b, txt in cues if remap(ts(b)) - remap(ts(a)) > .02]   # a cue inside a dropped retake collapses to 0
 lines = [f"{i}\n{fmt(remap(ts(a)))} --> {fmt(remap(ts(b)))}\n{txt.strip()}\n" for i, (a, b, txt) in enumerate(kept, 1)]
-(out / "face-cut.srt").write_text("\n".join(lines))
-(out / "cuts.txt").write_text("\n".join(f"{a:.3f} {b:.3f}" for a, b in keep))
+(out / "face-cut.srt").write_text("\n".join(lines), encoding="utf-8")
+(out / "cuts.txt").write_text("\n".join(f"{a:.3f} {b:.3f}" for a, b in keep), encoding="utf-8")
 acc = 0
 for a, b in keep[:-1]:
     acc += b - a; print(f"jump cut at {acc:.3f}s (source {b:.3f})")

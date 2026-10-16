@@ -8,10 +8,10 @@ Ready in `reels/<slug>/`: the final render (audio pass done, QA passed), a YouTu
 
 ## 2 · Upload to Zernio as a draft
 ```bash
-python3 -I tools/zernio/zernio.py upload reels/<slug>/final.mp4          # → video URL
-python3 -I tools/zernio/zernio.py upload reels/<slug>/cover/cover.jpg     # → cover URL
-python3 -I tools/zernio/zernio.py upload reels/<slug>/gate/gate.jpg       # → DM image URL (optional)
-python3 -I tools/zernio/zernio.py draft --video <video URL> --caption reels/<slug>/CAPTION.ig.txt --cover <cover URL> \
+tools/py -I tools/zernio/zernio.py upload reels/<slug>/final.mp4          # → video URL
+tools/py -I tools/zernio/zernio.py upload reels/<slug>/cover/cover.jpg     # → cover URL
+tools/py -I tools/zernio/zernio.py upload reels/<slug>/gate/gate.jpg       # → DM image URL (optional)
+tools/py -I tools/zernio/zernio.py draft --video <video URL> --caption reels/<slug>/CAPTION.ig.txt --cover <cover URL> \
   [--yt-video <yt URL> --yt-title "…" --yt-desc reels/<slug>/CAPTION.yt.txt]   # → DRAFT post id
 ```
 Limits: Instagram reels ≤ 90 s / 300 MB via the API; ~25 posts per hour per account.
@@ -34,12 +34,12 @@ time. ↩️ cancels everything (Zernio back to draft, automation deleted). If t
 After they approved the contact sheet and the caption. Zernio makes an Instagram carousel from one post with several
 image `mediaItems` (2–10 slides, JPEG/PNG ≤ 8 MB each, every slide the shape of the first; the kit's 1080×1350 slides fit).
 ```bash
-for f in reels/<slug>/carousel/slide-*.png; do python3 -I tools/zernio/zernio.py upload "$f"; done   # → one URL per slide
-python3 -I tools/zernio/zernio.py draft --images <url1> <url2> … --caption reels/<slug>/CAPTION.ig.txt   # → DRAFT post id
+for f in reels/<slug>/carousel/slide-*.png; do tools/py -I tools/zernio/zernio.py upload "$f"; done   # → one URL per slide
+tools/py -I tools/zernio/zernio.py draft --images <url1> <url2> … --caption reels/<slug>/CAPTION.ig.txt   # → DRAFT post id
 ```
 The Studio bot's one-tap card (step 3) is for reels only, so a carousel is scheduled by hand: the owner schedules the draft in the
 Zernio dashboard, or names a time in chat and you run
-`python3 -I tools/zernio/zernio.py schedule <post id> <UTC ISO>`. Check 📅 Schedule in the bot first: never two Instagram
+`tools/py -I tools/zernio/zernio.py schedule <post id> <UTC ISO>`. Check 📅 Schedule in the bot first: never two Instagram
 posts on one day. The comment-to-DM gate is set up in Zernio for a carousel, or left out.
 
 ## 4 · Order of the grid

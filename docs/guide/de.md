@@ -19,6 +19,8 @@ bash tools/install.sh
 bash telegram-bot/demo/demo.sh de
 ```
 
+**Windows:** in PowerShell `powershell -ExecutionPolicy Bypass -File tools\install.ps1` (mit `-Install` installiert es Git, Node, Python, ffmpeg, uv und Chrome per winget), dann `node telegram-bot\demo\demo.mjs`. Claude Code führt die Befehle des Kits in Git Bash aus, der Rest dieser Anleitung gilt also unverändert.
+
 Eine Seite mit drei Spalten öffnet sich: dein **Studio-Bot**, dein **Publisher-Bot** und dein **Kanal**. Tippe 📝 Entwürfe →
 ✅ beim Beitrag → das finale ✅ in der Publisher-Spalte, und sieh zu, wie er im Kanal ankommt. Öffne 📊 Dashboard und 💬 Posteingang,
 schick irgendeinen Link. Nichts verlässt deinen Rechner. Mit Ctrl-C beenden.
@@ -30,7 +32,7 @@ Die Beispiele liegen in `examples/bakery/` (eine erfundene Bäckerei): 10 Karuss
 
 | | |
 |---|---|
-| Rechner | macOS, Linux oder Windows mit WSL2 |
+| Rechner | macOS, Linux oder Windows 10/11 (ohne WSL; WSL2 geht auch) |
 | Software | git, Node 20+, Python 3.11+, ffmpeg, Google Chrome, uv (`bash tools/install.sh` sagt dir, was fehlt und wie du es installierst) |
 | Claude Code | ein Claude-Abo oder ein API-Schlüssel |
 | Konten (nur zum Live-Gehen) | professionelles Instagram-Konto, [Zernio](https://zernio.com) (Veröffentlichen und Zahlen), Telegram, ein kostenloser Gemini-Schlüssel, ein kostenloses Cloudflare-Konto, GitHub |
@@ -182,6 +184,7 @@ Reels, Bot-Einstellungen; Liste in `.gitattributes`), und zeigt, was neu ist und
 | Problem | Lösung |
 |---|---|
 | `install.sh` meldet, dass etwas fehlt | mit dem angezeigten Befehl installieren, erneut ausführen |
+| Windows: `python3` fehlt oder persischer Text ist verstümmelt | Python-Tools mit `tools/py` (Git Bash) oder `tools\py.cmd` (PowerShell) starten |
 | ein Render meldet, dass eine Schrift nicht geladen wurde | die Schrift-ID in `brand/brand.json` steht nicht in `fonts/fonts.json`, oder der `css`-Pfad deiner Schrift ist falsch |
 | der Bot antwortet nicht | öffne selbst `<BOT_URL>/setup?key=<SETUP_KEY>&info=1` und prüfe beide Webhooks |
 | keine Zahlen im Bericht | das Instagram-Konto muss professionell und in Zernio verbunden sein; neue Konten brauchen ein paar Tage Daten |

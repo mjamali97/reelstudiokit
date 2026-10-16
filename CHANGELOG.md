@@ -3,6 +3,23 @@
 Every kit update gets a version and a short entry here; `/update` reads the new entries to you after pulling.
 Format: what changed, then **Action** when you need to do something (most updates need nothing).
 
+## 2.4.0 · 2026-10-16
+- **Windows without WSL:** `tools\install.ps1` installs the same pieces and levels as `install.sh` from PowerShell
+  (`-Install` gets Git, Node LTS, Python 3.12, ffmpeg, uv and Chrome with winget); in Git Bash, where Claude Code runs its
+  commands, `bash tools/install.sh` hands over to it. `tools\py.cmd` runs the Python tools from PowerShell and cmd;
+  `tools\update.ps1` updates the kit. Tested on every push on a Windows runner (installer, renders, a Persian caption
+  burn, a multi-clip cut, a `/depth` render, the bot's tests, agency mode).
+- Persian text is read and written as UTF-8 on every system (Windows defaulted to cp1252 and broke it); the Python tools
+  run in UTF-8 mode; CI fails any new text read or write without an encoding.
+- The bot's tests and demo are Node now (`telegram-bot/test/all.mjs`, `demo/demo.mjs`), so they run on Windows; the `.sh`
+  files still work and start them. `audio.sh` became `audio.py` the same way.
+- `webcap.mjs --find "phrase"` prints where a phrase is in the screenshot of their own site, read from the page: exact on
+  every system (`ocrfind` stays as the macOS OCR for other images).
+- Agency mode on Windows uses directory junctions: no administrator rights or Developer Mode.
+- Fixes: `check_cuts.py` failed on ffmpeg 8 (`-vsync` is gone); compiled Python files had slipped into git in 2.3.0;
+  `captions.mjs` found its linter by a path that breaks on Windows; the punch-in note now makes sense for small clips.
+**Action:** none on macOS and Linux. On Windows: `powershell -ExecutionPolicy Bypass -File tools\install.ps1`.
+
 ## 2.3.0 · 2026-10-16
 - **New style `/depth` (14 styles):** your talking head stays on screen and the punch word of each line sits behind your
   head, the speaker cut out locally (HyperFrames `remove-background`, no upload). Lines never cover the face (placed

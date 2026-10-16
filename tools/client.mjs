@@ -8,7 +8,7 @@
 //   node tools/client.mjs use <slug>                   # make <slug> the active client
 //   node tools/client.mjs sync <slug> --id <n>         # send the client's voice, facts and handle to the agency bot
 //                                                      # (<n> = the client's number in the bot: 👥 Clients, or GET /api/clients)
-// Windows without symlink rights: run the terminal as administrator once, or enable Developer Mode.
+// On Windows the links are directory junctions: no administrator rights or Developer Mode needed.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -24,7 +24,9 @@ const link = (s) => {
   for (const d of DIRS) {
     if (fs.existsSync(p(d)) && !isLink(d)) { console.error(`${d}/ is a real folder; run \`node tools/client.mjs init <slug>\` first so it is not lost`); process.exit(1); }
     if (isLink(d)) fs.unlinkSync(p(d));
-    fs.symlinkSync(path.join("clients", s, d), p(d), "dir");
+    // a relative link moves with the folder; Windows gets a junction (absolute), which needs no special rights
+    if (process.platform === "win32") fs.symlinkSync(path.join(C, s, d), p(d), "junction");
+    else fs.symlinkSync(path.join("clients", s, d), p(d), "dir");
   }
 };
 const copyDir = (a, b) => { fs.mkdirSync(b, { recursive: true }); for (const f of fs.readdirSync(a, { withFileTypes: true })) f.isDirectory() ? copyDir(path.join(a, f.name), path.join(b, f.name)) : fs.copyFileSync(path.join(a, f.name), path.join(b, f.name)); };

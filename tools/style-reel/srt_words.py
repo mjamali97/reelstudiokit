@@ -82,7 +82,7 @@ def main():
             out.append({"text": w["text"], "start": w["start"], "end": w["end"], "type": "word"})
 
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-    Path(a.out).write_text(json.dumps(out, ensure_ascii=False, indent=1))
+    Path(a.out).write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"{sum(w['type'] == 'word' for w in out)} words from {len(cues)} cues -> {a.out}")
 
 

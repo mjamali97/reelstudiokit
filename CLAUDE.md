@@ -25,7 +25,7 @@ If CREATOR.md still says `STATUS: not set up`, run `/setup` first. In agency mod
   preview (brand on real frames), apply
 - `tools/render/` · carousels (10 templates), stories (11, incl. a brand-coloured OpenStreetMap map) + highlight covers, captions burner, icons (4 sets), illustrations · `tools/style-reel/` HyperFrames
   engine + 14 styles (`stills.mjs` previews) · `tools/take/` cut + audio · `tools/capture/` their own site · `tools/zernio/` CLI
-- `tools/install.sh` + `tools/STACK.md` · every tool (HyperFrames, WhisperX, Playwright, persian-motion-director, the NextWork
+- `tools/install.sh` (Windows: `tools/install.ps1`, `tools\py.cmd`) + `tools/STACK.md` · every tool (HyperFrames, WhisperX, Playwright, persian-motion-director, the NextWork
   editor plugin…) pinned, with licences · `tools/client.mjs` agency folders
 - `telegram-bot/` · Studio + Publisher bots (Cloudflare Worker), 7 languages, reports, inbox, competitors, agency; deploy = push to
   `main`; `bash telegram-bot/test/all.sh` before every push; `bash telegram-bot/demo/demo.sh` runs it locally with fakes

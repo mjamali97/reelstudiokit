@@ -10,7 +10,7 @@
 
 ## Cut the pauses and retime the SRT
 ```bash
-python3 tools/take/cut.py reels/<slug>/take/take.mov reels/<slug>/take/take.srt reels/<slug>/take [--drop 77.0-78.25]
+tools/py tools/take/cut.py reels/<slug>/take/take.mov reels/<slug>/take/take.srt reels/<slug>/take [--drop 77.0-78.25]
 ```
 silencedetect −38 dB / 0.35 s, 0.12 s kept each side, whole frames at 30 fps. Writes `face-cut.mp4`, `face-cut.srt`
 (retimed) and `cuts.txt`, and prints every jump cut in cut time: each must end up under b-roll or on a FACE/B-ROLL edge.

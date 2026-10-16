@@ -13,6 +13,8 @@
 //     --remove="sel, sel" delete these elements just before the shot (when an inline !important beats --hide)
 //     --click="text"      click the first element with this exact text before capturing
 //     --scrollto=N        scroll to N px and capture the viewport there (for sticky / pinned pages)
+//     --find="phrase"     also print where the phrase is in the saved image (image px: x y w h, one line per hit), read
+//                         from the page itself: exact on any system (ocrfind is the macOS OCR for images you did not capture)
 //
 // It scrolls the whole page once so lazy images load, dismisses cookie banners it recognises,
 // then takes the shot. Prints the saved size.
@@ -65,4 +67,21 @@ else {
   await page.screenshot({ path: out, fullPage: true, clip: { x: 0, y: 0, width: W, height: h } });
 }
 console.log(`${out}  ${Math.round(W * S)}x? css ${W}x${stop} scale ${S}  page ${total}px`);
+if (opt.find) {
+  const viewport = !!(opt.scrollto || !MAX);   // a viewport shot starts at the scroll position, a full-page one at the top
+  const hits = await page.evaluate(({ phrase, viewport }) => {
+    const want = phrase.toLowerCase(), out = [];
+    const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n; (n = walk.nextNode());) {
+      const i = n.data.toLowerCase().indexOf(want);
+      if (i < 0) continue;
+      const r = document.createRange(); r.setStart(n, i); r.setEnd(n, i + want.length);
+      const b = r.getBoundingClientRect(); if (!b.width || !b.height) continue;   // hidden text
+      out.push([b.left + (viewport ? 0 : scrollX), b.top + (viewport ? 0 : scrollY), b.width, b.height]);
+    }
+    return out;
+  }, { phrase: String(opt.find), viewport });
+  if (!hits.length) console.log(`find: "${opt.find}" not on the page`);
+  for (const h of hits) console.log(`find: ${h.map((v) => Math.round(v * S)).join(" ")}`);
+}
 await browser.close();

@@ -58,3 +58,84 @@ jobs:
         run: python3 tools/brand/palette.py examples/bakery/media --k 6
       - name: video styles load and seek without errors
         run: for s in $(ls tools/style-reel/styles | sed 's/\.js$//'); do node tools/style-reel/stills.mjs "$s" --t 1,9,22 --out /tmp/out/stills; done
+
+  # Windows without WSL: the installer in Windows PowerShell 5.1, every tool from PowerShell, cmd and Git Bash, a Persian
+  # caption burn (UTF-8 and backslash paths), a multi-clip cut, and the bot's local tests (wrangler + workerd on Windows)
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4   # core.autocrlf is on here: .gitattributes must keep the shell scripts LF
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: astral-sh/setup-uv@v6
+      - name: ffmpeg
+        run: choco install ffmpeg -y --no-progress
+      - name: install.ps1 (core) in Windows PowerShell 5.1, then check
+        shell: powershell
+        run: |
+          $env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + $env:Path
+          powershell -ExecutionPolicy Bypass -File tools\install.ps1; if ($LASTEXITCODE) { exit 1 }
+          powershell -ExecutionPolicy Bypass -File tools\install.ps1 check; if ($LASTEXITCODE) { exit 1 }
+      - run: node tools/ci/check.mjs
+      - run: node tools/assets/test-fetch.mjs
+      - name: Python tools through tools\py.cmd (cmd) and tools/py (Git Bash)
+        shell: cmd
+        run: |
+          call tools\py.cmd -I tools\render\lint_fa.py --self-test || exit /b 1
+          call tools\py.cmd tools\brand\palette.py examples\bakery\media --k 6 || exit /b 1
+          "C:\Program Files\Git\bin\bash.exe" -c "tools/py -I tools/render/lint_fa.py --self-test" || exit /b 1
+          "C:\Program Files\Git\bin\bash.exe" tools/install.sh check || exit /b 1
+      - name: carousels, stories and a Persian caption burn
+        shell: pwsh
+        run: |
+          $env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + $env:Path
+          foreach ($f in "tips", "tips-fa") { node tools/render/render.mjs "examples/bakery/carousels/$f.json" --out "$env:RUNNER_TEMP\out\$f"; if ($LASTEXITCODE) { exit 1 } }
+          node tools/render/render.mjs examples/bakery/stories/stories-illustrated.json --out "$env:RUNNER_TEMP\out\stories"; if ($LASTEXITCODE) { exit 1 }
+          ffmpeg -v error -f lavfi -i "color=c=0x6b4a3a:s=1080x1920:d=3" -f lavfi -i "sine=f=220:d=3" -c:v libx264 -c:a aac -shortest "$env:RUNNER_TEMP\in.mp4"
+          [IO.File]::WriteAllText("$env:RUNNER_TEMP\a.srt", "1`n00:00:00,200 --> 00:00:02,500`n" + [char]0x0633 + [char]0x0647 + " " + [char]0x0627 + [char]0x0634 + [char]0x062A + [char]0x0628 + [char]0x0627 + [char]0x0647 + "`n")
+          node tools/render/captions.mjs "$env:RUNNER_TEMP\in.mp4" "$env:RUNNER_TEMP\a.srt" "$env:RUNNER_TEMP\out\cap.mp4" --lang fa; if ($LASTEXITCODE) { exit 1 }
+          if (-not (Test-Path "$env:RUNNER_TEMP\out\cap.mp4")) { exit 1 }
+      - name: video styles load and seek
+        shell: bash
+        run: for s in clean depth vogue; do node tools/style-reel/stills.mjs "$s" --t 1,9,22 --out "$RUNNER_TEMP/stills" || exit 1; done
+      - name: several clips → one cut (assemble), audio measure, cut check
+        shell: bash
+        run: |
+          P="$RUNNER_TEMP/take"; mkdir -p "$P"
+          ffmpeg -v error -f lavfi -i "testsrc2=s=1080x1920:r=30:d=4" -f lavfi -i "sine=f=300:d=4" -c:v libx264 -pix_fmt yuv420p -c:a aac -shortest "$P/c1.mp4"
+          ffmpeg -v error -f lavfi -i "testsrc=s=1920x1080:r=30:d=4" -f lavfi -i "sine=f=500:d=4" -c:v libx264 -pix_fmt yuv420p -c:a aac -shortest "$P/c2.mp4"
+          printf '{"c1": "%s", "c2": "%s"}' "$(cygpath -m "$P/c1.mp4")" "$(cygpath -m "$P/c2.mp4")" > "$P/sources.json"
+          printf '[{"id":"a","clip":"c1","in":0.5,"out":2.5,"line":"یک"},{"id":"b","clip":"c2","in":1,"out":3,"zoom":1.3,"cy":0.4,"line":"دو"}]' > "$P/edl.json"
+          tools/py tools/take/assemble.py "$P" | tee "$P/log.txt"; grep -q "frames OK" "$P/log.txt"
+          grep -q "دو" "$P/assets/aroll.srt"
+          bash tools/take/audio.sh measure "$P/assets/aroll.mp4" | grep -q LUFS
+          tools/py tools/take/check_cuts.py "$P" "$P/assets/aroll.mp4" && test -f "$P/work/cut_check.jpg"
+      - name: all bot checks (mock Telegram, Zernio and Gemini)
+        run: node telegram-bot/test/all.mjs | tee bot-tests.log; if (-not (Select-String -Quiet "ALL GREEN" bot-tests.log)) { exit 1 }
+      - name: agency mode (client folders are junctions on Windows, no admin rights)
+        shell: bash
+        run: |
+          node tools/client.mjs init first && node tools/client.mjs new second "Second Shop" && node tools/client.mjs use second
+          node tools/client.mjs list | grep -q "▶ second"
+          grep -q "Second Shop" brand/brand.json && node tools/client.mjs use first && node tools/client.mjs list | grep -q "▶ first"
+
+  windows-video:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: ffmpeg
+        run: choco install ffmpeg -y --no-progress
+      - name: demo take, then a HyperFrames render of /depth (cutout layer and all) and its QA
+        shell: bash
+        run: |
+          python -m venv tools/.venv && tools/.venv/Scripts/python.exe -m pip install -q -r tools/requirements.txt
+          tools/py tools/style-reel/make_assets.py && tools/py tools/style-reel/make_demo.py
+          cd tools/style-reel && npx --yes hyperframes@0.8.46 check
+          npx --yes hyperframes@0.8.46 render --variables '{"style":"depth"}' --strict-variables --quality draft -o renders/ci-depth.mp4
+          ../py qa.py renders/ci-depth.mp4 | tee qa.txt; ! grep -q FAIL qa.txt
