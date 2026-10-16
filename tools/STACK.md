@@ -2,6 +2,9 @@
 `bash tools/install.sh [core|video|all]` installs it (pinned versions); `bash tools/install.sh check [core|video|all]` reports
 what is there for that level (default core). Nothing needs an account. Python scripts run with `tools/py <script>`, which
 picks the Python in `tools/.venv` (the system `python3` has no Pillow).
+Windows without WSL: `tools\install.ps1` (same levels; `-Install` gets Git, Node, Python, ffmpeg, uv and Chrome with winget),
+`tools\py.cmd` in PowerShell and cmd; Claude Code's Git Bash runs everything else as written (`install.sh` hands over to
+`install.ps1` there). The bot's tests and demo are Node (`all.mjs`, `demo.mjs`); the `.sh` files only start them.
 Third-party code is fetched at install time from its own repository and keeps its own licence; only MIT/Apache/BSD/OFL/ISC
 code is ever copied into this repo (see `THIRD_PARTY_NOTICES.md`). AGPL tools are used as separate apps, never vendored.
 

@@ -21,8 +21,8 @@ from pathlib import Path
 
 FPS, W, H = 30, 1080, 1920
 proj = Path(sys.argv[1]).expanduser().resolve()
-src = json.loads((proj / "sources.json").read_text())
-edl = json.loads((proj / "edl.json").read_text())
+src = json.loads((proj / "sources.json").read_text(encoding="utf-8"))
+edl = json.loads((proj / "edl.json").read_text(encoding="utf-8"))
 (proj / "assets").mkdir(exist_ok=True)
 
 def size(f):
@@ -39,7 +39,10 @@ for i, s in enumerate(edl):
     bw, bh = (sh * 9 / 16, sh) if sw / sh > 9 / 16 else (sw, sw * 16 / 9)
     z = max(1.0, float(s.get("zoom", 1))); cw, ch = int(bw / z) // 2 * 2, int(bh / z) // 2 * 2
     x = min(max(0, s.get("cx", .5) * sw - cw / 2), sw - cw); y = min(max(0, s.get("cy", .5) * sh - ch / 2), sh - ch)
-    if (cw < W * .95 or ch < H * .95) and z > 1: print(f"note: '{s['id']}' punch-in {z}x upscales a {sw}x{sh} source (crop {cw}x{ch}); keep it under {round(min(sw / W, sh / H) * 1.05, 2)}x for full sharpness")
+    if (cw < W * .95 or ch < H * .95) and z > 1:
+        sharp = round(min(bw / W, bh / H) * 1.05, 2)
+        print(f"note: '{s['id']}' punch-in {z}x upscales a {sw}x{sh} source (crop {cw}x{ch}); "
+              + (f"keep it under {sharp}x for full sharpness" if sharp > 1 else "its 9:16 area is already under 1080x1920, so any punch-in softens it"))
     out = proj / "work" / f"seg_{i:02d}.mp4"; out.parent.mkdir(exist_ok=True)
     # tpad repeats the last frame if the clip ends a frame early, so every segment has exactly n frames
     vf = f"setpts=PTS-STARTPTS,crop={cw}:{ch}:{int(x)}:{int(y)},scale={W}:{H}:flags=lanczos,fps={FPS},setsar=1,tpad=stop_mode=clone:stop_duration=0.5"
@@ -51,20 +54,20 @@ for i, s in enumerate(edl):
     line = s.get("line", "")
     wf = proj / f"words_{s['clip']}.json"   # no line in the EDL: the words intake.py heard inside in/out (proofread the SRT after)
     if not line and wf.exists():
-        line = " ".join(w["t"] for w in json.loads(wf.read_text()) if s["in"] - .05 <= w["s"] < s["out"])
+        line = " ".join(w["t"] for w in json.loads(wf.read_text(encoding="utf-8")) if s["in"] - .05 <= w["s"] < s["out"])
     segs.append({"id": s["id"], "clip": s["clip"], "frame": frame, "frames": n, "start": round(frame / FPS, 3), "line": line})
     frame += n
-lst = proj / "work" / "segments.txt"; lst.write_text("".join(f"file '{p.name}'\n" for p in parts))
+lst = proj / "work" / "segments.txt"; lst.write_text("".join(f"file '{p.name}'\n" for p in parts), encoding="utf-8")
 # one re-encode with timestamps rebuilt from the frame count: no start offset, no gaps, constant 30 fps
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-vf", f"setpts=N/{FPS}/TB", "-fps_mode", "cfr", "-r", str(FPS),
                 "-c:v", "libx264", "-preset", "slow", "-crf", "16", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "256k", "-ar", "48000",
                 "-movflags", "+faststart", proj / "assets" / "aroll.mp4"], check=True)
 got = subprocess.run(["ffprobe", "-v", "error", "-count_frames", "-select_streams", "v:0", "-show_entries", "stream=nb_read_frames", "-of", "csv=p=0",
                       proj / "assets" / "aroll.mp4"], capture_output=True, text=True).stdout.strip()
-(proj / "segments.json").write_text(json.dumps(segs, ensure_ascii=False, indent=1))
+(proj / "segments.json").write_text(json.dumps(segs, ensure_ascii=False, indent=1), encoding="utf-8")
 # one cue per segment with its line: the SRT new_reel.py aligns the words to
 ts = lambda f: f"{int(f / FPS // 3600):02d}:{int(f / FPS % 3600 // 60):02d}:{int(f / FPS % 60):02d},{round(f / FPS % 1 * 1000) % 1000:03d}"
 (proj / "assets" / "aroll.srt").write_text("".join(f"{i + 1}\n{ts(s['frame'])} --> {ts(s['frame'] + s['frames'])}\n{s['line']}\n\n"
-                                                   for i, s in enumerate(segs) if s["line"].strip()))
+                                                   for i, s in enumerate(segs) if s["line"].strip()), encoding="utf-8")
 print(f"aroll.mp4: {len(segs)} segments, {frame} frames ({frame / FPS:.2f}s), file has {got} frames {'OK' if str(frame) == got else 'MISMATCH'}")
 for s in segs: print(f"  {s['id']:12} {s['clip']}  from {s['start']:6.2f}s  {s['frames']:4d} frames  {s['line'][:50]}")

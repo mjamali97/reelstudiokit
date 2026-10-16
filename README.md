@@ -17,6 +17,9 @@ bash tools/install.sh                 # checks your computer, installs the core 
 bash telegram-bot/demo/demo.sh        # your bots, running locally with fake Telegram, Instagram and Gemini
 ```
 
+On Windows, in PowerShell: `powershell -ExecutionPolicy Bypass -File tools\install.ps1 -Install` (installs what is missing with winget),
+then `node telegram-bot\demo\demo.mjs`.
+
 Or from inside Claude Code, as a plugin: `/plugin install reel-studio --marketplace mjamali97/reelstudiokit`, then
 `/reel-studio:start` (it clones the kit into a folder of your choice and installs the tools).
 
@@ -74,7 +77,7 @@ is listed with its licence and pinned version in [tools/STACK.md](tools/STACK.md
 
 ## Requirements
 
-macOS, Linux or Windows (WSL2); git, Node 20+, Python 3.11+, ffmpeg, Google Chrome, uv; Claude Code. To go live: an
+macOS, Linux or Windows 10/11 (natively, or in WSL2); git, Node 20+, Python 3.11+, ffmpeg, Google Chrome, uv; Claude Code. To go live: an
 Instagram professional account, [Zernio](https://zernio.com), Telegram, a free Gemini key, free Cloudflare and GitHub
 accounts. Free for your own brand (agencies: [commercial licence](COMMERCIAL-LICENSE.md)); you pay for Claude, and for Zernio beyond its free tier.
 

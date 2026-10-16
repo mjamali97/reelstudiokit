@@ -24,7 +24,9 @@ ap.add_argument("--model", default=None, help="WhisperX model (default: small; l
 A = ap.parse_args()
 A.model = A.model or ("large-v3" if A.lang in ("fa", "ar") else "small")
 proj = Path(A.project).expanduser().resolve(); (proj / "work").mkdir(parents=True, exist_ok=True)
-WX = os.environ.get("WHISPERX") or shutil.which("whisperx") or str(Path.home() / ".local/bin/whisperx")
+# uv puts tool commands in ~/.local/bin (whisperx.exe on Windows), even when that folder is not on PATH
+WX = os.environ.get("WHISPERX") or shutil.which("whisperx") or next(
+    (str(p) for p in (Path.home() / ".local/bin/whisperx", Path.home() / ".local/bin/whisperx.exe") if p.exists()), "whisperx")
 
 files = []
 for i in A.inputs:
@@ -36,7 +38,7 @@ for i in A.inputs:
 files = sorted({f.resolve() for f in files}, key=lambda f: f.stat().st_mtime)
 if not files: sys.exit("no video files found")
 src = {f"c{i + 1}": str(f) for i, f in enumerate(files)}
-(proj / "sources.json").write_text(json.dumps(src, indent=1))
+(proj / "sources.json").write_text(json.dumps(src, indent=1), encoding="utf-8")
 
 def probe(f):
     j = json.loads(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration:stream=codec_type,width,height,r_frame_rate",
@@ -72,7 +74,7 @@ def transcribe(f, cid):
     r = subprocess.run(cmd, capture_output=True, text=True)
     js = next(out.glob("*.json"), None)
     if r.returncode or not js: sys.exit(f"WhisperX failed on {f}:\n{r.stderr[-800:]}")
-    segs = json.loads(js.read_text())["segments"]
+    segs = json.loads(js.read_text(encoding="utf-8"))["segments"]
     words = [{"t": w["word"].strip(), "s": round(w["start"], 3), "e": round(w["end"], 3)} for s in segs for w in s.get("words", []) if "start" in w]
     lines = [{"text": s["text"].strip(), "s": round(s["start"], 2), "e": round(s["end"], 2)} for s in segs]
     return words, lines
@@ -84,7 +86,7 @@ for cid, f in src.items():
     print(f"{cid}: {Path(f).name}  {w}x{h}  {dur:.1f}s  {fr} fps", flush=True)
     sheets.append(sheet(f, dur, proj / "work" / f"sheet_{cid}.jpg"))
     words, lines = transcribe(f, cid)
-    (proj / f"words_{cid}.json").write_text(json.dumps(words, ensure_ascii=False, indent=0))
+    (proj / f"words_{cid}.json").write_text(json.dumps(words, ensure_ascii=False, indent=0), encoding="utf-8")
     regions = speech(f, dur)
     report.append(f"## {cid} · {Path(f).name} · {w}x{h} · {dur:.1f}s{'  (4K: punch-ins stay sharp up to ~1.9x)' if min(w, h) >= 2000 else ''}\n")
     report += [f"- {l['s']:7.2f}–{l['e']:7.2f}  {l['text']}" for l in lines]
@@ -98,7 +100,7 @@ for l in all_lines:
 rep = [g for g in groups if len(g) > 1]
 report.append("## Repeats (retakes of the same line)\n" + ("\n".join(
     "- " + " | ".join(f"{x['clip']} {x['s']:.2f}–{x['e']:.2f}{' ← last' if x is g[-1] else ''}" for x in g) + f"\n  «{g[-1]['text']}»" for g in rep) or "- none"))
-(proj / "transcript.md").write_text("# Transcript\n\n" + "\n".join(report) + "\n")
+(proj / "transcript.md").write_text("# Transcript\n\n" + "\n".join(report) + "\n", encoding="utf-8")
 from PIL import Image
 W = max(s.width for s in sheets); S = Image.new("RGB", (W, sum(s.height for s in sheets)), "black"); y = 0
 for s in sheets: S.paste(s, (0, y)); y += s.height

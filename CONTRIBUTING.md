@@ -12,8 +12,9 @@ Users copy this repo and pull updates with `/update` (`tools/update.sh`). Keep u
 3. **New settings need defaults in code** (`env.X || default`), so an old `wrangler.jsonc` keeps working.
 4. **New business type:** copy `playbook/business/_TEMPLATE.md`, fill every section, add a row to `playbook/business/INDEX.md`.
 5. **Tests:** `node tools/ci/check.mjs` (static: skills, styles, fonts, guides, no personal data),
-   `python3 -I tools/render/lint_fa.py --self-test` (the Persian linter), `bash telegram-bot/test/all.sh`
-   (ALL GREEN) and `cd tools/style-reel && npx --yes hyperframes@0.8.46 check`. CI runs these plus render smoke tests on every push.
+   `tools/py -I tools/render/lint_fa.py --self-test` (the Persian linter), `bash telegram-bot/test/all.sh`
+   (or `node telegram-bot/test/all.mjs`; ALL GREEN) and `cd tools/style-reel && npx --yes hyperframes@0.8.46 check`. CI runs these plus render smoke tests on every push, on Linux and on Windows. Windows rules: Python text
+   I/O names `encoding="utf-8"`, new scripts are Node or Python (a `.sh` only starts them), `tools/install.ps1` stays ASCII.
 5b. **A new video style:** `tools/style-reel/styles/<name>.js` (scenes B1–B6, every hold keeps moving: `H.camera`), an entry in the
    `style` enum and a script tag in `index.html`, a skill `.claude/skills/<name>/SKILL.md`, a row in `/reel-style` and in the guides;
    render the demo, `qa.py` zero FAIL, eye pass on the sheet, then `node tools/render/showcase.mjs --only styles`.

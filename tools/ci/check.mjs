@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // check.mjs · static checks that keep the kit consistent (CI runs it on every push; contributors run it before a PR).
 //   node tools/ci/check.mjs
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -91,6 +92,29 @@ for (const p of [".claude-plugin/marketplace.json", "plugins/reel-studio/.claude
 const v = rd("VERSION").trim();
 ok(/^\d+\.\d+\.\d+$/.test(v), "VERSION must be x.y.z");
 ok(new RegExp(`^## ${v.replace(/\./g, "\\.")}\\b`, "m").test(rd("CHANGELOG.md")), `CHANGELOG.md has no "## ${v}" entry`);
+
+// 10 · Windows: Python text I/O names its encoding (the Windows default code page breaks Persian), the PowerShell
+// installer is ASCII (Windows PowerShell 5.1 misreads UTF-8 without a BOM), the Windows launchers exist, nothing compiled is in git
+const tracked = (() => { try { return execFileSync("git", ["ls-files"], { cwd: ROOT, encoding: "utf8" }).split("\n").filter(Boolean); } catch { return null; } })();
+if (tracked) {
+  ok(!tracked.some((f) => /__pycache__|\.pyc$/.test(f)), "compiled Python (__pycache__/*.pyc) is tracked in git: git rm -r --cached it");
+  for (const f of tracked.filter((f) => f.endsWith(".py") && !f.startsWith("tools/vendor/"))) {
+    const src = rd(f);
+    for (const m of src.matchAll(/\.(read_text|write_text)\(|(?<![\w.])open\(/g)) {
+      let i = m.index + m[0].length, depth = 1, q = null;   // the call's text up to its closing parenthesis
+      for (; i < src.length && depth; i++) {
+        const c = src[i];
+        if (q) { if (c === "\\") i++; else if (c === q) q = null; }
+        else if (c === '"' || c === "'") q = c; else if (c === "(") depth++; else if (c === ")") depth--;
+      }
+      const call = src.slice(m.index, i), line = src.slice(0, m.index).split("\n").length;
+      const binary = m[0].includes("open") && /,\s*(mode\s*=\s*)?["'][rwax+]*b/.test(call);
+      ok(binary || /encoding\s*=/.test(call), `${f}:${line}: ${m[0]}…) needs encoding="utf-8" (Windows reads text as cp1252 otherwise)`);
+    }
+  }
+}
+ok(!/[^\x00-\x7f]/.test(rd("tools/install.ps1")), "tools/install.ps1 must be ASCII only (Windows PowerShell 5.1 reads it as ANSI)");
+ok(ex("tools/py.cmd") && ex("tools/update.ps1"), "the Windows launchers tools/py.cmd and tools/update.ps1 are missing");
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

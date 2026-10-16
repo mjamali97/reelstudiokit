@@ -4,6 +4,10 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+// the kit's Python (tools/.venv: bin/ on macOS and Linux, Scripts/ on Windows), else the system one ("python3" does not
+// exist on most Windows machines); run it with -X utf8 so Persian text never meets the Windows code page
+export const PY = [path.join(ROOT, "tools/.venv/bin/python"), path.join(ROOT, "tools/.venv/Scripts/python.exe")].find((p) => fs.existsSync(p))
+  || (process.platform === "win32" ? "python" : "python3");
 export const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 export const RTL = new Set(["fa", "ar"]);
 const FONTS = JSON.parse(fs.readFileSync(path.join(ROOT, "fonts/fonts.json"), "utf8"));

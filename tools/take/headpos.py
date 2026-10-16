@@ -19,7 +19,7 @@ from pathlib import Path
 from PIL import Image
 
 proj = Path(sys.argv[1]).expanduser().resolve()
-segs = json.loads((proj / "segments.json").read_text()); sub = proj / "assets" / "subject.webm"
+segs = json.loads((proj / "segments.json").read_text(encoding="utf-8")); sub = proj / "assets" / "subject.webm"
 if not sub.exists(): sys.exit("no assets/subject.webm: run tools/take/cutout.py first")
 K = 4   # measured at 270x480, reported at 1080x1920
 try:
@@ -80,6 +80,6 @@ for s in segs:
          "moves": (max(tops) - min(tops)) * K > 60}
     out.append(e)
     print(f"{s['id']:12} {t0:6.2f}s  head top {e['head_top']:4d}  head x {e['head_x'][0]}-{e['head_x'][1]}  face to y {e['face_bottom']}  {'MOVES' if e['moves'] else ''}")
-(proj / "headpos.json").write_text(json.dumps(out, indent=1))
-(proj / "assets").mkdir(exist_ok=True); (proj / "assets" / "headpos.js").write_text("window.HEAD=" + json.dumps(out) + ";\n")
+(proj / "headpos.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
+(proj / "assets").mkdir(exist_ok=True); (proj / "assets" / "headpos.js").write_text("window.HEAD=" + json.dumps(out) + ";\n", encoding="utf-8")
 print("→ headpos.json, assets/headpos.js")

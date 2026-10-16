@@ -11,8 +11,11 @@ Check `git --version`, `node -v`, `python3 --version`, `ffmpeg -version`, Chrome
 install what is missing with Homebrew (`brew install git node python ffmpeg uv`; Chrome from google.com/chrome). On
 Linux and WSL2: `sudo apt install git ffmpeg python3 python3-venv` (Python 3.11+), Node 20+ from nvm (`nvm install --lts`)
 or NodeSource, not apt's `nodejs` (usually older than 20), uv with its install script. `bash tools/install.sh` checks the
-versions and prints the right command. On Windows use WSL2 (Ubuntu) for everything except Chrome. `tools/capture/ocrfind` (placing highlights on screenshots of their own site) is macOS-only;
-skip it elsewhere.
+versions and prints the right command. On Windows 10/11 (no WSL needed): `powershell -ExecutionPolicy Bypass -File tools\install.ps1 -Install` installs what is
+missing with winget (Git, Node LTS, Python 3.12, ffmpeg, uv, Chrome) and the same pieces as `install.sh`; Claude Code runs
+the kit's commands in Git Bash, where `bash tools/install.sh` hands over to it. WSL2 works too, as Linux.
+`tools/capture/ocrfind` (finding text on screenshots by OCR) is macOS-only; for their own site, `webcap.mjs --find` gives
+the exact spot on every system.
 
 ## B · Video tools
 
@@ -35,7 +38,7 @@ Walk them through, one screen at a time (they click, you confirm from a screensh
 3. Zernio dashboard → connect Instagram (and YouTube if they want Shorts). Telegram can also be connected there, but this
    kit posts to Telegram through its own Publisher bot.
 4. Zernio → API keys → create one. They open `.env` (copy of `.env.example`) and paste it after `ZERNIO_API_KEY=` themselves.
-5. Verify: `python3 -I tools/zernio/zernio.py accounts` lists their accounts (never print the key).
+5. Verify: `tools/py -I tools/zernio/zernio.py accounts` lists their accounts (never print the key).
 Comment-to-DM automations live under Inbox → Campaigns → Comment-to-DM in Zernio's UI; the bot creates them per reel.
 
 ## D · Telegram channel and bots
@@ -84,7 +87,7 @@ If a webhook did not set, open `<BOT_URL>/setup?key=<SETUP_KEY>&info=1` (they op
 
 ## G · Baseline from their own account
 
-`python3 -I tools/zernio/zernio.py analytics --out research/analytics/posts.json` and `insights`. Write their top posts
+`tools/py -I tools/zernio/zernio.py analytics --out research/analytics/posts.json` and `insights`. Write their top posts
 into `profile/HOOKS.md` (the first line of each, views, saves and shares per 1k, skip rate) and note the pattern of each
 hook. Pick `REEL_DAYS`/`REEL_TIME` from Zernio's online-followers / best-time data (two or three evenly spread days at
 the evening peak), update `wrangler.jsonc`, push. No account yet or under ~10 posts: leave the defaults and say so.

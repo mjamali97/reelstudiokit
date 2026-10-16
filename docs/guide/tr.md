@@ -19,6 +19,8 @@ bash tools/install.sh
 bash telegram-bot/demo/demo.sh tr
 ```
 
+**Windows:** PowerShell'de `powershell -ExecutionPolicy Bypass -File tools\install.ps1` (`-Install` eklersen Git, Node, Python, ffmpeg, uv ve Chrome'u winget ile kurar), sonra `node telegram-bot\demo\demo.mjs`. Claude Code kitin komutlarını Git Bash'te çalıştırır, bu yüzden rehberin geri kalanı yazıldığı gibi çalışır.
+
 Üç sütunlu bir sayfa açılır: **Stüdyo botu**, **Yayın botu** ve **kanalın**. 📝 Taslaklar → paylaşımda ✅ → Yayın sütununda
 son ✅'e bas ve kanala düşmesini izle. 📊 Panel ve 💬 Gelen kutusunu aç, bir bağlantı gönder. Hiçbir şey bilgisayarından çıkmaz.
 Ctrl-C ile durdur.
@@ -30,7 +32,7 @@ Görsel örnekler `examples/bakery/` klasöründe (hayali bir pastane): 10 karus
 
 | | |
 |---|---|
-| Bilgisayar | macOS, Linux veya WSL2'li Windows |
+| Bilgisayar | macOS, Linux veya Windows 10/11 (WSL gerekmez; WSL2 ile de çalışır) |
 | Yazılım | git, Node 20+, Python 3.11+, ffmpeg, Google Chrome, uv (`bash tools/install.sh` eksikleri ve nasıl kurulacağını söyler) |
 | Claude Code | Claude aboneliği veya API anahtarı |
 | Hesaplar (yalnızca canlı yayın için) | profesyonel Instagram hesabı, [Zernio](https://zernio.com) (yayın ve istatistik), Telegram, ücretsiz Gemini anahtarı, ücretsiz Cloudflare hesabı, GitHub |
@@ -182,6 +184,7 @@ ayarları; liste `.gitattributes` içinde), yenilikleri ve senden bir işlem ger
 | sorun | çözüm |
 |---|---|
 | `install.sh` bir şeyin eksik olduğunu söylüyor | yazdırdığı komutla kur, tekrar çalıştır |
+| Windows: `python3` bulunamıyor ya da Farsça metin bozuk | Python araçlarını `tools/py` (Git Bash) veya `tools\py.cmd` (PowerShell) ile çalıştır |
 | render bir fontun yüklenmediğini söylüyor | `brand/brand.json` içindeki font kimliği `fonts/fonts.json` içinde yok ya da kendi fontunun `css` yolu yanlış |
 | bot cevap vermiyor | `<BOT_URL>/setup?key=<SETUP_KEY>&info=1` adresini kendin aç ve iki webhook'u da kontrol et |
 | raporda rakam yok | Instagram hesabı profesyonel ve Zernio'ya bağlı olmalı; yeni hesaplar birkaç günlük veri ister |

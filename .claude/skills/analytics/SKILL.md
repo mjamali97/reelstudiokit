@@ -6,8 +6,8 @@ description: Pull the creator's Instagram numbers from Zernio, find what worked 
 # /analytics
 
 ```bash
-python3 -I tools/zernio/zernio.py analytics --out research/analytics/posts.json
-python3 -I tools/zernio/zernio.py insights
+tools/py -I tools/zernio/zernio.py analytics --out research/analytics/posts.json
+tools/py -I tools/zernio/zernio.py insights
 ```
 Then, in their language, short:
 1. The table of recent posts: views, saves/1k, shares/1k, skip rate, average watch vs length. Saves and shares per 1k views

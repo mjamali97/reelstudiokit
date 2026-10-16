@@ -6,10 +6,14 @@
 #   bash tools/install.sh all        # + HyperFrames skills and the NextWork AI video editor plugin for Claude Code
 #   bash tools/install.sh check      # only report what is installed (pieces of a higher level are listed, not counted
 #                                    # as missing: `check video` or `check all` to require them)
+# On Windows (PowerShell, or Git Bash, which hands over to it): powershell -ExecutionPolicy Bypass -File tools\install.ps1
 #
 # What each piece is and its licence: tools/STACK.md. Nothing here needs an account or a key.
 set -u
 cd "$(dirname "$0")/.."
+# Git Bash on Windows (where Claude Code runs its commands): the Windows installer does the work, with the same levels
+case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*)
+  exec powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(cygpath -w tools/install.ps1)" "$@";; esac
 LEVEL=${1:-core}
 case "$LEVEL" in core|video|all|check) ;; *) echo "usage: bash tools/install.sh [core|video|all|check [core|video|all]]"; exit 2;; esac
 WANT=$LEVEL; [ "$LEVEL" = check ] && WANT=${2:-core}
@@ -37,9 +41,8 @@ case "$OS" in
   Linux) PKG="sudo apt install"   # Linux and WSL2 (Ubuntu/Debian)
     NODE_HINT="Node 20+ from nvm (github.com/nvm-sh/nvm, then: nvm install --lts) or NodeSource (github.com/nodesource/distributions); apt's own nodejs is usually older than 20"
     PY_HINT="sudo apt install python3 python3-venv  (3.11+ ships with Ubuntu 24.04 and Debian 12; on an older release: uv python install 3.12 --default, which puts python3 in ~/.local/bin)";;
-  *) PKG="install"   # Git Bash / MSYS on Windows: the kit is made for WSL2
-    NODE_HINT="nodejs.org (20 or newer); on Windows the kit runs best in WSL2 (Ubuntu): run this script there"
-    PY_HINT="python.org (3.11 or newer); on Windows the kit runs best in WSL2 (Ubuntu)";;
+  *) PKG="install"
+    NODE_HINT="nodejs.org (20 or newer)"; PY_HINT="python.org (3.11 or newer)";;
 esac
 need git "git --version" "$PKG git"
 need node "node -v" "$NODE_HINT"

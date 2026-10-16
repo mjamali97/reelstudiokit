@@ -24,6 +24,8 @@ bash telegram-bot/demo/demo.sh ar
 
 </div>
 
+**ويندوز:** في PowerShell: `powershell -ExecutionPolicy Bypass -File tools\install.ps1` (أضف `-Install` ليثبّت Git وNode وPython وffmpeg وuv وChrome عبر winget)، ثم `node telegram-bot\demo\demo.mjs`. يشغّل Claude Code أوامر الحزمة في Git Bash، لذا يعمل باقي هذا الدليل كما هو مكتوب.
+
 تفتح صفحة بثلاثة أعمدة: **بوت الاستوديو** و**بوت النشر** و**قناتك**. اضغط 📝 المسودات ← ✅ على المنشور ← ✅ النهائية في عمود
 بوت النشر، وشاهده يصل إلى القناة. افتح 📊 لوحة البيانات و💬 صندوق الرسائل، وأرسل أي رابط. لا شيء يغادر جهازك. أوقفه بـ Ctrl-C.
 
@@ -34,7 +36,7 @@ bash telegram-bot/demo/demo.sh ar
 
 | | |
 |---|---|
-| الجهاز | ماك، لينكس، أو ويندوز مع WSL2 |
+| الجهاز | ماك، لينكس، أو ويندوز 10/11 (دون WSL؛ ويعمل مع WSL2 أيضاً) |
 | البرامج | git، Node 20 فأعلى، Python 3.11 فأعلى، ffmpeg، Google Chrome، uv (`bash tools/install.sh` يخبرك بما ينقص وكيف تثبّته) |
 | Claude Code | اشتراك Claude أو مفتاح API |
 | الحسابات (للنشر الفعلي فقط) | حساب إنستغرام احترافي، [Zernio](https://zernio.com) (النشر والأرقام)، تيليغرام، مفتاح Gemini مجاني، حساب Cloudflare مجاني، GitHub |
@@ -189,6 +191,7 @@ node tools/client.mjs use cafe-dubai
 | المشكلة | الحل |
 |---|---|
 | `install.sh` يقول إن شيئاً ناقص | ثبّته بالأمر الذي يطبعه ثم أعد التشغيل |
+| ويندوز: `python3` غير موجود أو يظهر النص الفارسي مشوّهاً | شغّل أدوات بايثون بـ`tools/py` (Git Bash) أو `tools\py.cmd` (PowerShell) |
 | التصيير يقول إن خطاً لم يُحمَّل | معرّف الخط في `brand/brand.json` غير موجود في `fonts/fonts.json`، أو مسار `css` لخطك خاطئ |
 | البوت لا يرد | افتح بنفسك `<BOT_URL>/setup?key=<SETUP_KEY>&info=1` وتحقق من الويب هوك لكلا البوتين |
 | لا أرقام في التقرير | يجب أن يكون حساب إنستغرام احترافياً ومتصلاً في Zernio؛ الحسابات الجديدة تحتاج أياماً من البيانات |

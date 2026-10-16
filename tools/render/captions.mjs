@@ -21,8 +21,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
-import { pathToFileURL } from "node:url";
-import { loadBrand, page, typeFor, RTL, esc } from "./lib.mjs";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { loadBrand, page, typeFor, RTL, esc, PY } from "./lib.mjs";
 
 const args = process.argv.slice(2);
 const opt = (k, d) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : d; };
@@ -79,9 +79,9 @@ if (lang === "fa") {
   // always safe in Persian text: Arabic yeh/kaf and Arabic-Indic digits → Persian
   const norm = (t) => t.replace(/ي/g, "ی").replace(/ك/g, "ک").replace(/[٠-٩]/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d.charCodeAt(0) - 0x660]);
   cues = cues.map((c) => ({ ...c, t: norm(c.t), ...(c.words ? { words: c.words.map((w) => ({ ...w, t: norm(w.t) })) } : {}) }));
-  const lint = path.join(path.dirname(new URL(import.meta.url).pathname), "lint_fa.py");
+  const lint = path.join(path.dirname(fileURLToPath(import.meta.url)), "lint_fa.py");
   const f = path.join(os.tmpdir(), `cues-${process.pid}.txt`); fs.writeFileSync(f, cues.map((c) => c.t).join("\n"));
-  try { execFileSync("python3", ["-I", lint, f], { stdio: "pipe" }); console.log("persian lint: clean"); }
+  try { execFileSync(PY, ["-I", "-X", "utf8", lint, f], { stdio: "pipe" }); console.log("persian lint: clean"); }
   catch (e) { console.warn(`persian lint (line = cue number; fix in ${path.basename(side)} and run again):\n${String(e.stdout || e.message).trim().split("\n").slice(0, 12).join("\n")}`); }
   fs.rmSync(f, { force: true });
 }
@@ -162,10 +162,11 @@ try {
 
 // ---------- one overlay stream: the caption PNGs and blank gaps, with their durations ----------
 const list = []; let t = 0;
-const add = (f, d) => { if (d > 0.001) { list.push(`file '${f}'`, `duration ${d.toFixed(3)}`); t += d; } };
+const fwd = (f) => f.split(path.sep).join("/");   // a Windows path with backslashes, written the way ffmpeg reads it everywhere
+const add = (f, d) => { if (d > 0.001) { list.push(`file '${fwd(f)}'`, `duration ${d.toFixed(3)}`); t += d; } };
 states.forEach((st, i) => { add(path.join(tmp, "blank.png"), st.s - t); add(path.join(tmp, `c${i}.png`), Math.min(st.e, states[i + 1]?.s ?? st.e) - Math.max(st.s, t)); });
 add(path.join(tmp, "blank.png"), dur - t + 0.5);
-list.push(`file '${path.join(tmp, "blank.png")}'`); // the concat demuxer drops the last duration without this
+list.push(`file '${fwd(path.join(tmp, "blank.png"))}'`); // the concat demuxer drops the last duration without this
 fs.writeFileSync(path.join(tmp, "list.txt"), list.join("\n"));
 const hasAudio = execFileSync("ffprobe", ["-v", "error", "-select_streams", "a", "-show_entries", "stream=index", "-of", "csv=p=0", video]).toString().trim() !== "";
 execFileSync("ffmpeg", ["-v", "error", "-y", "-i", video, "-f", "concat", "-safe", "0", "-i", path.join(tmp, "list.txt"),

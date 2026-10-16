@@ -19,6 +19,8 @@ bash tools/install.sh
 bash telegram-bot/demo/demo.sh fr
 ```
 
+**Windows :** dans PowerShell, `powershell -ExecutionPolicy Bypass -File tools\install.ps1` (avec `-Install`, il installe Git, Node, Python, ffmpeg, uv et Chrome via winget), puis `node telegram-bot\demo\demo.mjs`. Claude Code lance les commandes du kit dans Git Bash : le reste de ce guide marche tel quel.
+
 Une page s'ouvre avec trois colonnes : ton **bot Studio**, ton **bot Publisher** et ta **chaîne**. Appuie sur 📝 Brouillons → ✅ sur
 la publication → le ✅ final dans la colonne Publisher, et regarde-la arriver dans la chaîne. Ouvre 📊 Tableau de bord et 💬 Boîte de
 réception, envoie un lien. Rien ne quitte ton ordinateur. Arrête avec Ctrl-C.
@@ -30,7 +32,7 @@ des couvertures à la une. `fonts/gallery.html` montre les 51 polices. Dans Clau
 
 | | |
 |---|---|
-| Ordinateur | macOS, Linux, ou Windows avec WSL2 |
+| Ordinateur | macOS, Linux, ou Windows 10/11 (sans WSL ; WSL2 marche aussi) |
 | Logiciels | git, Node 20+, Python 3.11+, ffmpeg, Google Chrome, uv (`bash tools/install.sh` indique ce qui manque et comment l'installer) |
 | Claude Code | un abonnement Claude ou une clé API |
 | Comptes (seulement pour passer en ligne) | un compte Instagram professionnel, [Zernio](https://zernio.com) (publication et statistiques), Telegram, une clé Gemini gratuite, un compte Cloudflare gratuit, GitHub |
@@ -183,6 +185,7 @@ formats, reels, réglages du bot ; liste dans `.gitattributes`) et montre les no
 | problème | solution |
 |---|---|
 | `install.sh` signale qu'il manque quelque chose | installe-le avec la commande affichée, relance |
+| Windows : `python3` introuvable ou texte persan illisible | lance les outils Python avec `tools/py` (Git Bash) ou `tools\py.cmd` (PowerShell) |
 | un rendu indique qu'une police n'a pas chargé | l'identifiant de police dans `brand/brand.json` n'existe pas dans `fonts/fonts.json`, ou le chemin `css` de ta police est faux |
 | le bot ne répond pas | ouvre toi-même `<BOT_URL>/setup?key=<SETUP_KEY>&info=1` et vérifie les deux webhooks |
 | pas de chiffres dans le rapport | le compte Instagram doit être professionnel et connecté dans Zernio ; un nouveau compte a besoin de quelques jours de données |
